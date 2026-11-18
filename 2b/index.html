@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>서울대 한국어+ 2B 전단원 어휘·문법 테스트</title>
+  <style>
+    :root {
+      --bg-page: var(--pickle-surface-page, #f8fafc);
+      --bg-card: var(--pickle-surface-card, #ffffff);
+      --text-main: var(--pickle-text-primary, #0f172a);
+      --text-sub: var(--pickle-text-secondary, #475569);
+      --text-muted: var(--pickle-text-tertiary, #94a3b8);
+      --primary: #2563eb;
+      --primary-light: #eff6ff;
+      --success: #16a34a;
+      --success-light: #f0fdf4;
+      --danger: #dc2626;
+      --danger-light: #fef2f2;
+      --border: var(--pickle-border-control, #e2e8f0);
+      --radius-card: var(--pickle-radius-card, 16px);
+      --radius-pill: var(--pickle-radius-pill, 9999px);
+      --radius-btn: var(--pickle-radius-cta, 12px);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "맑은 고딕", sans-serif;
+      line-height: 1.5;
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header { margin-bottom: 12px; text-align: center; }
+
+    .badge-sub {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #e0e7ff;
+      color: #3730a3;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+    }
+
+    /* Unit selector */
+    .unit-selector-wrap {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border);
+      padding: 10px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .unit-selector-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-sub);
+      letter-spacing: 0.3px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .unit-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .unit-btn {
+      padding: 11px 2px;
+      background: #f1f5f9;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+      font-size: 11px;
+      letter-spacing: -0.4px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .unit-btn:hover { background: #e2e8f0; }
+
+    .unit-btn .u-num { font-weight: 700; color: var(--text-sub); }
+    .unit-btn .u-name { margin-left: 2px; font-weight: 600; color: var(--text-muted); }
+
+    @media (max-width: 380px) {
+      .unit-btn .u-name { display: none; }
+    }
+
+    .unit-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    }
+
+    .unit-btn.active .u-num, .unit-btn.active .u-name { color: #ffffff; }
+
+    .unit-active-summary {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: center;
+      line-height: 1.45;
+    }
+
+    .unit-active-summary span { color: var(--primary); font-weight: 700; }
+
+    /* Main card */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow);
+      padding: 20px 16px;
+      border: 1px solid var(--border);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tab-bar {
+      display: flex;
+      background: #e2e8f0;
+      border-radius: var(--radius-pill);
+      padding: 3px;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px 0;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-sub);
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-wrap {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--primary);
+      width: 10%;
+      transition: width 0.3s ease;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .q-count { font-size: 13px; font-weight: 700; color: var(--primary); }
+
+    .q-tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      background: #f1f5f9;
+      color: var(--text-sub);
+      border-radius: 6px;
+      font-weight: 600;
+      text-align: right;
+      line-height: 1.35;
+    }
+
+    .q-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.5;
+      margin-bottom: 6px;
+      white-space: pre-line;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+
+    .q-sub {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 18px;
+      word-break: keep-all;
+    }
+
+    .opts-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+
+    .opt-btn {
+      padding: 14px 16px;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-main);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.45;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+
+    .opt-btn:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-light); }
+    .opt-btn.correct { background: var(--success-light); border-color: var(--success); color: #15803d; font-weight: 700; }
+    .opt-btn.wrong { background: var(--danger-light); border-color: var(--danger); color: #b91c1c; font-weight: 700; }
+
+    .exp-box {
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.55;
+      margin-bottom: 16px;
+      display: none;
+      animation: fadeIn 0.2s ease-in;
+      word-break: keep-all;
+    }
+
+    .exp-box.correct { background: var(--success-light); color: #14532d; border: 1px solid #bbf7d0; }
+    .exp-box.wrong { background: var(--danger-light); color: #7f1d1d; border: 1px solid #fecaca; }
+
+    .exp-title { font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 4px; }
+
+    .nav-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-btn);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: auto;
+      transition: background 0.2s;
+    }
+
+    .nav-btn:hover { background: #1d4ed8; }
+
+    /* Result */
+    .result-wrap { text-align: center; padding: 16px 4px; }
+
+    .result-score-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      border: 4px solid var(--primary);
+      color: var(--primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .result-score-circle span { font-size: 11px; font-weight: 600; color: var(--text-sub); margin-top: -2px; }
+    .result-score-circle #resScoreNum { font-size: 30px; font-weight: 800; color: var(--primary); margin-top: 0; }
+
+    .result-msg { font-size: 17px; font-weight: 800; margin-bottom: 4px; }
+    .result-sub { font-size: 13px; color: var(--text-sub); margin-bottom: 20px; }
+
+    .result-btns { display: flex; gap: 10px; margin-bottom: 20px; }
+
+    .result-btn-sec {
+      flex: 1;
+      padding: 12px;
+      background: #f1f5f9;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-btn);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .result-btn-pri {
+      flex: 1;
+      padding: 12px;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-btn);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .review-list { text-align: left; border-top: 1px solid var(--border); padding-top: 14px; }
+
+    .review-item { padding: 10px 12px; background: #f8fafc; border-radius: 8px; margin-bottom: 8px; font-size: 12px; }
+    .review-q { font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
+    .review-ans { color: var(--text-sub); }
+    .review-ans.wrong { color: var(--danger); font-weight: 600; }
+
+    /* Flashcard */
+    .flashcard-wrap { perspective: 1000px; width: 100%; height: 260px; margin: 16px 0; cursor: pointer; }
+
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.4s;
+      transform-style: preserve-3d;
+      border-radius: var(--radius-card);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .flashcard-inner.flipped { transform: rotateY(180deg); }
+
+    .flashcard-front, .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      border-radius: var(--radius-card);
+      border: 2px solid var(--border);
+    }
+
+    .flashcard-front { background: #ffffff; color: var(--text-main); }
+    .flashcard-back { background: var(--primary-light); color: var(--text-main); transform: rotateY(180deg); border-color: #bfdbfe; }
+
+    .fc-word { font-size: 32px; font-weight: 800; margin-bottom: 12px; color: #1e1b4b; word-break: keep-all; }
+    .fc-hint { font-size: 12px; color: var(--text-muted); }
+    .fc-meaning { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 12px; line-height: 1.35; }
+    .fc-example {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.5;
+      background: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #dbeafe;
+      word-break: keep-all;
+    }
+
+    .fc-nav { display: flex; gap: 12px; margin-top: auto; }
+
+    .fc-btn {
+      flex: 1;
+      padding: 12px;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+
+    .fc-btn:hover { background: #e2e8f0; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  
+    /* Class 2C Password Gate */
+    body.locked > *:not(#pw-gate) { display: none !important; }
+    #pw-gate {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    }
+    body:not(.locked) #pw-gate { display: none !important; }
+    .pw-card {
+      width: 100%;
+      max-width: 380px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+    .pw-badge {
+      display: inline-block;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    .pw-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 8px;
+      line-height: 1.35;
+    }
+    .pw-desc {
+      font-size: 14px;
+      color: #475569;
+      margin: 0 0 22px;
+      line-height: 1.5;
+    }
+    .pw-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      outline: none;
+      text-align: center;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      transition: border-color 0.15s;
+    }
+    .pw-input:focus { border-color: #2563eb; }
+    .pw-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      background: #2563eb;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .pw-btn:active { background: #1d4ed8; }
+    .pw-err {
+      color: #dc2626;
+      font-size: 13px;
+      margin-top: 10px;
+      min-height: 18px;
+    }
+
+  </style>
+</head>
+<body class="locked">
+
+  <div id="pw-gate">
+    <div class="pw-card">
+      <div class="pw-badge">2급 C반 전용 퀴즈</div>
+      <h1 class="pw-title">서울대 한국어+ 2B<br>어휘·문법 테스트</h1>
+      <p class="pw-desc">우리 반 비밀번호를 입력해 주세요.<br>(Enter class password)</p>
+      <input id="pw-input" class="pw-input" type="password" placeholder="비밀번호 입력" autocomplete="off" />
+      <button id="pw-submit" class="pw-btn" type="button">입장하기</button>
+      <div id="pw-err" class="pw-err"></div>
+    </div>
+  </div>
+
+
+  <header>
+    <div class="badge-sub" id="badgeSub">서울대 한국어+ 2B (전단원 마스터)</div>
+    <h1>어휘 &amp; 문법 스피드 테스트</h1>
+  </header>
+
+  <div class="unit-selector-wrap" id="unitSelectorWrap">
+    <div class="unit-selector-label">
+      <span>학습할 단원 선택 (10~18단원)</span>
+      <span id="unitProgressCount">9개 단원 수록</span>
+    </div>
+    <div class="unit-selector-grid" id="unitGrid"></div>
+    <div class="unit-active-summary" id="unitSummaryText">
+      현재 선택: <span id="summaryTitle">10단원 학교생활</span> · <span id="summaryGrammar">반말 1 · V-자</span>
+    </div>
+  </div>
+
+  <div class="card" id="mainCard">
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tabQuiz" onclick="switchMode('quiz')">실전 퀴즈 (10문항)</button>
+      <button class="tab-btn" id="tabFlash" onclick="switchMode('flash')">어휘 단어장 (8단어)</button>
+    </div>
+
+    <div id="quizContainer">
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="q-meta">
+        <span class="q-count" id="qCounter">문제 1 / 10</span>
+        <span class="q-tag" id="qTag">어휘 (뜻)</span>
+      </div>
+
+      <div class="q-text" id="qText"></div>
+      <div class="q-sub" id="qSub"></div>
+
+      <div class="opts-list" id="optsList"></div>
+
+      <div class="exp-box" id="expBox">
+        <div class="exp-title" id="expTitle"></div>
+        <div id="expText"></div>
+      </div>
+
+      <button class="nav-btn" id="nextBtn" style="display: none;" onclick="nextQuestion()">다음 문제로 가기 →</button>
+    </div>
+
+    <div id="resultContainer" style="display: none;">
+      <div class="result-wrap">
+        <div class="result-score-circle">
+          <span id="resScoreNum">100</span>
+          <span>점수</span>
+        </div>
+        <div class="result-msg" id="resMsg">완벽해요!</div>
+        <div class="result-sub" id="resSub">10문제 중 10문제를 모두 맞히셨습니다.</div>
+
+        <div class="result-btns">
+          <button class="result-btn-sec" onclick="restartQuiz()">현재 단원 다시 풀기</button>
+          <button class="result-btn-pri" onclick="goToNextUnit()">다음 단원으로 이동 →</button>
+        </div>
+
+        <div class="review-list" id="reviewList"></div>
+      </div>
+    </div>
+
+    <div id="flashContainer" style="display: none;">
+      <div class="q-meta">
+        <span class="q-count" id="fcCounter">단어 1 / 8</span>
+        <span class="q-tag">터치해서 뒤집기</span>
+      </div>
+
+      <div class="flashcard-wrap" id="flashcardWrap" onclick="toggleCardFlip()">
+        <div class="flashcard-inner" id="cardInner">
+          <div class="flashcard-front">
+            <div class="fc-word" id="fcWordFront"></div>
+            <div class="fc-hint">카드를 누르면 영문 뜻과 예문이 나와요</div>
+          </div>
+          <div class="flashcard-back">
+            <div class="fc-meaning" id="fcMeaningBack"></div>
+            <div class="fc-example" id="fcExampleBack"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc-nav">
+        <button class="fc-btn" onclick="prevCard()">← 이전 단어</button>
+        <button class="fc-btn" onclick="nextCard()">다음 단어 →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const allUnits = [{"unit":10,"title":"10단원 학교생활","subtitle":"반말 1 · V-자 / V-(으)려면 · V-나요?","flashcards":[{"word":"시험공부","meaning":"Studying for an exam","ex":"주말에 친구와 같이 도서관에서 시험공부를 했어요."},{"word":"도서관","meaning":"Library","ex":"도서관에서 한국어 책을 빌렸어요."},{"word":"계획","meaning":"Plan","ex":"방학 동안 무엇을 할지 계획을 세웠어요."},{"word":"기숙사","meaning":"Dormitory","ex":"기숙사를 신청하려면 서류가 필요해요."},{"word":"신청하다","meaning":"To apply","ex":"한국어 수업을 홈페이지에서 신청했어요."},{"word":"서류","meaning":"Documents / paperwork","ex":"필요한 서류를 미리 준비하세요."},{"word":"홈페이지","meaning":"Website / homepage","ex":"홈페이지에서 신청서를 내려받았어요."},{"word":"조건","meaning":"Condition / requirement","ex":"장학금을 받으려면 조건이 맞아야 해요."}],"quiz":[{"tag":"어휘 (뜻)","q":"학교 안이나 근처에서 학생들이 생활하도록 마련한 건물을 무엇이라고 해요?","sub":"학교에서 자고 식사도 하는 학생용 건물을 찾아보세요.","options":["도서관","매점","강의실","기숙사"],"ans":3,"hint":"'기숙사(Dormitory)'는 학생들이 생활하는 건물이에요. 수업을 듣는 곳은 '강의실(Classroom)'이에요."},{"tag":"어휘 (뜻)","q":"장학금을 받으려면 성적이 좋아야 하는 것처럼, 어떤 일을 이루기 위해 갖추어야 하는 것을 무엇이라고 해요?","sub":"'조건'과 '절차', '서류'의 뜻을 구별해 보세요.","options":["조건","계획","절차","서류"],"ans":0,"hint":"'조건(Condition)'은 일을 이루기 위해 갖추어야 하는 것이에요. '절차(Procedure)'는 일을 하는 순서예요."},{"tag":"문법: 반말 1 (동사)","q":"가: 지금 어디 가?\n나: 나 지금 도서관에 [       ]. (기본형: 가다)","sub":"친구에게 반말로 대답하는 형태를 고르세요.","options":["가요","갑니다","가","갈게요"],"ans":2,"hint":"반말은 동사 어간에 '-아/어'를 붙여요. '가다'는 모음이 'ㅏ'라서 '가'가 돼요. (가다 → 가)"},{"tag":"문법: 반말 1 (명사)","q":"친구에게 '오늘부터 방학이야'라고 말할 때, 명사 '방학'에 붙는 반말 형태는?","sub":"명사 뒤에는 받침에 따라 '(이)야'가 붙어요.","options":["방학야","방학이야","방학이다","방학이에요"],"ans":1,"hint":"받침이 있는 명사에는 '-이야'를 붙여요. (방학 → 방학이야 / 우유 → 우유야)"},{"tag":"문법: V-자 (반말 청유)","q":"가: 점심시간인데 뭐 해?\n나: 우리 같이 점심 [       ]. (기본형: 먹다)","sub":"친구에게 함께 하자고 제안하는 반말을 고르세요.","options":["먹자","먹을래요","먹읍시다","먹어요"],"ans":0,"hint":"'-자'는 '-(으)ㅂ시다'의 반말이에요. 친구에게는 '우리 같이 먹자'라고 해요."},{"tag":"문법: V-자 (제약)","q":"다음 중 문법에 맞게 쓴 문장을 고르세요.","sub":"'-자'는 동사에만 붙고, 윗사람에게는 쓰지 않아요.","options":["선생님, 같이 가자.","우리 같이 예쁘자.","우리 같이 예뻐지자.","우리 같이 가자요."],"ans":2,"hint":"'예쁘다'는 형용사라서 '-자'를 붙일 수 없어요. 동사 '예뻐지다'를 쓰면 '우리 같이 예뻐지자'가 돼요."},{"tag":"문법: V-(으)려면","q":"기숙사를 [       ] 필요한 서류를 미리 준비하세요. (기본형: 신청하다)","sub":"어떤 일을 하려는 경우를 가정할 때 쓰는 연결 어미를 고르세요.","options":["신청하으려면","신청하러면","신청하려면","신청했으려면"],"ans":2,"hint":"'-(으)려면'은 '-(으)려고 하면'을 줄인 말이에요. 받침이 없으면 '-려면'이 붙고, 앞에는 시제를 쓰지 않아요. (신청하다 → 신청하려면)"},{"tag":"문법: V-나요?","q":"동사 '받다'를 두루높임 의문문으로 바꾼 형태는?","sub":"동사에는 '-나요?', 형용사에는 '-(으)ㄴ가요?', 명사에는 '-인가요?'가 붙어요.","options":["받았가요?","받나요?","받인가요?","받은가요?"],"ans":1,"hint":"동사에는 받침과 상관없이 '-나요?'가 붙어요. (받다 → 받나요? / 먹다 → 먹나요?)"},{"tag":"문법: N인가요?","q":"다음 중 형태가 바르게 쓰인 문장을 고르세요.","sub":"명사 뒤에는 받침과 상관없이 '-인가요?'가 붙어요.","options":["이 방이 1인실나요?","이 방이 1인실은가요?","이 방이 1인실인가요?","이 방이 1인실가요?"],"ans":2,"hint":"명사 뒤에는 '-인가요?'를 붙여요. (1인실 → 1인실인가요? / 학생 → 학생인가요?)"},{"tag":"종합 회화 완성","q":"가: 이번 학기에 기숙사를 신청하려면 어떻게 해야 해요?\n나: 학교 홈페이지에서 [       ].","sub":"'-(으)려면'에 대한 대답으로 자연스러운 표현을 고르세요.","options":["신청하나요","신청하려고요","신청인가요","신청하면 돼요"],"ans":3,"hint":"'-(으)려면'의 대답으로는 조건과 방법을 나타내는 '-으면/면 돼요'를 써요. (홈페이지에서 신청하면 돼요)"}]},{"unit":11,"title":"11단원 음식","subtitle":"V-(으)ㄹ래요 · N 중에서 · V-아/어 본 N","flashcards":[{"word":"메뉴","meaning":"Menu","ex":"메뉴 좀 보여 주세요."},{"word":"주문하다","meaning":"To order","ex":"순두부찌개 하나를 주문했어요."},{"word":"맵다","meaning":"To be spicy","ex":"이 찌개는 너무 매워서 물을 마셨어요."},{"word":"달다","meaning":"To be sweet","ex":"이 케이크는 너무 달아요."},{"word":"짜다","meaning":"To be salty","ex":"국물이 짜서 밥을 더 먹었어요."},{"word":"추천하다","meaning":"To recommend","ex":"친구가 맛있는 식당을 추천해 주었어요."},{"word":"냉면","meaning":"Cold noodles","ex":"여름에는 시원한 냉면이 제일 맛있어요."},{"word":"양념","meaning":"Seasoning / sauce","ex":"고기에 양념을 넣고 구웠어요."}],"quiz":[{"tag":"어휘 (뜻)","q":"식당에서 먹고 싶은 음식을 정해서 종업원에게 말하는 것을 무엇이라고 해요?","sub":"음식을 고르는 것과 돈을 내는 것을 구별해 보세요.","options":["포장하다","추천하다","주문하다","계산하다"],"ans":2,"hint":"'주문하다(To order)'는 먹을 음식을 골라 말하는 것이고, '추천하다'는 다른 사람에게 좋은 것을 골라 알려 주는 거예요."},{"tag":"어휘 (뜻)","q":"음식에 맛을 내려고 넣는 재료를 무엇이라고 해요?","sub":"고기나 김치를 만들 때 넣는 재료를 생각해 보세요.","options":["국물","면","양념","메뉴"],"ans":2,"hint":"'양념(Seasoning)'은 음식에 맛을 더하려고 넣는 재료예요. '국물'은 음식의 물 부분이에요."},{"tag":"어휘 (상황)","q":"가: 국물이 [       ]. 소금을 더 넣을까요?\n나: 네, 조금 싱거운 것 같아요.","sub":"간이 세지 않고 싱거운 맛을 나타내는 말을 고르세요.","options":["달아요","매워요","짜요","싱거워요"],"ans":3,"hint":"간이 세지 않고 싱거운 것은 '싱겁다'예요. 반대로 간이 센 것은 '짜다'예요."},{"tag":"문법: V-(으)ㄹ래요 (의지)","q":"가: 뭐 드실래요?\n나: 저는 비빔밥을 [       ]. (기본형: 먹다)","sub":"말하는 사람이 지금 무엇을 하겠다고 고를 때 쓰는 형태를 고르세요.","options":["먹을래요","먹래요","먹을려요","먹으래요"],"ans":0,"hint":"'-ㄹ래요'는 말하는 사람의 의지를 나타내요. 받침이 있으면 '-을래요'가 붙어요. (먹다 → 먹을래요)"},{"tag":"문법: V-(으)ㄹ래요 (ㄹ 받침)","q":"동사 '만들다'에 '-ㄹ래요'를 붙인 형태로 알맞은 것은?","sub":"받침이 'ㄹ'인 동사의 규칙을 생각해 보세요.","options":["만들래요","만드래요","만들을래요","만들으래요"],"ans":0,"hint":"받침이 'ㄹ'인 동사는 '-ㄹ래요'와 만나요. (만들다 → 만들래요 / 살다 → 살래요)"},{"tag":"문법: V-(으)ㄹ래요 (제약)","q":"다음 중 바르게 쓴 문장을 고르세요.","sub":"'-ㄹ래요'는 1인칭 주어에 쓰고, 반말과 높임말을 섞지 않아요.","options":["제가 갈래요.","민수 씨가 갈래요.","제가 가을래요.","나는 갈래요."],"ans":0,"hint":"'-ㄹ래요'는 말하는 사람의 의지라서 '제가/내가'와 함께 써요. 3인칭에는 '가고 싶어 하다'를 쓰고, '나는 갈래요'처럼 반말과 높임말을 섞지 않아요."},{"tag":"문법: V-(으)ㄹ래요? (제안)","q":"가: 시간이 있는데 커피 한잔 [       ]?\n나: 좋아요, 마실게요.","sub":"듣는 사람의 의향을 가볍게 묻는 형태를 고르세요.","options":["마실래요","마시래요","마시을래요","마셔래요"],"ans":0,"hint":"'-ㄹ래요?'는 친구에게 함께 하자고 가볍게 제안할 때 써요. (마시다 → 마실래요?)"},{"tag":"문법: N 중에서","q":"드라마 [       ] '오징어 게임'이 제일 재미있어요.","sub":"여러 가지 가운데 하나를 고를 때 쓰는 표현을 고르세요.","options":["동안","처럼","중에서","마다"],"ans":2,"hint":"범위를 나타내는 명사 뒤에는 '중에서'를 써요. '중'은 의존명사라서 앞말과 띄어 써요. (드라마 중에서)"},{"tag":"문법: V-아/어 본 N","q":"제가 [       ] 냉면 중에서 평양냉면이 제일 맛있었어요. (기본형: 먹어 보다)","sub":"경험한 대상을 꾸미는 관형사형을 고르세요.","options":["먹어 볼","먹은","먹어 본","먹어 봤는"],"ans":2,"hint":"경험을 나타낼 때는 'V-아/어 본 N'을 써요. 여기에 '-았/었-'을 넣지 않아요. (먹어 본 냉면)"},{"tag":"종합 회화 완성","q":"가: 이 식당에서 뭐가 맛있어요?\n나: 제가 [       ] 음식 중에서 김치찌개를 추천해요.","sub":"경험과 범위를 함께 나타내는 표현을 고르세요.","options":["먹어 본","먹어 볼","먹을","먹는"],"ans":0,"hint":"지금까지 먹은 경험을 말할 때는 '먹어 본 음식'을 써요. 뒤에는 '중에서'가 이어져요."}]},{"unit":12,"title":"12단원 외모와 성격","subtitle":"V-고 있다 · ㅎ불규칙 / N처럼 · A-(으)ㄴ 편이다","flashcards":[{"word":"외모","meaning":"Appearance","ex":"그 배우는 외모가 아주 뛰어나요."},{"word":"스웨터","meaning":"Sweater","ex":"오늘은 까만 스웨터를 입었어요."},{"word":"입다","meaning":"To wear (clothes)","ex":"추워서 두꺼운 코트를 입었어요."},{"word":"신다","meaning":"To wear (shoes)","ex":"운동화를 신고 공원을 걸었어요."},{"word":"끼다","meaning":"To wear (gloves, ring)","ex":"장갑을 끼고 밖에 나갔어요."},{"word":"메다","meaning":"To carry on the shoulder","ex":"가방을 메고 학교에 갔어요."},{"word":"까맣다","meaning":"To be black","ex":"제 동생은 눈이 크고 머리가 까매요."},{"word":"활발하다","meaning":"To be lively / outgoing","ex":"제 동생은 성격이 아주 활발해요."}],"quiz":[{"tag":"어휘 (뜻)","q":"사람의 얼굴이나 몸, 옷차림처럼 겉으로 보이는 모습을 무엇이라고 해요?","sub":"겉모습과 마음가짐을 구별해 보세요.","options":["외모","기분","성격","습관"],"ans":0,"hint":"'외모(Appearance)'는 겉으로 보이는 모습이고, '성격(Personality)'은 마음가짐이에요."},{"tag":"어휘 (착용 동사)","q":"신발이나 양말처럼 발에 착용하는 것을 나타내는 동사는?","sub":"옷·모자·장갑에 쓰는 동사와 구별해 보세요.","options":["쓰다","끼다","신다","입다"],"ans":2,"hint":"옷은 '입고', 신발은 '신고', 모자는 '쓰고', 장갑·반지는 '끼고'라고 해요."},{"tag":"어휘 (상황)","q":"가방을 어깨에 [       ] 학교에 갔어요.","sub":"가방을 어깨에 거는 동작을 나타내는 말을 고르세요.","options":["차고","끼고","신고","메고"],"ans":3,"hint":"가방은 어깨에 '메다'를 써요. 시계나 벨트는 '차다'를 써요."},{"tag":"문법: V-고 있다 (착용)","q":"가: 저 사람이 누구예요?\n나: 까만 스웨터를 [       ]. (기본형: 입다)","sub":"지금 입고 있는 상태를 나타내는 형태를 고르세요.","options":["입어 있어요","입고 있어요","입으고 있어요","입았어요"],"ans":1,"hint":"입다·신다·쓰다·끼다·메다 같은 착용 동사에는 '-고 있다'를 붙여 입은 상태를 나타내요."},{"tag":"문법: V-고 있다 (제약)","q":"다음 중 틀린 문장을 고르세요.","sub":"'-고 있다'는 동작의 진행이나 착용 상태를 나타내며, 형용사에는 쓰지 않아요.","options":["친구가 책을 읽고 있어요.","동생이 지금 자고 있어요.","밖에 비가 오고 있어요.","제 여동생은 예쁘고 있어요."],"ans":3,"hint":"'예쁘다'는 형용사라서 '-고 있다'를 붙일 수 없어요. '예뻐요' 또는 변화를 나타내는 '예뻐지고 있어요'를 써요."},{"tag":"문법: ㅎ불규칙 (-아요)","q":"형용사 '빨갛다'에 '-아요'를 붙인 형태로 알맞은 것은?","sub":"'ㅎ' 받침의 불규칙 활용을 생각해 보세요.","options":["빨래요","빨개요","빨갛어요","빨갛아요"],"ans":1,"hint":"'ㅎ' 불규칙 형용사는 '-아요' 앞에서 'ㅎ'이 탈락하고 '애'로 바뀌어요. (빨갛다 → 빨개요 / 하얗다 → 하얘요)"},{"tag":"문법: ㅎ불규칙 (관형형)","q":"창밖에 [       ] 하늘이 보여요. (기본형: 파랗다)","sub":"명사를 꾸미는 관형사형으로 바꿔 보세요.","options":["파랗은","파랑한","파래는","파란"],"ans":3,"hint":"관형형 '-(으)ㄴ' 앞에서도 'ㅎ'이 탈락해요. (파랗다 → 파란 하늘 / 까맣다 → 까만 옷)"},{"tag":"문법: N처럼","q":"제 친구는 [       ] 마음이 넓어요. (명사: 바다)","sub":"성격이나 모양이 비슷함을 나타내는 조사를 고르세요.","options":["바다에서","바다처럼","바다보다","바다마다"],"ans":1,"hint":"'처럼'은 모양이나 성격이 비슷함을 나타내는 조사예요. '같이'로 바꿔 쓸 수 있어요. (바다처럼 = 바다같이)"},{"tag":"문법: A-(으)ㄴ 편이다","q":"저는 성격이 [       ]. (기본형: 조용하다)","sub":"단정하지 않고 부드럽게 성격을 말하는 형태를 고르세요.","options":["조용은 편이에요","조용한 편이에요","조용해 편이에요","조용하는 편이에요"],"ans":1,"hint":"형용사에는 '-(으)ㄴ 편이다'를 붙여요. '조용하다'는 '조용한 편이에요'가 돼요."},{"tag":"종합 회화 완성","q":"가: 새로 온 친구가 어때요?\n나: 처음에는 어색했는데 지금은 [       ].","sub":"성격을 부드럽게 평가하는 표현을 고르세요.","options":["활발하는 편이에요","활발해 편이에요","활발한 편해요","활발한 편이에요"],"ans":3,"hint":"형용사 '활발하다'에는 '-ㄴ 편이다'가 붙어 '활발한 편이에요'가 돼요."}]},{"unit":13,"title":"13단원 감정","subtitle":"A/V-겠- · N 때문에 / V-아/어지다 · -았으면 좋겠다","flashcards":[{"word":"기분","meaning":"Mood / feeling","ex":"오늘은 기분이 아주 좋아요."},{"word":"속상하다","meaning":"To be upset / hurt","ex":"친구가 약속을 잊어서 속상했어요."},{"word":"걱정","meaning":"Worry","ex":"시험 걱정을 많이 했어요."},{"word":"위로하다","meaning":"To comfort","ex":"힘들어하는 친구를 위로했어요."},{"word":"실망하다","meaning":"To be disappointed","ex":"결과를 보고 많이 실망했어요."},{"word":"긴장되다","meaning":"To feel nervous","ex":"처음 발표를 해서 긴장됐어요."},{"word":"스트레스","meaning":"Stress","ex":"요즘 일 때문에 스트레스가 많아요."},{"word":"친해지다","meaning":"To become close","ex":"같은 반 친구와 금방 친해졌어요."}],"quiz":[{"tag":"어휘 (뜻)","q":"슬프거나 힘들어하는 사람에게 괜찮다고 말하며 마음을 달래 주는 것을 무엇이라고 해요?","sub":"좋은 일을 축하하는 말과 구별해 보세요.","options":["실망하다","걱정하다","소개하다","위로하다"],"ans":3,"hint":"'위로하다(To comfort)'는 힘들어하는 사람의 마음을 달래 주는 것이에요."},{"tag":"어휘 (뜻)","q":"기대했던 일이 잘 안 되어 마음이 즐겁지 않은 감정을 나타내는 말은?","sub":"기대와 반대되는 감정을 찾아보세요.","options":["실망하다","위로하다","긴장되다","기대하다"],"ans":0,"hint":"'실망하다(To be disappointed)'는 기대한 만큼 되지 않아 마음이 즐겁지 않은 것이에요."},{"tag":"어휘 (상황)","q":"가: 왜 이렇게 [       ]?\n나: 내일 면접이 있어서요.","sub":"마음이 조마조마하고 떨리는 상태를 나타내는 말을 고르세요.","options":["친해져요","위로해요","긴장돼요","실망해요"],"ans":2,"hint":"몸과 마음이 떨리고 조마조마한 것은 '긴장되다(To feel nervous)'예요."},{"tag":"문법: A/V-겠- (현재 추측)","q":"가: 어제부터 아무것도 못 먹었어요.\n나: 지금 많이 [       ]. (기본형: 배고프다)","sub":"눈앞의 상황을 보고 짐작할 때 쓰는 형태를 고르세요.","options":["배고프겠어요","배고팠겠어요","배고프었겠어요","배고프어요"],"ans":0,"hint":"'-겠-'은 지금 눈앞의 상황을 보고 짐작할 때 써요. 지금 배가 고픈 상태를 짐작하므로 '배고프겠어요'가 맞아요."},{"tag":"문법: -았/었겠- (과거 추측)","q":"가: 어젯밤부터 아침까지 일했어요.\n나: 정말 [       ]. (기본형: 힘들다)","sub":"이미 지난 일을 짐작할 때는 '-았/었겠-'을 써요.","options":["힘들었겠어요","힘들겠어요","힘들겠었어요","힘들었어겠어요"],"ans":0,"hint":"과거의 일을 짐작할 때는 '-았/었-'을 먼저 붙이고 '-겠-'을 붙여요. (힘들다 → 힘들었겠어요)"},{"tag":"문법: N 때문에","q":"다음 중 '때문에'를 바르게 쓴 문장을 고르세요.","sub":"'때문에'는 명사 뒤에 바로 붙여요.","options":["친구 때문에 속상해요.","친구를 때문에 속상해요.","친구가 때문에 속상해요.","친구의 때문에 속상해요."],"ans":0,"hint":"명사 뒤에는 조사를 붙이지 않고 바로 '때문에'를 써요. (친구 때문에 / 시험 때문에)"},{"tag":"문법: V-아/어지다","q":"요즘 같은 반 친구들과 [       ]. (기본형: 친해지다)","sub":"전과 달라진 상태를 나타내는 형태를 고르세요.","options":["친하지었어요","친해아졌어요","친해졌어요","친했어졌어요"],"ans":2,"hint":"'-아/어지다'는 형용사가 시간이 지나면서 변함을 나타내요. '하다' 형용사는 '해지다'로 써요. (친하다 → 친해지다 → 친해졌어요)"},{"tag":"문법: -았으면 좋겠다","q":"가: 앞으로 어떤 친구를 만나고 싶어요?\n나: 저는 성격이 좋은 친구를 [       ]. (기본형: 만나다)","sub":"아직 이루어지지 않은 일에 대한 바람을 나타내세요.","options":["만났으면 좋아요","만나겠으면 좋겠어요","만났으면 좋겠어요","만나으면 좋겠어요"],"ans":2,"hint":"바람은 '동사 + -았으면/었으면 좋겠다'로 말해요. (만나다 → 만났으면 좋겠어요)"},{"tag":"문법: -았으면 좋겠다 (ㅎ불규칙)","q":"가: 내일 날씨가 어때요?\n나: 내일은 날씨가 [       ]. (기본형: 따뜻하다)","sub":"형용사 '따뜻하다'에 바람의 표현을 붙여 보세요.","options":["따뜻하았으면 좋겠어요","따뜻했으면는 좋겠어요","따뜻해았으면 좋겠어요","따뜻했으면 좋겠어요"],"ans":3,"hint":"'하다' 형용사는 '-했으면 좋겠다'로 써요. (따뜻하다 → 따뜻했으면 좋겠어요 / 행복하다 → 행복했으면 좋겠어요)"},{"tag":"종합 회화 완성","q":"가: 요즘 한국 생활이 어때요?\n나: 처음에는 힘들었는데 지금은 많이 [       ].","sub":"전보다 상태가 좋아졌다는 뜻을 나타내는 표현을 고르세요.","options":["편해았어요","편해졌어요","편했어졌어요","편하졌어요"],"ans":1,"hint":"'편하다'는 '편해지다'로 바뀌고 과거에는 '편해졌어요'가 돼요."}]},{"unit":14,"title":"14단원 인생","subtitle":"V-게 되다 · V-기 전에 / V-(으)ㄴ 적이 있다 · -는데","flashcards":[{"word":"입학하다","meaning":"To enter a school","ex":"올해 대학교에 입학했어요."},{"word":"졸업하다","meaning":"To graduate","ex":"내년에 대학원을 졸업해요."},{"word":"지원하다","meaning":"To apply for","ex":"회사에 지원하게 됐어요."},{"word":"합격하다","meaning":"To pass (an exam)","ex":"장학금 시험에 합격했어요."},{"word":"계기","meaning":"Motive / opportunity","ex":"여행이 한국어를 배우게 된 계기였어요."},{"word":"꿈","meaning":"Dream","ex":"제 꿈은 동화 작가가 되는 거예요."},{"word":"은사님","meaning":"Respected teacher","ex":"고등학교 은사님을 오랜만에 만났어요."},{"word":"인연","meaning":"Connection / fate","ex":"그분과의 인연이 참 소중해요."}],"quiz":[{"tag":"어휘 (뜻)","q":"학교에서 공부를 다 마치고 사회로 나가는 것을 무엇이라고 해요?","sub":"학교에 들어가는 것과 나가는 것을 구별해 보세요.","options":["지원하다","입학하다","합격하다","졸업하다"],"ans":3,"hint":"'졸업하다(To graduate)'는 공부를 다 마치는 것이고, '입학하다'는 학교에 들어가는 것이에요."},{"tag":"어휘 (뜻)","q":"어떤 일을 시작하게 된 동기나 기회를 무엇이라고 해요?","sub":"한국어를 배우게 된 이유를 말할 때 쓰는 말이에요.","options":["인연","경험","꿈","계기"],"ans":3,"hint":"'계기(Motive/Opportunity)'는 어떤 일을 시작하게 된 동기예요. (한국 드라마가 한국어를 배우게 된 계기였어요)"},{"tag":"어휘 (높임)","q":"자신을 가르쳐 주신 스승을 높여 부르는 말은?","sub":"직장 동료나 친구를 부르는 말과 구별해 보세요.","options":["선배님","동료","친구분","은사님"],"ans":3,"hint":"'은사님'은 자신을 가르쳐 주신 스승을 높여 부르는 말이에요."},{"tag":"문법: V-게 되다","q":"작년에 한국 회사에서 [       ]. (기본형: 일하다)","sub":"내 의지보다 상황 때문에 그렇게 되었을 때 쓰는 표현을 고르세요.","options":["일하러 됐어요","일하고 됐어요","일하게 됐어요","일했게 됐어요"],"ans":2,"hint":"'-게 되다'는 상황이나 계기로 어떤 일이 이루어졌음을 나타내요. (일하다 → 일하게 됐어요)"},{"tag":"문법: V-게 되다 (제약)","q":"다음 중 틀린 문장을 고르세요.","sub":"형용사의 변화는 '-아/어지다'로 말해요.","options":["날씨가 갑자기 추워졌어요.","한국어를 배우게 됐어요.","날씨가 갑자기 추워하게 됐어요.","회사에서 일하게 됐어요."],"ans":2,"hint":"형용사에는 '-게 되다'를 쓰지 않고 '-아/어지다'를 써요. (추워졌어요 / 예뻐졌어요)"},{"tag":"문법: V-기 전에","q":"한국에 [       ] 중국에서 일했어요. (기본형: 오다)","sub":"어떤 일보다 앞선 때를 나타내는 표현을 고르세요.","options":["오은 전에","온 전에","오기 전에","왔기 전에"],"ans":2,"hint":"'-기 전에'의 앞에는 시제를 붙이지 않아요. (오다 → 오기 전에)"},{"tag":"문법: V-기 전에 (반대 표현)","q":"수업이 [       ] 준비하세요. (기본형: 시작되다)","sub":"'-은 후에'와 반대되는 뜻의 표현을 고르세요.","options":["시작되은 전에","시작된 후에","시작되기 전에","시작되기 후에"],"ans":2,"hint":"준비는 수업이 시작하기 전에 해요. '-(으)ㄴ 후에'는 반대의 뜻이에요. (시작되기 전에)"},{"tag":"문법: V-(으)ㄴ 적이 있다","q":"저는 제주도에 [       ]. (기본형: 가다)","sub":"과거의 경험을 나타내는 형태를 고르세요.","options":["가는 적이 있어요","갔은 적이 있어요","갈 적이 있어요","간 적이 있어요"],"ans":3,"hint":"경험은 'V-(으)ㄴ 적이 있다'로 말하고, 시제를 두 번 표시하지 않아요. (가다 → 간 적이 있어요)"},{"tag":"문법: V-(으)ㄴ 적이 있다 (ㄹ 탈락)","q":"저는 부산에 [       ]. (기본형: 살다)","sub":"받침 'ㄹ'이 탈락하는 규칙을 생각해 보세요.","options":["산 적이 있어요","사는 적이 있어요","살았은 적이 있어요","살은 적이 있어요"],"ans":0,"hint":"받침이 'ㄹ'인 동사는 'ㄹ'이 탈락해요. (살다 → 산 적이 있어요 / 만들다 → 만든 적이 있어요)"},{"tag":"종합 회화 완성","q":"가: 고향이 어디예요?\n나: 제 고향은 제주도[       ] 바다가 아주 아름다워요.","sub":"뒤에 오는 말의 배경을 먼저 제시하는 형태를 고르세요.","options":["는데","은데","인데","이는데"],"ans":2,"hint":"명사 뒤에는 받침과 상관없이 '-인데'가 붙어요. (제주도 → 제주도인데)"}]},{"unit":15,"title":"15단원 집","subtitle":"A/V-아/어서 · V-기 좋다/편하다 / V-아/어 있다","flashcards":[{"word":"월세","meaning":"Monthly rent","ex":"이 집은 월세가 조금 비싸요."},{"word":"보증금","meaning":"Deposit","ex":"보증금을 내고 방을 구했어요."},{"word":"이사하다","meaning":"To move house","ex":"지난달에 새 집으로 이사했어요."},{"word":"넓다","meaning":"To be spacious","ex":"거실이 넓어서 마음에 들어요."},{"word":"좁다","meaning":"To be narrow / small","ex":"방이 좁아서 책상을 놓기 힘들어요."},{"word":"교통","meaning":"Transportation","ex":"이 동네는 교통이 편리해요."},{"word":"편리하다","meaning":"To be convenient","ex":"역이 가까워서 생활하기 편리해요."},{"word":"정리되다","meaning":"To be organized","ex":"책상 위가 깨끗하게 정리되어 있어요."}],"quiz":[{"tag":"어휘 (뜻)","q":"집을 빌려 쓰면서 매달 내는 돈을 무엇이라고 해요?","sub":"집을 구할 때 처음 내는 큰돈과 구별해 보세요.","options":["관리비","수입","보증금","월세"],"ans":3,"hint":"'월세(Monthly rent)'는 매달 내는 집세이고, '보증금'은 집을 빌릴 때 맡기는 돈이에요."},{"tag":"어휘 (뜻)","q":"살던 집을 떠나 다른 집으로 옮기는 것을 무엇이라고 해요?","sub":"새 집을 구한 뒤에 하는 일이에요.","options":["이용하다","정리하다","이사하다","입학하다"],"ans":2,"hint":"'이사하다(To move house)'는 살던 곳을 떠나 다른 집으로 옮기는 것이에요."},{"tag":"어휘 (반의어)","q":"'넓다'의 반대말로, 공간이 작고 답답한 상태를 나타내는 말은?","sub":"방의 크기를 나타내는 형용사예요.","options":["좁다","높다","가볍다","밝다"],"ans":0,"hint":"'넓다'의 반대말은 '좁다'예요. (방이 넓다 ↔ 방이 좁다)"},{"tag":"문법: A/V-아/어서 (이유)","q":"방이 [       ] 살기 좋아요. (기본형: 넓다)","sub":"앞의 내용이 뒤의 이유가 되도록 연결하세요.","options":["넓으서","넓해서","넓어서는","넓어서"],"ans":3,"hint":"'-아/어서'는 앞절이 뒤절의 이유나 원인이 될 때 써요. (넓다 → 넓어서)"},{"tag":"문법: -아/어서 (제약)","q":"다음 중 바르게 쓴 문장을 고르세요.","sub":"뒤절에 명령이나 청유가 오면 '-아/어서'를 쓸 수 없어요.","options":["비가 와서 우산을 쓰세요.","비가 오니까 우산을 쓰세요.","비가 왔어서 우산을 쓰세요.","비가 와서 우산을 씁시다."],"ans":1,"hint":"뒤절이 명령이나 청유일 때는 '-아/어서' 대신 '-(으)니까'를 써요. (비가 오니까 우산을 쓰세요)"},{"tag":"문법: V-기 쉽다","q":"지도가 자세해서 길을 [       ]. (기본형: 찾다)","sub":"어떤 행동을 하는 것이 어떠하다고 평가할 때 쓰는 형태를 고르세요.","options":["찾기 쉬워요","찾어 쉬워요","찾은 쉬워요","찾고 쉬워요"],"ans":0,"hint":"동사에 '-기'를 붙여 '쉽다, 어렵다, 좋다, 편하다'로 평가해요. (찾다 → 찾기 쉬워요)"},{"tag":"문법: V-기 편하다","q":"도서관이 조용해서 [       ]. (기본형: 공부하다)","sub":"장소의 장점을 평가하는 표현을 고르세요.","options":["공부하기 편해요","공부해 편해요","공부하기 편한데요","공부한 편해요"],"ans":0,"hint":"동사 '공부하다'에 '-기'를 붙여 '공부하기 편해요'라고 해요. '편한데요'는 '-는데'가 붙은 다른 형태예요."},{"tag":"문법: V-아/어 있다 (상태)","q":"벽에 가족사진이 [       ]. (기본형: 걸리다)","sub":"행동이 끝난 뒤의 상태가 계속됨을 나타내세요.","options":["걸고 있어요","걸려 있는데요","걸리어 있어요","걸려 있어요"],"ans":3,"hint":"'-아/어 있다'는 동작이 끝난 뒤 그 상태가 계속됨을 나타내요. '걸리다'는 '걸려 있다'가 돼요."},{"tag":"문법: V-고 있다 vs V-아/어 있다","q":"가: 지금 뭐 해요?\n나: 더워서 창문을 [       ]. (기본형: 열다)","sub":"지금 하고 있는 동작을 나타내는 형태를 고르세요.","options":["열리어 있어요","열어 있어요","열고 있어요","열려 있어요"],"ans":2,"hint":"'창문을'처럼 목적어가 있으면 진행을 나타내는 '-고 있다'를 써요. '창문이 열려 있어요'는 상태를 나타내요."},{"tag":"종합 회화 완성","q":"가: 새로 이사한 집이 마음에 들어요?\n나: 네, 방이 [       ] 살기 편해요.","sub":"이유를 나타내는 연결 어미를 고르세요.","options":["넓았어서","넓어서","넓어서는","넓하서"],"ans":1,"hint":"'넓다'에 '-아/어서'를 붙이면 '넓어서'가 돼요. 앞절에는 과거 시제를 쓰지 않아요."}]},{"unit":16,"title":"16단원 예절","subtitle":"V-아/어도 되다 · V-지 않아도 되다 / V-(으)면 안 되다 · N 중","flashcards":[{"word":"예절","meaning":"Etiquette / manners","ex":"한국에서는 어른께 두 손으로 물건을 드리는 것이 예절이에요."},{"word":"허락","meaning":"Permission","ex":"선생님께 허락을 받고 교실을 나왔어요."},{"word":"실례","meaning":"Rudeness / bad manners","ex":"제가 먼저 가는 것이 실례가 될까요?"},{"word":"조심하다","meaning":"To be careful","ex":"길이 미끄러우니까 조심하세요."},{"word":"부탁하다","meaning":"To ask a favor","ex":"친구에게 사진을 찍어 달라고 부탁했어요."},{"word":"규칙","meaning":"Rule","ex":"도서관 규칙을 꼭 지켜 주세요."},{"word":"공연","meaning":"Performance","ex":"어제 공연장에서 재미있는 공연을 봤어요."},{"word":"휴대폰","meaning":"Cell phone","ex":"공연 중에는 휴대폰을 꺼 주세요."}],"quiz":[{"tag":"어휘 (뜻)","q":"다른 사람에게 예의를 갖추어 행동하는 방식을 무엇이라고 해요?","sub":"지켜야 하는 것과 어긋난 행동을 구별해 보세요.","options":["예절","규칙","실례","허락"],"ans":0,"hint":"'예절(Etiquette)'은 예의를 갖추어 행동하는 방식이에요. '실례'는 예의에 어긋나는 행동이에요."},{"tag":"어휘 (뜻)","q":"남에게 어떤 일을 해 달라고 정중하게 청하는 것을 무엇이라고 해요?","sub":"무엇을 해도 된다고 허락하는 것과 구별해 보세요.","options":["허락하다","부탁하다","안내하다","조심하다"],"ans":1,"hint":"'부탁하다(To ask a favor)'는 해 달라고 청하는 것이고, '허락하다'는 해도 된다고 해 주는 것이에요."},{"tag":"어휘 (상황)","q":"가: 공연 중에 사진을 찍어도 돼요?\n나: 아니요, 그건 [       ]예요.","sub":"예의에 어긋나는 행동을 가리키는 말을 고르세요.","options":["허락","실례","입장","안내"],"ans":1,"hint":"'실례(Rudeness)'는 예의에 어긋나는 행동이에요. (공연 중에 사진을 찍는 것은 실례예요)"},{"tag":"문법: V-아/어도 되다 (허락)","q":"가: 여기 앉아도 [       ]?\n나: 네, 앉으세요.","sub":"'되다'의 바른 표기를 고르세요.","options":["되요","돼요","됐어요","되여요"],"ans":1,"hint":"'되어요'가 줄어서 '돼요'가 돼요. '되요'는 틀린 표기예요. (앉아도 돼요)"},{"tag":"문법: V-지 않아도 되다","q":"가: 내일도 꼭 와야 해요?\n나: 아니요, [       ].","sub":"하지 않아도 괜찮다는 뜻의 표현을 고르세요.","options":["오지 않아도 돼요","오지 안아도 돼요","오지 말아도 돼요","오지 않으면 안 돼요"],"ans":0,"hint":"'-지 않아도 되다'는 하지 않아도 괜찮다는 뜻이에요. '안 와도 돼요'로 줄여 말할 수도 있어요. ('-지 말아도 되다'는 쓰지 않아요)"},{"tag":"문법: V-(으)면 안 되다 (금지)","q":"공연 중에 사진을 [       ]. (기본형: 찍다)","sub":"금지를 나타내는 형태를 고르세요.","options":["찍어도 안 됩니다","찍으면 안 됍니다","찍으면 안 됩니다","찍어면 안 됩니다"],"ans":2,"hint":"받침이 있으면 '-으면 안 되다'를 붙여요. 허락의 '-어도 되다'와 섞어 '찍어도 안 됩니다'라고 쓰지 않아요. (찍다 → 찍으면 안 됩니다)"},{"tag":"문법: 허락과 금지 구별","q":"다음 중 허락을 나타내는 문장은?","sub":"'-아/어도 되다'와 '-(으)면 안 되다'의 뜻을 비교해 보세요.","options":["여기에서 사진을 찍어도 돼요.","여기에서 사진을 찍으면 안 돼요.","여기에서 사진을 찍지 마세요.","여기에서 사진을 찍을 수 없어요."],"ans":0,"hint":"'-아/어도 되다'는 허락, '-(으)면 안 되다'와 '-지 마세요'는 금지를 나타내요."},{"tag":"문법: N 중 (동안)","q":"'수업 중'의 뜻으로 알맞은 것은?","sub":"안내문에 자주 쓰는 '중'의 뜻을 생각해 보세요.","options":["수업이 시작하기 전","수업이 없는 날","수업이 끝난 뒤","수업하는 동안"],"ans":3,"hint":"'N 중'은 '-하는 동안'의 뜻이에요. '중'은 의존명사라서 앞말과 띄어 써요. (수업 중 = 수업하는 동안 / 공연 중 = 공연하는 동안)"},{"tag":"문법: -는 중","q":"'회의하다'를 '지금 하고 있다'는 뜻으로 바르게 쓴 것은?","sub":"동사와 '중'을 함께 쓸 때의 형태를 고르세요.","options":["회의한 중이에요","회의하는 중이에요","회의 중하는 거예요","회의하 중이에요"],"ans":1,"hint":"동사와 쓰면 '-는 중이다' 형태로 써요. (회의하다 → 회의하는 중이에요 / 준비하다 → 준비하는 중이에요)"},{"tag":"종합 회화 완성","q":"가: 이 교실에서 음식을 먹어도 돼요?\n나: 아니요, 교실에서는 음식을 [       ].","sub":"금지를 나타내는 자연스러운 대답을 고르세요.","options":["먹어도 돼요","먹지 않아도 돼요","먹으면 안 돼요","먹을 거예요"],"ans":2,"hint":"'먹어도 돼요?'라는 질문에 '아니요'로 대답했으므로 금지를 나타내는 '먹으면 안 돼요'가 맞아요."}]},{"unit":17,"title":"17단원 문화","subtitle":"V-기 위해서 · V-아/어 놓다 / N 중 하나 · 평서문 -다","flashcards":[{"word":"예매하다","meaning":"To book in advance","ex":"공연 표를 인터넷으로 예매했어요."},{"word":"미리","meaning":"In advance","ex":"표를 미리 사 놓았어요."},{"word":"명절","meaning":"Holiday / festive day","ex":"한국의 큰 명절 중 하나가 추석이에요."},{"word":"송편","meaning":"Songpyeon (rice cake)","ex":"추석에는 가족들이 모여 송편을 만들어요."},{"word":"전통","meaning":"Tradition","ex":"설날에는 전통 옷을 입어요."},{"word":"안내문","meaning":"Notice / guide","ex":"공연장 안내문을 잘 읽어 보세요."},{"word":"설명하다","meaning":"To explain","ex":"선생님이 이 글의 뜻을 설명해 주셨어요."},{"word":"대표적이다","meaning":"To be representative","ex":"김치는 한국의 대표적인 음식이에요."}],"quiz":[{"tag":"어휘 (뜻)","q":"공연이나 영화의 표를 미리 사 두는 것을 무엇이라고 해요?","sub":"표를 사는 것과 공연을 보는 것을 구별해 보세요.","options":["관람하다","준비하다","예매하다","설명하다"],"ans":2,"hint":"'예매하다(To book in advance)'는 표를 미리 사 두는 것이고, '관람하다'는 공연이나 전시를 보는 것이에요."},{"tag":"어휘 (뜻)","q":"여러 해 동안 이어져 내려온 생활 방식이나 풍습을 무엇이라고 해요?","sub":"추석, 설날과 함께 쓰이는 말이에요.","options":["규칙","명절","예절","전통"],"ans":3,"hint":"'전통(Tradition)'은 오랜 시간 이어져 내려온 생활 방식이나 풍습이에요."},{"tag":"어휘 (상황)","q":"가: 추석에 뭐 해요?\n나: 가족들이 모여서 [       ]을/를 만들어요.","sub":"추석에 먹는 대표적인 음식을 고르세요.","options":["송편","냉면","김치","떡갈비"],"ans":0,"hint":"'송편'은 추석에 먹는 떡이에요. (추석에는 송편을 만들어 먹어요)"},{"tag":"문법: V-기 위해서","q":"한국어를 [       ] 한국에 왔어요. (기본형: 배우다)","sub":"앞의 행동이 뒤의 행동을 위한 목적임을 나타내세요.","options":["배우고 위해서","배우려고 위해서","배우서 위해서","배우기 위해서"],"ans":3,"hint":"'-기 위해서'는 목적을 나타내는 격식적인 표현이에요. 앞에는 시제를 붙이지 않아요. (배우다 → 배우기 위해서)"},{"tag":"문법: N을/를 위해서","q":"건강[       ] 매일 운동해요.","sub":"명사 뒤에 붙는 목적 표현을 고르세요.","options":["이 위해서","을 위해서","기 위해서","에 대해서"],"ans":1,"hint":"명사 뒤에는 '을/를 위해서'를 써요. '건강'은 받침이 있어서 '건강을 위해서'가 돼요."},{"tag":"문법: V-아/어 놓다","q":"콘서트 표를 미리 [       ]. (기본형: 사다)","sub":"미리 해 둔 일을 나타내는 형태를 고르세요.","options":["샀 놓았어요","사 놓았어요","사 놓었어요","사 놓을게요"],"ans":1,"hint":"'-아/어 놓다'는 미리 해 두거나 그 상태를 유지함을 나타내요. (사다 → 사 놓았어요)"},{"tag":"문법: V-아/어 놓다 (상태 유지)","q":"더워서 창문을 [       ]. (기본형: 열다)","sub":"행동이 끝난 뒤의 상태가 계속됨을 나타내세요.","options":["열으 놓았어요","열었 놓았어요","열어 놓았어요","열고 놓았어요"],"ans":2,"hint":"받침이 없는 '열다'에는 '-어 놓다'가 붙어요. (열다 → 열어 놓았어요)"},{"tag":"문법: N 중(에) 하나","q":"다음 중 '중'을 바르게 띄어 쓴 것은?","sub":"'중'은 의존명사예요.","options":["명절 중 하나","명절 중한 개","명절중 하나","명절 중에 한 개"],"ans":0,"hint":"'명절 중 하나'처럼 '중'과 '하나'를 모두 띄어 써요. (추석은 한국의 큰 명절 중 하나다)"},{"tag":"문법: 평서문 -다","q":"다음 중 안내문에 바르게 쓴 문장은?","sub":"형용사는 '-다', 동사는 '-ㄴ다/는다', 명사는 '-(이)다'로 써요.","options":["추석이 가장 크는다.","한국 사람들은 추석에 송편을 먹다.","추석은 한국의 명절다.","한국 사람들은 추석에 송편을 먹는다."],"ans":3,"hint":"'먹다'는 받침이 있는 동사라서 '-는다'를 붙여 '먹는다'가 돼요. 형용사는 '크다', 명사는 '명절이다'로 써요."},{"tag":"종합 회화 완성","q":"가: 공연 표 예매했어요?\n나: 네, 어제 미리 [       ].","sub":"미리 준비해 둔 상태를 나타내는 표현을 고르세요.","options":["예매하 놓았어요","예매해 놓어요","예매해 놓았어요","예매하고 놓았어요"],"ans":2,"hint":"'예매하다'는 '예매해 놓았어요'가 돼요. '놓다'를 '놓어요'로 쓰지 않아요."}]},{"unit":18,"title":"18단원 추억과 꿈","subtitle":"A/V-기는 하지만 · -지만 / V-(으)ㄴ 지 · N(이)나","flashcards":[{"word":"학기","meaning":"Semester","ex":"이번 학기에 한국어 수업을 들었어요."},{"word":"아쉽다","meaning":"To feel it is a shame / to be sorry","ex":"친구와 헤어지기가 아쉬워요."},{"word":"추억","meaning":"Memory / reminiscence","ex":"제주도에서의 추억이 참 많아요."},{"word":"그립다","meaning":"To miss","ex":"고향에 있는 가족이 그리워요."},{"word":"헤어지다","meaning":"To part / separate","ex":"우리는 공항에서 헤어졌어요."},{"word":"변하다","meaning":"To change","ex":"시간이 지나서 고향이 많이 변했어요."},{"word":"계절","meaning":"Season","ex":"제가 좋아하는 계절은 가을이에요."},{"word":"오래되다","meaning":"To be old (of long time)","ex":"앨범에서 오래된 사진을 찾았어요."}],"quiz":[{"tag":"어휘 (뜻)","q":"지나간 일을 생각하면 마음이 따뜻해지는 기억을 무엇이라고 해요?","sub":"앞으로의 계획과 지나간 기억을 구별해 보세요.","options":["계획","시험","소식","추억"],"ans":3,"hint":"'추억(Memory)'은 지나간 일에 대한 따뜻한 기억이에요."},{"tag":"어휘 (상황)","q":"가: 고향 생각이 많이 나요?\n나: 네, 가족이 정말 [       ].","sub":"보고 싶고 마음이 아련한 느낌을 나타내는 말을 고르세요.","options":["변해요","그리워요","아쉬워요","오래돼요"],"ans":1,"hint":"'그립다(To miss)'는 보고 싶고 마음이 아련한 느낌이에요. '아쉽다'는 부족하거나 헤어질 때 드는 느낌이에요."},{"tag":"어휘 (뜻)","q":"1년을 두 기간으로 나누어 수업을 하는 한 기간을 무엇이라고 해요?","sub":"방학과 구별해 보세요.","options":["방학","학기","계절","학년"],"ans":1,"hint":"'학기(Semester)'는 1년을 두 기간으로 나눈 수업 기간이에요. (1학기, 2학기)"},{"tag":"문법: A/V-기는 하지만","q":"형용사 '좋다'에 '-기는 하지만'을 붙인 형태로 알맞은 것은?","sub":"어간에 바로 붙이는 모양을 확인하세요.","options":["좋으기는 하지만","좋기는 하지만","좋기은 하지만","좋기는 하지먼"],"ans":1,"hint":"'-기는 하지만'은 앞의 내용을 인정하고 뒤에 반대되는 내용을 말해요. (좋다 → 좋기는 하지만 / 이번 학기가 끝나서 좋기는 하지만 아쉬워요)"},{"tag":"문법: A/V-기는 하지만 (줄임말)","q":"가: 이 영화 어때요?\n나: [       ] 조금 길어요. (기본형: 재미있다)","sub":"인정과 반대를 함께 나타내는 형태를 고르세요.","options":["재미있기는 하니","재미있기에는 하지만","재미있기는 하지만","재미있기는 해서"],"ans":2,"hint":"'재미있긴 하지만'으로 줄여 말할 수 있어요. 원래 형태는 '재미있기는 하지만'이에요."},{"tag":"문법: A/V-지만","q":"이 음식은 [       ] 맛있어요. (기본형: 맵다)","sub":"두 내용이 반대일 때 이어 주는 연결 어미를 고르세요.","options":["맵은지만","맵지만","매운지만","매워지만"],"ans":1,"hint":"받침과 상관없이 '-지만'을 붙여요. (맵다 → 맵지만 / 크다 → 크지만)"},{"tag":"문법: N이지만","q":"명사 '주말'에 '-지만'을 붙인 형태로 알맞은 것은?","sub":"명사 뒤에 붙는 대조 표현을 고르세요.","options":["주말이지만서","주말이지만","주말지만","주말으지만"],"ans":1,"hint":"명사 뒤에는 '이지만'을 붙여요. (주말 → 주말이지만 / 오늘은 주말이지만 회사에 나왔어요)"},{"tag":"문법: V-(으)ㄴ 지","q":"한국에 [       ] 벌써 6개월이 됐어요. (기본형: 오다)","sub":"어떤 일이 있은 뒤 얼마나 지났는지를 나타내세요.","options":["올 지","왔은 지","온 지","오는 지"],"ans":2,"hint":"'-(으)ㄴ 지' 뒤에는 '시간 + 이/가 되다'가 와요. 앞에는 시제를 붙이지 않아요. (오다 → 온 지)"},{"tag":"문법: V-(으)ㄴ 지 (ㄹ 탈락)","q":"이 도시에 [       ] 벌써 10년이 됐어요. (기본형: 살다)","sub":"받침 'ㄹ'이 탈락하는 규칙을 생각해 보세요.","options":["살은 지","산 지","살아은 지","사는 지"],"ans":1,"hint":"받침이 'ㄹ'인 동사는 'ㄹ'이 탈락해요. (살다 → 산 지 / 만들다 → 만든 지)"},{"tag":"종합 회화 완성","q":"가: 한국 생활이 어때요?\n나: 한국에 온 지 벌써 6개월[       ] 됐어요.","sub":"생각보다 오래되었다는 뜻을 강조하는 조사를 고르세요.","options":["이나","에서","을","나"],"ans":0,"hint":"'6개월'은 받침이 있어서 '이나'를 붙여요. 수량이 예상보다 많음을 강조해요. (6개월이나 ↔ 6개월밖에)"}]}];
+
+    let currentUnitIdx = 0;
+    let currentMode = 'quiz';
+    let currentQIdx = 0;
+    let score = 0;
+    let userAnswers = [];
+    let currentCardIdx = 0;
+
+    function initUnitGrid() {
+      const grid = document.getElementById('unitGrid');
+      grid.innerHTML = '';
+      if (allUnits.length === 1) {
+        document.getElementById('unitSelectorWrap').style.display = 'none';
+        document.getElementById('badgeSub').innerText = '서울대 한국어+ 2B · ' + allUnits[0].title;
+        document.title = '서울대 한국어+ 2B ' + allUnits[0].title + ' 어휘·문법 테스트';
+        return;
+      }
+      document.getElementById('badgeSub').innerText = '서울대 한국어+ 2B (전단원 마스터)';
+      allUnits.forEach((u, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'unit-btn' + (idx === currentUnitIdx ? ' active' : '');
+        btn.innerHTML = '<span class="u-num">' + u.unit + '단원</span>' +
+                        '<span class="u-name">' + u.title.replace(/^[0-9]+단원\s*/, '') + '</span>';
+        btn.onclick = () => selectUnit(idx);
+        grid.appendChild(btn);
+      });
+      document.getElementById('unitProgressCount').innerText = allUnits.length + '개 단원 수록';
+    }
+
+    function selectUnit(idx) {
+      if (idx < 0 || idx >= allUnits.length) return;
+      currentUnitIdx = idx;
+      initUnitGrid();
+      const u = allUnits[currentUnitIdx];
+      document.getElementById('summaryTitle').innerText = u.title;
+      document.getElementById('summaryGrammar').innerText = u.subtitle;
+      currentCardIdx = 0;
+      restartQuiz();
+      renderFlashcard();
+      switchMode(currentMode);
+      saveState();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchMode(mode) {
+      currentMode = mode;
+      document.getElementById('tabQuiz').className = 'tab-btn' + (mode === 'quiz' ? ' active' : '');
+      document.getElementById('tabFlash').className = 'tab-btn' + (mode === 'flash' ? ' active' : '');
+
+      if (mode === 'quiz') {
+        document.getElementById('quizContainer').style.display = 'block';
+        document.getElementById('flashContainer').style.display = 'none';
+        document.getElementById('resultContainer').style.display = 'none';
+      } else {
+        document.getElementById('quizContainer').style.display = 'none';
+        document.getElementById('resultContainer').style.display = 'none';
+        document.getElementById('flashContainer').style.display = 'flex';
+        document.getElementById('flashContainer').style.flexDirection = 'column';
+        renderFlashcard();
+      }
+      saveState();
+    }
+
+    function loadQuestion() {
+      const u = allUnits[currentUnitIdx];
+      const q = u.quiz[currentQIdx];
+
+      document.getElementById('qCounter').innerText = '문제 ' + (currentQIdx + 1) + ' / ' + u.quiz.length;
+      document.getElementById('qTag').innerText = q.tag;
+      document.getElementById('qText').innerText = q.q;
+      document.getElementById('qSub').innerText = q.sub;
+
+      const progress = ((currentQIdx + 1) / u.quiz.length) * 100;
+      document.getElementById('progressBar').style.width = progress + '%';
+
+      const optsList = document.getElementById('optsList');
+      optsList.innerHTML = '';
+
+      q.options.forEach((optText, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = (idx + 1) + '. ' + optText;
+        btn.onclick = () => selectOption(idx);
+        optsList.appendChild(btn);
+      });
+
+      document.getElementById('expBox').style.display = 'none';
+      document.getElementById('nextBtn').style.display = 'none';
+    }
+
+    function selectOption(selectedIdx) {
+      const u = allUnits[currentUnitIdx];
+      const q = u.quiz[currentQIdx];
+      const btns = document.querySelectorAll('#optsList .opt-btn');
+
+      btns.forEach(btn => btn.disabled = true);
+
+      const isCorrect = (selectedIdx === q.ans);
+      if (isCorrect) score += 10;
+
+      userAnswers.push({
+        qText: q.q,
+        chosen: q.options[selectedIdx],
+        correct: q.options[q.ans],
+        isCorrect: isCorrect
+      });
+
+      btns[selectedIdx].classList.add(isCorrect ? 'correct' : 'wrong');
+      if (!isCorrect) btns[q.ans].classList.add('correct');
+
+      const expBox = document.getElementById('expBox');
+      expBox.className = 'exp-box ' + (isCorrect ? 'correct' : 'wrong');
+      document.getElementById('expTitle').innerText = isCorrect ? '정답입니다!' : '다시 확인해 보세요!';
+      document.getElementById('expText').innerText = q.hint;
+      expBox.style.display = 'block';
+
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.innerText = (currentQIdx === u.quiz.length - 1) ? '결과 리포트 보기' : '다음 문제로 가기 →';
+      nextBtn.style.display = 'block';
+    }
+
+    function nextQuestion() {
+      const u = allUnits[currentUnitIdx];
+      currentQIdx++;
+      if (currentQIdx < u.quiz.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      const u = allUnits[currentUnitIdx];
+      document.getElementById('quizContainer').style.display = 'none';
+      document.getElementById('resultContainer').style.display = 'block';
+
+      document.getElementById('resScoreNum').innerText = score;
+      const correctCount = score / 10;
+      document.getElementById('resSub').innerText = u.quiz.length + '문제 중 ' + correctCount + '문제를 맞히셨습니다.';
+
+      const resMsg = document.getElementById('resMsg');
+      if (score === 100) resMsg.innerText = '완벽해요! ' + u.unit + '단원 마스터';
+      else if (score >= 80) resMsg.innerText = '참 잘했어요! 거의 다 맞혔어요.';
+      else if (score >= 60) resMsg.innerText = '좋아요! 조금만 더 연습해 볼까요?';
+      else resMsg.innerText = '다시 한번 복습해 보세요.';
+
+      const reviewList = document.getElementById('reviewList');
+      reviewList.innerHTML = '';
+      userAnswers.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'review-item';
+        const qLine = document.createElement('div');
+        qLine.className = 'review-q';
+        qLine.innerText = (idx + 1) + '. ' + item.qText.split('\n')[0];
+        const aLine = document.createElement('div');
+        aLine.className = 'review-ans' + (item.isCorrect ? '' : ' wrong');
+        aLine.innerText = item.isCorrect ? '✓ 정답: ' + item.correct
+                                         : '✗ 선택: ' + item.chosen + ' (정답: ' + item.correct + ')';
+        div.appendChild(qLine);
+        div.appendChild(aLine);
+        reviewList.appendChild(div);
+      });
+
+      if (window.pickle && window.pickle.widget && window.pickle.widget.signal) {
+        window.pickle.widget.signal(u.title + ' 테스트 완료: 10문제 중 ' + correctCount + '문제를 맞혔습니다.');
+      }
+    }
+
+    function restartQuiz() {
+      currentQIdx = 0;
+      score = 0;
+      userAnswers = [];
+      const u = allUnits[currentUnitIdx];
+      document.getElementById('summaryTitle').innerText = u.title;
+      document.getElementById('summaryGrammar').innerText = u.subtitle;
+      document.getElementById('resultContainer').style.display = 'none';
+      document.getElementById('quizContainer').style.display = 'block';
+      loadQuestion();
+    }
+
+    function goToNextUnit() {
+      selectUnit((currentUnitIdx + 1) % allUnits.length);
+    }
+
+    function renderFlashcard() {
+      const u = allUnits[currentUnitIdx];
+      if (!u || !u.flashcards[currentCardIdx]) return;
+      const fc = u.flashcards[currentCardIdx];
+      document.getElementById('cardInner').classList.remove('flipped');
+      document.getElementById('fcCounter').innerText = '단어 ' + (currentCardIdx + 1) + ' / ' + u.flashcards.length;
+      document.getElementById('fcWordFront').innerText = fc.word;
+      document.getElementById('fcMeaningBack').innerText = fc.meaning;
+      document.getElementById('fcExampleBack').innerText = '예문: ' + fc.ex;
+    }
+
+    function toggleCardFlip() {
+      document.getElementById('cardInner').classList.toggle('flipped');
+    }
+
+    function nextCard() {
+      const u = allUnits[currentUnitIdx];
+      currentCardIdx = (currentCardIdx + 1) % u.flashcards.length;
+      renderFlashcard();
+    }
+
+    function prevCard() {
+      const u = allUnits[currentUnitIdx];
+      currentCardIdx = (currentCardIdx - 1 + u.flashcards.length) % u.flashcards.length;
+      renderFlashcard();
+    }
+
+    function saveState() {
+      if (window.pickle && window.pickle.widget && window.pickle.widget.save) {
+        try {
+          window.pickle.widget.save({
+            unit: allUnits[currentUnitIdx].unit,
+            mode: currentMode,
+            metrics: { units_total: allUnits.length }
+          });
+        } catch (e) {}
+      }
+    }
+
+    if (window.pickle && window.pickle.widget) {
+      const st = window.pickle.widget.state;
+      if (st && st.unit) {
+        const idx = allUnits.findIndex(u => u.unit === st.unit);
+        if (idx >= 0) currentUnitIdx = idx;
+      }
+      window.pickle.widget.onstate = (d) => {
+        if (d && d.unit) {
+          const idx = allUnits.findIndex(u => u.unit === d.unit);
+          if (idx >= 0) selectUnit(idx);
+        }
+        if (d && d.mode === 'flash') switchMode('flash');
+      };
+      window.pickle.widget.oncommand = (cmd) => {
+        const [word, ...args] = String(cmd || '').trim().split(/\s+/);
+        if (word === 'unit') {
+          const n = parseInt(args[0], 10);
+          const idx = allUnits.findIndex(u => u.unit === n);
+          if (idx >= 0) selectUnit(idx);
+        } else if (word === 'mode') {
+          if (args[0] === 'quiz' || args[0] === 'flash') switchMode(args[0]);
+        } else if (word === 'restart') {
+          switchMode('quiz');
+          restartQuiz();
+        }
+      };
+      if (st && st.mode === 'flash') switchMode('flash');
+    }
+
+    initUnitGrid();
+    document.getElementById('summaryTitle').innerText = allUnits[currentUnitIdx].title;
+    document.getElementById('summaryGrammar').innerText = allUnits[currentUnitIdx].subtitle;
+    loadQuestion();
+    renderFlashcard();
+  </script>
+
+  <script>
+    (function() {
+      var KEY = "snu2b_2c_unlocked_v1";
+      var PASS = "2c0704";
+      function unlock() {
+        document.body.classList.remove("locked");
+        try { sessionStorage.setItem(KEY, "1"); } catch (e) {}
+      }
+      try {
+        if (sessionStorage.getItem(KEY) === "1") {
+          unlock();
+        }
+      } catch (e) {}
+      var inp = document.getElementById("pw-input");
+      var btn = document.getElementById("pw-submit");
+      var err = document.getElementById("pw-err");
+      function check() {
+        if ((inp.value || "").trim() === PASS) {
+          err.textContent = "";
+          unlock();
+        } else {
+          err.textContent = "비밀번호가 맞지 않아요. 다시 확인해 주세요.";
+          inp.focus();
+          inp.select();
+        }
+      }
+      btn.addEventListener("click", check);
+      inp.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") check();
+      });
+    })();
+  </script>
+
+</body>
+</html>
