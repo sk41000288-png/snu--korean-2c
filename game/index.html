@@ -68,7 +68,7 @@
     box-shadow:0 12px 22px -10px rgba(29,78,216,.8), inset 0 0 0 2px rgba(255,255,255,.25);
   }
   .brand h1{font-size:20px; font-weight:900; letter-spacing:-.03em; line-height:1.25}
-  .brand p{font-size:12.5px; color:var(--sub); font-weight:600; margin-top:3px}
+  .brand p{font-size:12.5px; color:var(--sub); font-weight:600; margin-top:3px; word-break:keep-all}
   .field{margin-bottom:15px}
   .field > label{display:block; font-size:12.5px; font-weight:800; color:#334155; margin-bottom:7px; letter-spacing:-.01em}
   .seg{display:flex; gap:6px; background:#f1f5f9; padding:4px; border-radius:14px; border:1px solid #e9eef6}
@@ -117,16 +117,22 @@
     font-size:15px; display:grid; place-items:center; box-shadow:0 2px 5px rgba(15,23,42,.05);
   }
   .topbtns button:active{transform:scale(.95)}
-  .board-wrap{flex:1; min-height:0; display:flex; align-items:center; justify-content:center}
+  .board-wrap{flex:1; min-height:0; display:flex; align-items:center; justify-content:center; padding:2px 0}
+  .board-col{width:min(100%, calc(100dvh - 210px), 880px); display:flex; flex-direction:column; gap:7px; min-height:0}
 
   .board{
-    width:min(100%, calc(100dvh - 74px), 880px);
+    width:100%;
     aspect-ratio:1 / 1;
     display:grid; grid-template-columns:repeat(7,1fr); grid-template-rows:repeat(7,1fr);
     gap:3px; padding:7px; border-radius:20px;
     background:linear-gradient(145deg,#1e40af 0%,#0369a1 48%,#0e7490 100%);
     box-shadow:0 26px 50px -24px rgba(15,23,42,.55), inset 0 0 0 2px rgba(255,255,255,.16);
     container-type:inline-size;
+  }
+  .scorebar{
+    background:#fff; border:1px solid #e6ecf5; border-radius:14px; padding:8px 10px;
+    display:flex; flex-direction:column; gap:4px; flex:none;
+    box-shadow:0 6px 18px -14px rgba(15,23,42,.5);
   }
   .cell{
     position:relative; min-width:0; min-height:0; overflow:hidden;
@@ -144,14 +150,15 @@
     font-size:clamp(6px,1.2cqw,10.5px); font-weight:900; display:grid; place-items:center;
     box-shadow:0 1px 2px rgba(0,0,0,.2);
   }
-  .cemo{font-size:clamp(12px,3.1cqw,27px); line-height:1.05; filter:drop-shadow(0 1px 1px rgba(0,0,0,.08))}
+  .cursor{display:none}
+  .cemo{font-size:clamp(13px,3.5cqw,28px); line-height:1.05; filter:drop-shadow(0 1px 1px rgba(0,0,0,.08))}
   .cname{
-    font-size:clamp(7px,1.72cqw,13px); font-weight:800; color:#1e293b; line-height:1.12;
+    font-size:clamp(7.5px,2.15cqw,13px); font-weight:800; color:#1e293b; line-height:1.12;
     letter-spacing:-.03em; word-break:keep-all; margin-top:.15em;
   }
-  .cell.corner .cemo{font-size:clamp(13px,3.7cqw,32px)}
-  .cell.corner .cname.big{font-size:clamp(8px,2.05cqw,15px)}
-  .csub{font-size:clamp(5.5px,1.18cqw,9.5px); font-weight:700; color:#64748b; line-height:1.1; margin-top:.1em; word-break:keep-all}
+  .cell.corner .cemo{font-size:clamp(14px,4cqw,32px)}
+  .cell.corner .cname.big{font-size:clamp(8.5px,2.4cqw,15px)}
+  .csub{font-size:clamp(5.5px,1.3cqw,9.5px); font-weight:700; color:#64748b; line-height:1.1; margin-top:.1em; word-break:keep-all}
   .cell.start{background:#fff7ed}
   .cell.island{background:#ecfeff}
   .cell.jeju{background:#eff6ff}
@@ -173,9 +180,9 @@
   .center{
     grid-row:2 / 7; grid-column:2 / 7;
     background:linear-gradient(180deg,#ffffff,#f8fbff 70%,#f1f7ff);
-    border-radius:14px; padding:2.2cqw 2.4cqw;
-    display:flex; flex-direction:column; align-items:center; justify-content:space-between;
-    gap:1cqw; min-height:0; overflow:hidden;
+    border-radius:14px; padding:2.4cqw 2.6cqw;
+    display:flex; flex-direction:column; align-items:center; justify-content:space-evenly;
+    gap:1.4cqw; min-height:0; overflow:hidden;
     box-shadow:inset 0 0 0 1px rgba(255,255,255,.7), 0 6px 18px -12px rgba(15,23,42,.4);
   }
   .crow{display:flex; align-items:center; gap:1cqw; width:100%; justify-content:space-between}
@@ -214,6 +221,8 @@
   .roll:active{transform:translateY(1px)}
   .roll:disabled{opacity:.55; cursor:default}
   .chips{display:flex; flex-wrap:wrap; gap:.9cqw; justify-content:center; width:100%}
+  .scorebar .chips{gap:5px}
+  .scorebar .chip{padding:3px 9px; font-size:13px}
   .chip{
     display:flex; align-items:center; gap:.4em; background:#fff; border:1.5px solid #e8eef7;
     border-radius:99px; padding:.4cqw 1.1cqw; font-size:clamp(8.5px,2.1cqw,17px); font-weight:700;
@@ -228,6 +237,8 @@
   .chip-score{font-weight:900; color:#0f172a}
   .chip-land{color:#94a3b8; font-size:.85em; font-weight:700}
   .logbox{width:100%; display:flex; flex-direction:column; gap:.15cqw; min-height:0; overflow:hidden}
+  .scorebar .logbox{gap:1px; max-height:4.4em}
+  .scorebar .logline{font-size:11.5px; line-height:1.45}
   .logline{
     font-size:clamp(7.5px,1.8cqw,14px); color:#64748b; font-weight:600;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.4;
@@ -362,7 +373,7 @@
   .toast.show{opacity:1; transform:translate(-50%,0)}
 
   @media (max-height:600px){
-    .logbox{display:none}
+    .scorebar .logbox{display:none}
     .chips{gap:.5cqw}
   }
   @media (max-width:400px){
@@ -450,7 +461,13 @@
     </div>
   </header>
   <main class="board-wrap">
-    <div id="board" class="board"></div>
+    <div class="board-col">
+      <div id="board" class="board"></div>
+      <div class="scorebar">
+        <div class="chips" id="chips"></div>
+        <div class="logbox" id="logbox"></div>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -655,6 +672,7 @@ function save() {
   try {
     const c = JSON.parse(JSON.stringify(S));
     c.phase = 'idle';
+    c.savedAt = Date.now();
     localStorage.setItem(SAVE_KEY, JSON.stringify(c));
   } catch (e) { }
 }
@@ -665,6 +683,7 @@ function loadSave() {
     if (!raw) return null;
     const s = JSON.parse(raw);
     if (!s || !s.teams || !s.teams.length || s.over) return null;
+    if (!s.savedAt || Date.now() - s.savedAt > 24 * 3600 * 1000) return null;
     return s;
   } catch (e) { return null; }
 }
@@ -797,9 +816,7 @@ function buildBoard() {
     </div>
     <div class="turnbanner" id="turnBanner"></div>
     <div class="dice" id="dice">⚀</div>
-    <button id="rollBtn" class="roll">주사위 굴리기</button>
-    <div class="chips" id="chips"></div>
-    <div class="logbox" id="logbox"></div>`;
+    <button id="rollBtn" class="roll">주사위 굴리기</button>`;
   b.appendChild(center);
   $('#rollBtn').addEventListener('click', onRoll);
 }
