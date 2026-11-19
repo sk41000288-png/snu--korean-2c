@@ -57,38 +57,38 @@
   }
   .topbar-in{
     max-width:760px;margin:0 auto;padding:10px 14px 0;
-    display:flex;align-items:flex-end;justify-content:space-between;gap:10px;
+    display:block;
   }
   .brand{min-width:0}
   .brand-k{
-    font-size:11px;font-weight:800;letter-spacing:.02em;color:var(--red);
-    display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    font-size:13px;font-weight:800;letter-spacing:.01em;color:var(--red);
+    display:flex;align-items:center;gap:6px;line-height:1.35;word-break:keep-all;
   }
-  .brand-k::before{content:"";width:14px;height:2px;background:var(--red);display:inline-block;border-radius:2px;flex:none}
+  .brand-k::before{content:"";width:15px;height:2px;background:var(--red);display:inline-block;border-radius:2px;flex:none}
+  .hrow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:2px}
   h1{
-    margin:1px 0 0;font-size:21px;line-height:1.2;letter-spacing:-.03em;font-weight:900;color:var(--indigo);
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    margin:0;font-size:23px;line-height:1.2;letter-spacing:-.03em;font-weight:900;color:var(--indigo);
+    min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   }
-  h1 span{font-size:11px;font-weight:700;color:var(--ink-3);letter-spacing:0;margin-left:5px}
+  h1 span{font-size:11.5px;font-weight:700;color:var(--ink-3);letter-spacing:0;margin-left:5px}
   .speed{display:flex;gap:4px;flex:none;background:var(--paper-2);border:1px solid var(--line-2);border-radius:999px;padding:3px}
   .sp{
-    border:0;background:transparent;color:var(--ink-2);font:inherit;font-size:11px;font-weight:800;
-    padding:5px 9px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:4px;line-height:1;
+    border:0;background:transparent;color:var(--ink-2);font:inherit;font-size:12.5px;font-weight:800;
+    padding:6px 10px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:4px;line-height:1;
   }
-  .sp i{font-style:normal;font-weight:700;font-size:10px;color:var(--ink-3)}
+  .sp i{font-style:normal;font-weight:700;font-size:11px;color:var(--ink-3)}
   .sp.on{background:var(--indigo);color:#fff;box-shadow:0 2px 6px rgba(29,51,88,.25)}
   .sp.on i{color:#cfdcf0}
   .sp:active{transform:scale(.96)}
 
   .tabs{
-    max-width:760px;margin:8px auto 0;padding:0 10px 9px;
-    display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+    max-width:760px;margin:9px auto 0;padding:0 12px 10px;
+    display:flex;flex-wrap:wrap;gap:6px;
   }
-  .tabs::-webkit-scrollbar{display:none}
   .tab{
-    flex:none;border:1px solid var(--line-2);background:var(--card);color:var(--ink-2);
-    font:inherit;font-size:12.5px;font-weight:800;letter-spacing:-.01em;
-    padding:7px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;
+    flex:1 1 30%;min-width:0;border:1px solid var(--line-2);background:var(--card);color:var(--ink-2);
+    font:inherit;font-size:13.5px;font-weight:800;letter-spacing:-.01em;
+    padding:8px 10px;border-radius:999px;cursor:pointer;white-space:nowrap;text-align:center;
     transition:transform .12s, background .15s, color .15s, border-color .15s;
   }
   .tab:active{transform:scale(.97)}
@@ -111,7 +111,7 @@
   @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
   .panel-intro{
-    margin:16px 0 6px;font-size:12.5px;color:var(--ink-2);line-height:1.5;
+    margin:16px 0 6px;font-size:14px;color:var(--ink-2);line-height:1.55;
     display:flex;gap:8px;align-items:flex-start;word-break:keep-all;
   }
   .panel-intro b{color:var(--red);font-weight:900;flex:none;white-space:nowrap}
@@ -119,7 +119,7 @@
   /* ---------- block ---------- */
   .blk{
     background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-    padding:15px 14px 14px;margin:12px 0;box-shadow:var(--shadow);
+    padding:16px 14px 15px;margin:14px 0;box-shadow:var(--shadow);
     position:relative;overflow:hidden;
   }
   .blk::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red),#d98b45);opacity:.85}
@@ -127,88 +127,88 @@
   .blk.k3::before{background:linear-gradient(180deg,var(--celadon),#8fbfae)}
   .blk.k4::before{background:linear-gradient(180deg,var(--gold),#e0bd72)}
   .blk-k{
-    display:inline-block;font-size:10.5px;font-weight:900;letter-spacing:.06em;
-    color:var(--red);background:var(--red-2);border-radius:999px;padding:2px 8px;margin-bottom:6px;
+    display:inline-block;font-size:11.5px;font-weight:900;letter-spacing:.06em;
+    color:var(--red);background:var(--red-2);border-radius:999px;padding:3px 9px;margin-bottom:7px;
   }
   .k2 .blk-k{color:var(--indigo-2);background:var(--indigo-3)}
   .k3 .blk-k{color:var(--celadon);background:var(--celadon-2)}
   .k4 .blk-k{color:#8a6516;background:var(--gold-2)}
   .blk h2{
-    margin:0;font-size:16.5px;font-weight:900;letter-spacing:-.02em;color:var(--indigo);line-height:1.3;
+    margin:0;font-size:18.5px;font-weight:900;letter-spacing:-.02em;color:var(--indigo);line-height:1.3;
     display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;
   }
-  .blk h2 em{font-style:normal;font-size:11.5px;font-weight:700;color:var(--ink-3);letter-spacing:0}
-  .blk-d{margin:3px 0 0;font-size:12px;color:var(--ink-2);line-height:1.5;word-break:keep-all}
-  .blk-body{margin-top:11px}
+  .blk h2 em{font-style:normal;font-size:12.5px;font-weight:700;color:var(--ink-3);letter-spacing:0}
+  .blk-d{margin:4px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.55;word-break:keep-all}
+  .blk-body{margin-top:12px}
 
   .sub-h{
     display:flex;align-items:center;justify-content:space-between;gap:8px;
     margin:14px 0 8px;padding-top:11px;border-top:1px dashed var(--line-2);
   }
   .sub-h:first-child{margin-top:0;padding-top:0;border-top:0}
-  .sub-h span{font-size:11.5px;font-weight:900;color:var(--ink-2);letter-spacing:.01em}
+  .sub-h span{font-size:13px;font-weight:900;color:var(--ink-2);letter-spacing:.01em}
   .sub-h span i{font-style:normal;color:var(--ink-3);font-weight:700;margin-left:4px;letter-spacing:0}
   .playall{
-    border:1px solid var(--line-2);background:#fff;color:var(--indigo);font:inherit;font-size:11px;font-weight:800;
-    padding:4px 9px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:4px;flex:none;
+    border:1px solid var(--line-2);background:#fff;color:var(--indigo);font:inherit;font-size:12.5px;font-weight:800;
+    padding:5px 11px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:4px;flex:none;
   }
   .playall:active{transform:scale(.96)}
   .playall.playing{background:var(--indigo);color:#fff;border-color:var(--indigo)}
 
   /* ---------- letter cards ---------- */
-  .lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:8px}
+  .lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:9px}
   .lt{
     position:relative;border:1px solid var(--line);background:linear-gradient(180deg,#fffefb,#fbf7ef);
-    border-radius:var(--r-s);padding:10px 6px 8px;cursor:pointer;font:inherit;text-align:center;
-    display:flex;flex-direction:column;align-items:center;gap:1px;transition:transform .12s,box-shadow .15s,border-color .15s;
+    border-radius:var(--r-s);padding:13px 8px 11px;cursor:pointer;font:inherit;text-align:center;
+    display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .12s,box-shadow .15s,border-color .15s;
     overflow:hidden;
   }
   .lt:active{transform:scale(.97)}
   .lt > *{flex:none}
-  .lt .g{font-family:"Noto Serif KR","Nanum Myeongjo",Batang,"Apple SD Gothic Neo",serif;font-size:31px;font-weight:800;line-height:1.15;color:var(--indigo);letter-spacing:0}
-  .lt .ipa{font-size:11.5px;font-weight:800;color:var(--red)}
-  .lt .rom{font-size:10px;font-weight:700;color:var(--ink-3);letter-spacing:.02em}
-  .lt .tip{font-size:9.5px;line-height:1.4;color:var(--ink-2);margin-top:3px;padding-bottom:2px;word-break:keep-all}
+  .lt .g{font-family:"Noto Serif KR","Nanum Myeongjo",Batang,"Apple SD Gothic Neo",serif;font-size:46px;font-weight:800;line-height:1.1;color:var(--indigo);letter-spacing:0}
+  .lt .ipa{font-size:14.5px;font-weight:800;color:var(--red)}
+  .lt .rom{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:.02em}
+  .lt .tip{font-size:12.5px;line-height:1.5;color:var(--ink-2);margin-top:4px;padding-bottom:1px;word-break:keep-all}
   .lt.vo .g{color:#7b3f8f}
   .lt.vs{background:linear-gradient(180deg,#fffefb,#fbf4f9)}
   .lt.say{box-shadow:var(--tap);border-color:#9dbbe0}
   .lt.say .g{color:var(--red)}
   .lt::after{
-    content:"🔊";position:absolute;top:3px;right:5px;font-size:9px;opacity:.28;
+    content:"🔊";position:absolute;top:4px;right:6px;font-size:11px;opacity:.3;
   }
   .lt.say::after{opacity:1}
 
   /* ---------- words ---------- */
-  .wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:7px}
+  .wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(102px,1fr));gap:8px}
   .wd{
     border:1px solid var(--line);background:linear-gradient(180deg,#fffefb,#fbf8f1);
-    border-radius:var(--r-s);padding:8px 8px 7px;cursor:pointer;font:inherit;text-align:left;
-    display:flex;flex-direction:column;gap:1px;transition:transform .12s,box-shadow .15s,border-color .15s;
+    border-radius:var(--r-s);padding:10px 9px 9px;cursor:pointer;font:inherit;text-align:left;
+    display:flex;flex-direction:column;gap:2px;transition:transform .12s,box-shadow .15s,border-color .15s;
     position:relative;
   }
   .wd:active{transform:scale(.97)}
   .wd > *{flex:none}
-  .wd .ko{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.25;word-break:keep-all}
-  .wd .en{font-size:9.5px;font-weight:700;color:var(--ink-3);line-height:1.3;word-break:break-word}
-  .wd .ipa{font-size:10.5px;font-weight:800;color:var(--celadon);margin-top:1px}
+  .wd .ko{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.25;word-break:keep-all}
+  .wd .en{font-size:11.5px;font-weight:700;color:var(--ink-3);line-height:1.35;word-break:break-word}
+  .wd .ipa{font-size:13px;font-weight:800;color:var(--celadon);margin-top:1px}
   .wd.say{border-color:#9dbbe0;box-shadow:var(--tap)}
   .wd.say .ko{color:var(--red)}
 
   .chips{display:flex;flex-wrap:wrap;gap:6px}
   .chip{
     border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;
-    padding:6px 12px;font:inherit;font-size:14.5px;font-weight:800;cursor:pointer;letter-spacing:-.01em;
-    display:inline-flex;align-items:center;gap:5px;transition:transform .1s,background .15s;
+    padding:8px 14px;font:inherit;font-size:17px;font-weight:800;cursor:pointer;letter-spacing:-.01em;
+    display:inline-flex;align-items:center;gap:6px;transition:transform .1s,background .15s;
   }
   .chip:active{transform:scale(.96)}
   .chip.say{background:var(--indigo);color:#fff;border-color:var(--indigo)}
-  .chip .n{font-size:10px;font-weight:900;color:var(--ink-3)}
+  .chip .n{font-size:11px;font-weight:900;color:var(--ink-3)}
   .chip.say .n{color:#cfdcf0}
 
   /* ---------- note ---------- */
   .note{
-    margin:12px 0 0;padding:9px 11px;border-radius:var(--r-s);
-    background:var(--gold-2);border:1px solid #eadcb9;color:#6b4f13;font-size:11.5px;line-height:1.5;
+    margin:13px 0 0;padding:11px 12px;border-radius:var(--r-s);
+    background:var(--gold-2);border:1px solid #eadcb9;color:#6b4f13;font-size:13px;line-height:1.55;
     word-break:keep-all;
   }
   .note b{font-weight:900}
@@ -217,17 +217,17 @@
 
   /* ---------- compare rows ---------- */
   .cmp{margin:0 0 12px}
-  .cmp-t{font-size:10.5px;font-weight:900;color:var(--ink-3);letter-spacing:.04em;margin-bottom:5px}
-  .cmp-r{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .cmp-t{font-size:12px;font-weight:900;color:var(--ink-3);letter-spacing:.04em;margin-bottom:6px}
+  .cmp-r{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
   .cmp-b{
-    flex:1 1 0;min-width:64px;border:1px solid var(--line);border-radius:var(--r-s);background:#fff;
-    padding:9px 4px;font:inherit;cursor:pointer;text-align:center;transition:transform .1s,box-shadow .15s;
-    display:flex;flex-direction:column;gap:1px;align-items:center;
+    flex:1 1 0;min-width:70px;border:1px solid var(--line);border-radius:var(--r-s);background:#fff;
+    padding:11px 6px;font:inherit;cursor:pointer;text-align:center;transition:transform .1s,box-shadow .15s;
+    display:flex;flex-direction:column;gap:2px;align-items:center;
   }
   .cmp-b:active{transform:scale(.97)}
-  .cmp-b .w{font-size:17px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
-  .cmp-b .t{font-size:9px;font-weight:800;color:var(--ink-3);letter-spacing:.02em;text-transform:uppercase}
-  .cmp-b .en{font-size:9.5px;font-weight:700;color:var(--ink-3)}
+  .cmp-b .w{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
+  .cmp-b .t{font-size:10.5px;font-weight:800;color:var(--ink-3);letter-spacing:.02em;text-transform:uppercase}
+  .cmp-b .en{font-size:11.5px;font-weight:700;color:var(--ink-3)}
   .cmp-b.say{border-color:#9dbbe0;box-shadow:var(--tap);background:#f7fbff}
   .cmp-b.say .w{color:var(--red)}
   .cmp-b.plain{background:linear-gradient(180deg,#fff,#f9f6ef)}
@@ -237,10 +237,10 @@
   /* ---------- dialogue ---------- */
   .dlg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .dlg-col{display:flex;flex-direction:column;gap:6px}
-  .dlg-who{font-size:10.5px;font-weight:900;color:var(--ink-3);letter-spacing:.06em;margin-bottom:1px}
+  .dlg-who{font-size:11.5px;font-weight:900;color:var(--ink-3);letter-spacing:.06em;margin-bottom:2px}
   .dlg-l{
-    border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px 10px;
-    font:inherit;font-size:14px;font-weight:700;color:var(--ink);text-align:left;cursor:pointer;
+    border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px 12px;
+    font:inherit;font-size:16.5px;font-weight:700;color:var(--ink);text-align:left;cursor:pointer;
     letter-spacing:-.01em;transition:transform .1s,background .15s;word-break:keep-all;
   }
   .dlg-l:active{transform:scale(.98)}
@@ -251,115 +251,116 @@
   /* ---------- bingo ---------- */
   .bingo{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:12px}
   .bingo .cell{
-    border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;font-size:13px;font-weight:800;
-    padding:11px 2px;cursor:pointer;color:var(--ink);transition:transform .1s,background .15s;
+    border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;font-size:16px;font-weight:800;
+    padding:13px 2px;cursor:pointer;color:var(--ink);transition:transform .1s,background .15s;
   }
   .bingo .cell:active{transform:scale(.96)}
   .bingo .cell.say{background:var(--indigo);color:#fff;border-color:var(--indigo)}
-  .bingo-t{font-size:10.5px;font-weight:900;color:var(--ink-3);letter-spacing:.05em;margin:0 0 5px}
+  .bingo-t{font-size:12px;font-weight:900;color:var(--ink-3);letter-spacing:.05em;margin:0 0 6px}
 
   /* ---------- final consonant table ---------- */
   .ftab{border:1px solid var(--line);border-radius:var(--r-s);overflow:hidden;background:#fff}
-  .ft-row{display:grid;grid-template-columns:1fr auto;gap:3px 8px;padding:9px 10px;border-top:1px solid var(--line);align-items:center}
+  .ft-row{display:grid;grid-template-columns:1fr auto;gap:4px 8px;padding:11px 11px;border-top:1px solid var(--line);align-items:center}
   .ft-row:first-child{border-top:0}
-  .ft-fin{font-size:12px;font-weight:900;color:var(--indigo);letter-spacing:.01em;line-height:1.35}
-  .ft-snd{font-size:14px;font-weight:900;color:var(--red);grid-column:2;grid-row:1;background:var(--red-2);border-radius:999px;padding:1px 9px}
-  .ft-ex{display:flex;flex-wrap:wrap;gap:4px;grid-column:1 / -1;margin-top:2px}
+  .ft-fin{font-size:14px;font-weight:900;color:var(--indigo);letter-spacing:.01em;line-height:1.4}
+  .ft-snd{font-size:17px;font-weight:900;color:var(--red);grid-column:2;grid-row:1;background:var(--red-2);border-radius:999px;padding:2px 10px}
+  .ft-ex{display:flex;flex-wrap:wrap;gap:5px;grid-column:1 / -1;margin-top:3px}
   .reveal{
-    border:1px solid var(--line-2);background:#fff;border-radius:8px;font:inherit;font-size:12px;font-weight:900;
-    color:var(--ink-3);width:30px;height:30px;cursor:pointer;flex:none;
+    border:1px solid var(--line-2);background:#fff;border-radius:8px;font:inherit;font-size:14px;font-weight:900;
+    color:var(--ink-3);width:32px;height:32px;cursor:pointer;flex:none;
   }
-  .reveal.on{background:var(--red-2);border-color:#e6b4a4;color:var(--red);width:auto;padding:0 9px}
+  .reveal.on{background:var(--red-2);border-color:#e6b4a4;color:var(--red);width:auto;padding:0 10px}
   .reveal-word{
-    border:1px dashed var(--line-2);border-radius:9px;background:#fff;font:inherit;font-size:14px;font-weight:900;
-    padding:8px 10px;cursor:pointer;color:var(--ink);flex:1 1 0;min-width:0;
+    border:1px dashed var(--line-2);border-radius:9px;background:#fff;font:inherit;font-size:17px;font-weight:900;
+    padding:10px 11px;cursor:pointer;color:var(--ink);flex:1 1 0;min-width:0;
   }
   .reveal-word:active{transform:scale(.98)}
   .ft-ex button{
-    border:1px solid var(--line);background:#fdfbf6;border-radius:7px;font:inherit;font-size:12.5px;font-weight:700;
-    padding:2px 7px;cursor:pointer;color:var(--ink);
+    border:1px solid var(--line);background:#fdfbf6;border-radius:7px;font:inherit;font-size:15px;font-weight:700;
+    padding:3px 9px;cursor:pointer;color:var(--ink);
   }
   .ft-ex button:active{background:var(--indigo);color:#fff}
 
   /* ---------- jamo puzzle ---------- */
-  .jgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:7px}
+  .jgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
   .jp{
     border:1px solid var(--line);border-radius:var(--r-s);background:#fff;font:inherit;cursor:pointer;
-    padding:9px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;transition:transform .1s,background .15s;
+    padding:11px 5px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .1s,background .15s;
   }
   .jp:active{transform:scale(.97)}
-  .jp .j{font-size:12.5px;font-weight:800;color:var(--ink-3);letter-spacing:.02em;white-space:nowrap}
-  .jp .q{font-size:15px;font-weight:900;color:var(--indigo);opacity:0;transition:opacity .2s}
+  .jp .j{font-size:14px;font-weight:800;color:var(--ink-3);letter-spacing:.02em;white-space:nowrap}
+  .jp .q{font-size:19px;font-weight:900;color:var(--indigo);opacity:0;transition:opacity .2s}
   .jp.on{background:var(--celadon-2);border-color:#b7d9d0}
   .jp.on .j{color:#6c8b83}
   .jp.on .q{opacity:1;color:var(--celadon)}
 
   /* ---------- games ---------- */
   .game{border:1px dashed var(--line-2);border-radius:var(--r-s);padding:12px;background:linear-gradient(180deg,#fffdf8,#fbf7ef)}
-  .game-top{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:900;color:var(--ink-3);letter-spacing:.04em;margin-bottom:8px}
+  .game-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:900;color:var(--ink-3);letter-spacing:.04em;margin-bottom:9px}
   .game-top .sc{color:var(--celadon)}
   .game-word{
     display:block;width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;
-    font:inherit;font-size:34px;font-weight:900;color:var(--indigo);padding:14px 8px;cursor:pointer;letter-spacing:-.02em;
+    font:inherit;font-size:38px;font-weight:900;color:var(--indigo);padding:16px 8px;cursor:pointer;letter-spacing:-.02em;
     font-family:"Noto Serif KR","Nanum Myeongjo",Batang,sans-serif;
   }
   .game-word:active{transform:scale(.99)}
   .game-word.say{box-shadow:var(--tap);border-color:#9dbbe0}
-  .game-q{font-size:11.5px;font-weight:800;color:var(--ink-2);margin:8px 0 6px;text-align:center}
-  .game-btns{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+  .game-q{font-size:13px;font-weight:800;color:var(--ink-2);margin:9px 0 7px;text-align:center}
+  .game-btns{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
   .gb{
-    border:1px solid var(--line-2);background:#fff;border-radius:9px;font:inherit;font-size:15px;font-weight:900;
-    min-width:44px;padding:8px 10px;cursor:pointer;color:var(--ink);
+    border:1px solid var(--line-2);background:#fff;border-radius:9px;font:inherit;font-size:18px;font-weight:900;
+    min-width:48px;padding:9px 11px;cursor:pointer;color:var(--ink);
   }
   .gb:active{transform:scale(.96)}
   .gb.ok{background:var(--celadon);color:#fff;border-color:var(--celadon)}
   .gb.ng{background:var(--ng);color:#fff;border-color:var(--ng)}
   .gb:disabled{opacity:.55;cursor:default}
-  .game-msg{min-height:18px;margin-top:8px;text-align:center;font-size:11.5px;font-weight:800;color:var(--ink-3)}
+  .game-msg{min-height:20px;margin-top:9px;text-align:center;font-size:13px;font-weight:800;color:var(--ink-3)}
   .game-msg.ok{color:var(--celadon)}
   .game-msg.ng{color:var(--ng)}
   .game-end{text-align:center;padding:6px 0 2px}
-  .game-end .big{font-size:26px;font-weight:900;color:var(--indigo);letter-spacing:-.02em}
-  .game-end p{font-size:12px;color:var(--ink-2);margin:2px 0 10px}
+  .game-end .big{font-size:28px;font-weight:900;color:var(--indigo);letter-spacing:-.02em}
+  .game-end p{font-size:13.5px;color:var(--ink-2);margin:3px 0 11px}
 
   .btn{
-    border:0;border-radius:11px;background:var(--indigo);color:#fff;font:inherit;font-size:13.5px;font-weight:900;
-    padding:11px 18px;cursor:pointer;letter-spacing:-.01em;box-shadow:0 6px 16px -8px rgba(29,51,88,.7);
+    border:0;border-radius:11px;background:var(--indigo);color:#fff;font:inherit;font-size:15px;font-weight:900;
+    padding:12px 20px;cursor:pointer;letter-spacing:-.01em;box-shadow:0 6px 16px -8px rgba(29,51,88,.7);
   }
   .btn:active{transform:scale(.98)}
   .btn.ghost{background:#fff;color:var(--indigo);border:1px solid var(--line-2);box-shadow:none}
 
   /* ---------- quiz ---------- */
-  .quiz-wrap{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 14px;margin:12px 0;box-shadow:var(--shadow)}
-  .q-top{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:900;color:var(--ink-3);letter-spacing:.05em}
-  .q-bar{height:5px;border-radius:999px;background:var(--paper-2);margin:8px 0 14px;overflow:hidden}
+  .quiz-wrap{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:17px 14px;margin:14px 0;box-shadow:var(--shadow)}
+  .q-top{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:900;color:var(--ink-3);letter-spacing:.05em}
+  .q-bar{height:6px;border-radius:999px;background:var(--paper-2);margin:9px 0 15px;overflow:hidden}
   .q-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--indigo-2),var(--celadon));border-radius:999px;transition:width .3s}
-  .q-type{font-size:10.5px;font-weight:900;color:var(--red);background:var(--red-2);padding:2px 8px;border-radius:999px;display:inline-block;margin-bottom:8px}
-  .q-ask{font-size:15px;font-weight:900;color:var(--indigo);letter-spacing:-.02em;margin:0 0 2px;word-break:keep-all}
-  .q-ask-en{font-size:11px;font-weight:700;color:var(--ink-3);margin:0 0 12px}
+  .q-type{font-size:12px;font-weight:900;color:var(--red);background:var(--red-2);padding:3px 9px;border-radius:999px;display:inline-block;margin-bottom:9px}
+  .q-ask{font-size:17.5px;font-weight:900;color:var(--indigo);letter-spacing:-.02em;margin:0 0 3px;word-break:keep-all}
+  .q-ask-en{font-size:12.5px;font-weight:700;color:var(--ink-3);margin:0 0 12px}
   .q-big{
-    font-size:44px;font-weight:900;color:var(--indigo);text-align:center;letter-spacing:-.02em;line-height:1.2;
-    font-family:"Noto Serif KR","Nanum Myeongjo",Batang,sans-serif;margin:4px 0 12px;word-break:keep-all;
+    font-size:46px;font-weight:900;color:var(--indigo);text-align:center;letter-spacing:-.02em;line-height:1.2;
+    font-family:"Noto Serif KR","Nanum Myeongjo",Batang,sans-serif;margin:6px 0 12px;word-break:keep-all;
   }
-  .q-big small{display:block;font-size:12px;font-family:inherit;color:var(--ink-3);font-weight:800;letter-spacing:.02em;margin-top:4px}
+  .q-big.is-ipa{font-family:inherit;color:var(--red);font-size:40px;letter-spacing:0}
+  .q-big small{display:block;font-size:13px;font-family:inherit;color:var(--ink-3);font-weight:800;letter-spacing:.02em;margin-top:5px}
   .q-play{
     display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
     border:1px solid #cfdcf0;background:linear-gradient(180deg,#f7fbff,#eef5fd);color:var(--indigo);
-    font:inherit;font-size:14px;font-weight:900;padding:13px;border-radius:12px;cursor:pointer;margin-bottom:14px;
+    font:inherit;font-size:16px;font-weight:900;padding:14px;border-radius:12px;cursor:pointer;margin-bottom:14px;
   }
   .q-play:active{transform:scale(.99)}
-  .q-opts{display:grid;gap:8px}
+  .q-opts{display:grid;gap:9px}
   .q-opt{
-    border:1px solid var(--line-2);background:#fff;border-radius:12px;font:inherit;font-size:17px;font-weight:900;
-    color:var(--ink);padding:12px 14px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;
-    transition:transform .1s,background .15s,border-color .15s;letter-spacing:-.01em;
+    border:1px solid var(--line-2);background:#fff;border-radius:12px;font:inherit;font-size:19px;font-weight:900;
+    color:var(--ink);padding:13px 14px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;
+    transition:transform .1s,background .15s,border-color .15s;letter-spacing:-.01em;word-break:keep-all;
   }
   .q-opt:active{transform:scale(.99)}
   .q-opt .mk{
-    width:22px;height:22px;flex:none;border-radius:50%;background:var(--paper-2);color:var(--ink-2);
-    font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;
+    width:24px;height:24px;flex:none;border-radius:50%;background:var(--paper-2);color:var(--ink-2);
+    font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;
   }
-  .q-opt .en{margin-left:auto;font-size:10.5px;font-weight:800;color:var(--ink-3)}
+  .q-opt .en{margin-left:auto;font-size:12px;font-weight:800;color:var(--ink-3)}
   .q-opt:hover{border-color:#9dbbe0}
   .q-opt.ok{background:var(--celadon-2);border-color:#8fc4b7;color:#14584c}
   .q-opt.ok .mk{background:var(--celadon);color:#fff}
@@ -367,43 +368,71 @@
   .q-opt.ng .mk{background:var(--ng);color:#fff}
   .q-opt.dim{opacity:.55}
   .q-opts.seven{grid-template-columns:repeat(4,1fr)}
-  .q-opts.seven .q-opt{justify-content:center;padding:12px 4px;font-size:19px}
+  .q-opts.seven .q-opt{justify-content:center;padding:13px 4px;font-size:21px}
   .q-opts.seven .q-opt .mk{display:none}
   .q-foot{margin-top:14px;display:flex;gap:8px;justify-content:flex-end}
   .q-res{text-align:center;padding:8px 0 4px}
   .q-res .ring{
-    width:112px;height:112px;border-radius:50%;margin:6px auto 10px;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;border:7px solid var(--indigo-3);color:var(--indigo);
+    width:118px;height:118px;border-radius:50%;margin:8px auto 10px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;border:8px solid var(--indigo-3);color:var(--indigo);
   }
-  .q-res .ring b{font-size:30px;font-weight:900;line-height:1;letter-spacing:-.03em}
-  .q-res .ring span{font-size:10.5px;font-weight:800;color:var(--ink-3);margin-top:3px}
-  .q-res h3{margin:0 0 4px;font-size:17px;color:var(--indigo);font-weight:900;letter-spacing:-.02em}
-  .q-res p{font-size:12.5px;color:var(--ink-2);margin:0 0 14px}
+  .q-res .ring b{font-size:32px;font-weight:900;line-height:1;letter-spacing:-.03em}
+  .q-res .ring span{font-size:11.5px;font-weight:800;color:var(--ink-3);margin-top:4px}
+  .q-res h3{margin:0 0 5px;font-size:19px;color:var(--indigo);font-weight:900;letter-spacing:-.02em}
+  .q-res p{font-size:14px;color:var(--ink-2);margin:0 0 15px;line-height:1.5}
+
+  /* ---------- unit quiz (단원 확인 퀴즈) ---------- */
+  .uq{
+    background:var(--card);border:1px solid var(--line-2);border-radius:var(--r);
+    padding:17px 14px 16px;margin:16px 0 6px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .uq::before{content:"";position:absolute;left:0;top:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--red) 75%)}
+  .uq-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:2px 0 3px}
+  .uq-title b{font-size:19px;font-weight:900;color:var(--indigo);letter-spacing:-.02em;line-height:1.3}
+  .uq-title span{font-size:12px;font-weight:900;color:#8a6516;background:var(--gold-2);border:1px solid #eadcb9;border-radius:999px;padding:2px 10px}
+  .uq-lead{font-size:13.5px;color:var(--ink-2);margin:5px 0 10px;word-break:keep-all;line-height:1.55}
+  .uq-list{margin:0 0 15px;padding-left:19px;font-size:13.5px;color:var(--ink-2);line-height:1.65}
+  .uq-list li{margin:3px 0;word-break:keep-all}
+  .uq-barrow{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:900;color:var(--ink-3);letter-spacing:.04em;margin-top:4px}
+  .uq-barrow span:last-child{color:var(--celadon)}
+  .uq-fb{font-size:14px;font-weight:800;line-height:1.55;margin-top:12px;padding:11px 12px;border-radius:11px;word-break:keep-all}
+  .uq-fb[hidden]{display:none}
+  .uq-fb.ok{background:var(--celadon-2);border:1px solid #b7d9d0;color:#14584c}
+  .uq-fb.ng{background:var(--red-2);border:1px solid #e6b4a4;color:#8c2f18}
+  .uq-exp{font-weight:700;color:var(--ink-2)}
+  .uq-foot{display:flex;justify-content:flex-end;align-items:center;margin-top:13px}
+  .uq-foot .btn{min-width:110px}
+  .uq-acts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 
   /* ---------- footer ---------- */
   footer{
     max-width:760px;margin:26px auto 0;padding:0 14px;
-    font-size:10.5px;color:var(--ink-3);line-height:1.6;text-align:center;
+    font-size:12px;color:var(--ink-3);line-height:1.65;text-align:center;
   }
   footer b{color:var(--ink-2)}
   .toast{
     position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);
-    background:rgba(29,43,69,.94);color:#fff;font-size:12.5px;font-weight:700;
-    padding:10px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:99;
+    background:rgba(29,43,69,.94);color:#fff;font-size:14px;font-weight:700;
+    padding:11px 17px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:99;
     max-width:88vw;text-align:center;
   }
   .toast.on{opacity:1;transform:translate(-50%,0)}
 
-  @media (max-width:400px){
-    h1{font-size:19px}
+  @media (max-width:430px){
+    h1{font-size:22px}
     h1 span{display:none}
-    .lgrid{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}
-    .wgrid{grid-template-columns:repeat(auto-fill,minmax(97px,1fr))}
-    .game-word{font-size:30px}
+    .brand-k{font-size:12.5px}
+    .tab{flex:1 1 30%;font-size:13px;padding:8px 8px}
+    .lgrid{grid-template-columns:repeat(2,1fr)}
+    .wgrid{grid-template-columns:repeat(auto-fill,minmax(98px,1fr))}
+    .game-word{font-size:36px}
+    .q-big{font-size:44px}
+    .q-big.is-ipa{font-size:36px}
   }
   @media (min-width:620px){
     .dlg{gap:16px}
-    .lgrid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+    .lgrid{grid-template-columns:repeat(auto-fill,minmax(116px,1fr))}
+    .tab{flex:0 0 auto}
   }
   @media (prefers-reduced-motion: reduce){
     *{animation:none!important;transition:none!important}
@@ -416,11 +445,13 @@
   <div class="topbar-in">
     <div class="brand">
       <div class="brand-k">서울대 한국어+ 1A · 한글 배우기</div>
-      <h1>한글 발음편<span>Hangeul Pronunciation</span></h1>
-    </div>
-    <div class="speed" role="group" aria-label="재생 속도 / Speed">
-      <button class="sp" data-rate="0.65" aria-label="천천히 0.65배속">🐢<b>천천히</b><i>0.65×</i></button>
-      <button class="sp on" data-rate="1" aria-label="보통 1.0배속">🔊<b>보통</b><i>1.0×</i></button>
+      <div class="hrow">
+        <h1>한글 발음편<span>Hangeul Pronunciation</span></h1>
+        <div class="speed" role="group" aria-label="재생 속도 / Speed">
+          <button class="sp" data-rate="0.65" aria-label="천천히 0.65배속">🐢<b>천천히</b><i>0.65×</i></button>
+          <button class="sp on" data-rate="1" aria-label="보통 1.0배속">🔊<b>보통</b><i>1.0×</i></button>
+        </div>
+      </div>
     </div>
   </div>
   <nav class="tabs" id="tabs" aria-label="학습 탭">
@@ -814,6 +845,7 @@ const CLASS_D = [['질문 있어요?','teacher'],['네, 있어요.','student'],[
    3. 렌더 도우미
    ======================================================================= */
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const uqMount = key => `<div class="uq" id="uq-${key}"></div>`;
 
 function block(kind, kicker, title, en, desc, body, opts){
   opts = opts || {};
@@ -890,7 +922,8 @@ document.getElementById('p-h1').innerHTML =
     subHead('② 듣고 번호 쓰기','Listen and number', P18_2) + chips(P18_2) +
     subHead('③ 듣고 맞는 단어 고르기','Minimal pairs', P18_3.flat()) +
     P18_3.map(p => pairRow(p[0], p[1])).join(''),
-    {note:'두 단어의 <b>모음</b>만 다릅니다. 한 쌍씩 번갈아 눌러 소리의 차이를 들어 보세요.', noteClass:'green'});
+    {note:'두 단어의 <b>모음</b>만 다릅니다. 한 쌍씩 번갈아 눌러 소리의 차이를 들어 보세요.', noteClass:'green'}) +
+  uqMount('h1');
 
 /* ---------- 한글 2 ---------- */
 document.getElementById('p-h2').innerHTML =
@@ -930,7 +963,8 @@ document.getElementById('p-h2').innerHTML =
     subHead('p.36 ① 듣고 O / X','Listen: same or different', P36_1) + chips(P36_1) +
     subHead('p.36 ② 듣고 번호 쓰기','Listen and number', P36_2) + chips(P36_2) +
     subHead('p.36 ③ 최소대립쌍','Minimal pairs', P36_3.flat()) +
-    P36_3.map(p => pairRow(p[0], p[1])).join(''));
+    P36_3.map(p => pairRow(p[0], p[1])).join('')) +
+  uqMount('h2');
 
 /* ---------- 한글 3 ---------- */
 document.getElementById('p-h3').innerHTML =
@@ -959,7 +993,8 @@ document.getElementById('p-h3').innerHTML =
   block('k3','p.45 · 한글 3','짝 활동','Pair Work','두 사람이 번갈아 읽어 보세요',
     subHead('A → B 읽으세요','A reads, B listens', W45_A.map(w=>w[0])) + wordCards(W45_A) +
     subHead('B → A 읽으세요','B reads, A listens', W45_B.map(w=>w[0])) + wordCards(W45_B),
-    {note:'교재의 빈칸 채우기: 취<b>미</b> · 교<b>외</b> · 쉬<b>워</b>요 · 아<b>내</b> · 서<b>예</b> · <b>화</b>가 / <b>노</b>래 · 회<b>의</b> · 가<b>위</b> · 소<b>개</b> · 모<b>레</b> · <b>채</b>소', noteClass:''});
+    {note:'교재의 빈칸 채우기: 취<b>미</b> · 교<b>외</b> · 쉬<b>워</b>요 · 아<b>내</b> · 서<b>예</b> · <b>화</b>가 / <b>노</b>래 · 회<b>의</b> · 가<b>위</b> · 소<b>개</b> · 모<b>레</b> · <b>채</b>소', noteClass:''}) +
+  uqMount('h3');
 
 /* ---------- 받침 ---------- */
 const sortHTML = `
@@ -1018,7 +1053,8 @@ document.getElementById('p-bat').innerHTML =
     subHead('③ 최소대립쌍','Minimal pairs', P50_3.flat()) +
     P50_3.map(p => pairRow(p[0], p[1])).join('')) +
   block('k4','p.53 · 받침','쓰세요','Write','받침이 있는 단어를 읽고 써 보세요',
-    subHead('단어','Words', W53) + chips(W53));
+    subHead('단어','Words', W53) + chips(W53)) +
+  uqMount('bat');
 
 /* ---------- 종합연습 ---------- */
 document.getElementById('p-etc').innerHTML =
@@ -1039,7 +1075,8 @@ document.getElementById('p-etc').innerHTML =
       ${CLASS_D.map(d => `<button class="dlg-l ${d[1]==='teacher'?'dlg-a':'dlg-b'}" data-say="${esc(d[0])}">
         <span style="font-size:10px;font-weight:900;color:var(--ink-3);display:block;letter-spacing:.06em">${d[1]==='teacher'?'선생님':'학생'}</span>
         ${esc(d[0])}</button>`).join('')}
-    </div>`);
+    </div>`) +
+  uqMount('etc');
 
 /* ---------- 퀴즈 탭 ---------- */
 document.getElementById('p-quiz').innerHTML = quizHTML;
@@ -1388,6 +1425,304 @@ onVoiceReady = () => {
   if(!quiz.started) renderQuizIntro();
 };
 renderQuizIntro();
+
+/* =======================================================================
+   8. 단원별 확인 퀴즈 (각 단원 맨 아래)
+   ======================================================================= */
+const FINALS7 = ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅇ'];
+const ALL_V = [...V1, ...V2, ...V3];
+const ALL_C = [...C1, ...C2, ...C3];
+const takeN = (arr, n) => shuffle([...arr]).slice(0, n);
+
+/* --- 문제 만들기 도우미 (자료는 모두 교재 원문) --- */
+function qMeaning(word, tag){
+  const correct = PAIR_MEANING[word];
+  if(!correct) return null;
+  const others = takeN(Object.keys(PAIR_MEANING).filter(w => PAIR_MEANING[w] !== correct), 3).map(w => PAIR_MEANING[w]);
+  if(others.length < 3) return null;
+  const opts = shuffle([correct, ...others]);
+  return {tag, ask:`‘${word}’의 뜻은 무엇일까요?`, askEn:'What does it mean?', big:word, options:opts, answer:opts.indexOf(correct)};
+}
+
+function qPair(a, b, tag){
+  if(!ttsOk) return qMeaning(a, tag);
+  const opts = Math.random() < 0.5 ? [a, b] : [b, a];
+  const exp = (PAIR_MEANING[a] && PAIR_MEANING[b]) ? `‘${a}’는 ${PAIR_MEANING[a]}, ‘${b}’는 ${PAIR_MEANING[b]}` : '';
+  return {tag, ask:'무엇을 들었어요?', askEn:'Which word did you hear?', say:a, options:opts, answer:opts.indexOf(a), explain:exp};
+}
+
+function qVowel(v, tag){
+  const others = takeN(ALL_V.filter(x => x.ipa !== v.ipa), 3).map(x => x.ipa);
+  const opts = shuffle([v.ipa, ...others]);
+  return {tag, ask:`‘${v.j}’의 발음 기호는 무엇일까요?`, askEn:'Which sound does it make?', big:v.j, say:v.say, options:opts, answer:opts.indexOf(v.ipa), explain:`${v.j} — ${v.ipa} (${v.rom})`};
+}
+
+function qCons(c, tag){
+  const others = takeN(ALL_C.filter(x => x.j !== c.j), 2).map(x => x.j);
+  const opts = shuffle([c.j, ...others]);
+  return {tag, ask:'이 소리를 내는 자음은 무엇일까요?', askEn:'Which consonant makes this sound?', big:c.ipa, bigIpa:true, say:c.say, options:opts, answer:opts.indexOf(c.j), explain:`${c.ipa} → ${c.j} (${c.say})`};
+}
+
+function qFinal(word, f, tag){
+  const opts = [...FINALS7];
+  return {tag, ask:'받침의 소리는 무엇일까요?', askEn:'Which final sound?', big:word, say:word, options:opts, answer:opts.indexOf(f), seven:true, explain:`${word} → [${f}]`};
+}
+
+function qWordListen(entry, pool, tag){
+  const w = entry[0], en = entry[1];
+  if(ttsOk){
+    const others = takeN(pool.filter(x => x[0] !== w), 3).map(x => x[0]);
+    const opts = shuffle([w, ...others]);
+    return {tag, ask:'무엇을 들었어요?', askEn:'Which word did you hear?', say:w, options:opts, answer:opts.indexOf(w), explain:`${w} — ${en}`};
+  }
+  const others = takeN(pool.filter(x => x[1] !== en), 3).map(x => x[1]);
+  const opts = shuffle([en, ...others]);
+  return {tag, ask:`‘${w}’의 뜻은 무엇일까요?`, askEn:'What does it mean?', big:w, options:opts, answer:opts.indexOf(en)};
+}
+
+/* --- 단원별 문제 은행 (8문제씩) --- */
+function buildH1Quiz(){
+  const qs = [];
+  takeN(P18_3, 4).forEach(p => qs.push(qPair(p[0], p[1], 'p.18 대립쌍')));
+  takeN(V1, 2).forEach(v => qs.push(qVowel(v, 'p.10 모음 1')));
+  takeN(C1, 2).forEach(c => qs.push(qCons(c, 'p.15 자음 1')));
+  return shuffle(qs.filter(Boolean));
+}
+
+function buildH2Quiz(){
+  const qs = [];
+  takeN([...P30_3, ...P36_3], 3).forEach(p => qs.push(qPair(p[0], p[1], 'p.30 · p.36 대립쌍')));
+  const row = takeN(CMP_SYL.filter(r => r.asp), 1)[0];
+  if(row){
+    const three = [row.plain, row.asp, row.tense];
+    const target = three[Math.floor(Math.random() * 3)];
+    if(ttsOk){
+      const opts = shuffle([...three]);
+      qs.push({tag:'p.15 · 28 · 34 비교', ask:'어떤 소리였어요?', askEn:'Which one did you hear?', say:target, options:opts, answer:opts.indexOf(target), explain:'예사 · 거센 · 된소리 순서로 들어 보세요'});
+    }else{
+      const kind = target === row.plain ? '예사소리' : (target === row.asp ? '거센소리' : '된소리');
+      const opts = ['예사소리','거센소리','된소리'];
+      qs.push({tag:'p.15 · 28 · 34 비교', ask:`‘${target}’는 어떤 소리일까요?`, askEn:'Plain, aspirated or tense?', big:target, options:opts, answer:opts.indexOf(kind), explain:`${row.plain} · ${row.asp} · ${row.tense}`});
+    }
+  }
+  takeN(V2, 2).forEach(v => qs.push(qVowel(v, 'p.22 모음 2')));
+  takeN([...C2, ...C3], 2).forEach(c => qs.push(qCons(c, 'p.28 · p.34 거센·된소리')));
+  return shuffle(qs.filter(Boolean));
+}
+
+function buildH3Quiz(){
+  const qs = [];
+  takeN(P43_3, 3).forEach(p => qs.push(qPair(p[0], p[1], 'p.43 대립쌍')));
+  takeN(V3, 3).forEach(v => qs.push(qVowel(v, 'p.40 모음 3')));
+  takeN(W41, 2).forEach(w => qs.push(qWordListen(w, W41, 'p.41 단어')));
+  return shuffle(qs.filter(Boolean));
+}
+
+function buildBatQuiz(){
+  const qs = [];
+  const pool = [];
+  W47.forEach(w => pool.push({w:w[0], f:w[3]}));
+  W48.forEach(g => g[1].forEach(w => pool.push({w:w[0], f:g[0]})));
+  SORT.forEach(s => pool.push({w:s[0], f:s[1]}));
+  const seen = {};
+  const finals = pool.filter(o => (FINALS7.indexOf(o.f) >= 0 && !seen[o.w]) ? (seen[o.w] = true) : false);
+  takeN(finals, 4).forEach(o => qs.push(qFinal(o.w, o.f, 'p.47 · p.48 · p.52')));
+  takeN(P50_3, 3).forEach(p => qs.push(qPair(p[0], p[1], 'p.50 대립쌍')));
+  const row = takeN(P50_1, 1)[0];
+  if(row && ttsOk){
+    const target = row[Math.floor(Math.random() * row.length)];
+    const opts = shuffle([...row]);
+    qs.push({tag:'p.50 ① 듣고 고르기', ask:'무엇을 들었어요?', askEn:'Which one did you hear?', say:target, options:opts, answer:opts.indexOf(target)});
+  }else{
+    const o = takeN(finals, 1)[0];
+    if(o) qs.push(qFinal(o.w, o.f, 'p.47 · p.50'));
+  }
+  return shuffle(qs.filter(Boolean));
+}
+
+function buildEtcQuiz(){
+  const qs = [];
+  const snd = takeN(SOUND_W, 4);
+  /* 동물·사물 → 소리를 흉내 낸 말 (p.54) */
+  snd.slice(0, 2).forEach(s => {
+    const others = takeN(SOUND_W.filter(x => x[0] !== s[0]), 3).map(x => x[0]);
+    const opts = shuffle([s[0], ...others]);
+    qs.push({tag:'p.54 의성어', ask:`‘${s[1]}’의 소리를 흉내 낸 말은?`, askEn:'Which sound word is it?', big:s[1], options:opts, answer:opts.indexOf(s[0]), explain:`${s[0]} — ${s[2]}`});
+  });
+  /* 소리를 흉내 낸 말 → 무엇의 소리인지 (p.54) */
+  snd.slice(2).forEach(s => {
+    const others = takeN(SOUND_W.filter(x => x[1] !== s[1]), 3).map(x => x[1]);
+    const opts = shuffle([s[1], ...others]);
+    if(ttsOk){
+      qs.push({tag:'p.54 의성어', ask:'무엇의 소리였어요?', askEn:'What makes this sound?', say:s[0], options:opts, answer:opts.indexOf(s[1]), explain:`${s[0]} — ${s[1]}`});
+    }else{
+      qs.push({tag:'p.54 의성어', ask:`‘${s[0]}’는 무엇의 소리일까요?`, askEn:'What makes this sound?', big:s[0], options:opts, answer:opts.indexOf(s[1]), explain:`${s[0]} — ${s[1]}`});
+    }
+  });
+  /* 교실 한국어 — 뜻 고르기 (p.56) */
+  takeN(CLASS_W, 2).forEach(c => {
+    const others = takeN(CLASS_W.filter(x => x[1] !== c[1]), 3).map(x => x[1]);
+    const opts = shuffle([c[1], ...others]);
+    qs.push({tag:'p.56 교실 한국어', ask:`‘${c[0]}’의 뜻은 무엇일까요?`, askEn:'What does it mean?', big:c[0], options:opts, answer:opts.indexOf(c[1]), explain:`${c[0]} — ${c[1]}`});
+  });
+  /* 교실 한국어 — 듣고 고르기 (p.56) */
+  takeN(CLASS_W, 2).forEach(c => {
+    if(ttsOk){
+      const others = takeN(CLASS_W.filter(x => x[0] !== c[0]), 3).map(x => x[0]);
+      const opts = shuffle([c[0], ...others]);
+      qs.push({tag:'p.56 교실 한국어', ask:'무엇을 들었어요?', askEn:'Which expression did you hear?', say:c[0], options:opts, answer:opts.indexOf(c[0]), explain:`${c[0]} — ${c[1]}`});
+    }else{
+      const others = takeN(CLASS_W.filter(x => x[1] !== c[1]), 3).map(x => x[1]);
+      const opts = shuffle([c[1], ...others]);
+      qs.push({tag:'p.56 교실 한국어', ask:`‘${c[0]}’의 뜻은 무엇일까요?`, askEn:'What does it mean?', big:c[0], options:opts, answer:opts.indexOf(c[1]), explain:`${c[0]} — ${c[1]}`});
+    }
+  });
+  return shuffle(qs.filter(Boolean));
+}
+
+/* --- 단원 퀴즈 카드 --- */
+const UNIT_QUIZZES = [
+  {key:'h1', label:'한글 1 확인 퀴즈', short:'8문제',
+   lead:'한글 1에서 배운 모음 1·자음 1의 소리와 p.18 대립쌍을 그대로 확인해요.',
+   intro:['모음 ㅏ ㅓ ㅗ ㅜ ㅡ ㅣ — 발음 기호 고르기 (p.10)',
+          '자음 ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ ㅇ ㅈ ㅎ — 소리 듣고 자음 찾기 (p.15)',
+          '최소대립쌍 — 고기/거기, 누구/구두, 나비/나무, 모기/모자, 지도/수도, 고리/거리 (p.18)'],
+   build: buildH1Quiz},
+  {key:'h2', label:'한글 2 확인 퀴즈', short:'8문제',
+   lead:'모음 2·거센소리·된소리를 소리로 구별하고 p.30·p.36 대립쌍을 확인해요.',
+   intro:['모음 ㅑ ㅕ ㅛ ㅠ — 발음 기호 고르기 (p.22)',
+          '거센소리 ㅋ ㅌ ㅍ ㅊ · 된소리 ㄲ ㄸ ㅃ ㅆ ㅉ (p.28 · p.34)',
+          '최소대립쌍 — 기사/기차, 커피/코피, 보도/포도, 사다/싸다, 지다/찌다, 바르다/빠르다, 고리/꼬리, 트다/뜨다'],
+   build: buildH2Quiz},
+  {key:'h3', label:'한글 3 확인 퀴즈', short:'8문제',
+   lead:'이중모음 11개와 p.43 대립쌍을 확인해요.',
+   intro:['모음 3 — ㅐ ㅔ ㅒ ㅖ ㅘ ㅝ ㅟ ㅢ ㅚ ㅙ ㅞ 발음 기호 고르기 (p.40)',
+          '최소대립쌍 — 애기/얘기, 어깨/어제, 취미/치마, 가구/가게, 세기/세계, 호의/회의 (p.43)',
+          '단어 25 — 듣고 맞는 단어 고르기 (p.41)'],
+   build: buildH3Quiz},
+  {key:'bat', label:'받침 확인 퀴즈', short:'8문제',
+   lead:'받침 7대표음과 p.50 대립쌍을 확인해요.',
+   intro:['받침의 소리 ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅇ 중에서 고르기 (p.47 · p.48 · p.52)',
+          '최소대립쌍 — 곧/골, 짚/짐, 부엉/부엌, 걷다/검다, 시장/신장, 사진/사직 (p.50)',
+          '듣고 알맞은 것 고르기 — 곰/공/골, 산/살/삼 (p.50)'],
+   build: buildBatQuiz},
+  {key:'etc', label:'종합연습 확인 퀴즈', short:'8문제',
+   lead:'소리를 흉내 낸 말과 교실 한국어 표현을 확인해요.',
+   intro:['의성어 — 음매, 개굴개굴, 멍멍, 야옹, 찍찍, 꿀꿀, 꼬끼오, 따르릉, 부릉부릉, 칙칙폭폭, 맴맴 (p.54)',
+          '교실 한국어 — 보세요, 읽으세요, 들으세요, 쓰세요, 앉으세요, 이야기하세요, 따라 하세요, 쉬세요, 좋아요 (p.56)',
+          '듣고 뜻·표현 맞히기'],
+   build: buildEtcQuiz}
+];
+
+function initUnitQuiz(cfg){
+  const host = document.getElementById('uq-' + cfg.key);
+  if(!host) return;
+  const st = {qs:[], i:0, score:0, answered:false, phase:'intro'};
+  const head = () => `<div class="uq-title"><b>🎯 ${esc(cfg.label)}</b><span>${esc(cfg.short)}</span></div>`;
+
+  function intro(){
+    st.phase = 'intro';
+    host.innerHTML = head() +
+      `<p class="uq-lead">${esc(cfg.lead)}</p>
+       <ul class="uq-list">${cfg.intro.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+       <button class="btn" data-act="start" style="width:100%;padding:15px">퀴즈 시작하기</button>`;
+  }
+
+  function start(){
+    st.qs = cfg.build().filter(Boolean);
+    st.i = 0; st.score = 0;
+    draw();
+  }
+
+  function draw(){
+    if(st.i >= st.qs.length) return result();
+    st.phase = 'q'; st.answered = false;
+    const q = st.qs[st.i];
+    const pct = Math.round(st.i / st.qs.length * 100);
+    host.innerHTML = head() +
+      `<div class="uq-barrow"><span>문제 ${st.i + 1} / ${st.qs.length}</span><span>✓ ${st.score}</span></div>
+       <div class="q-bar"><i style="width:${pct}%"></i></div>
+       <span class="q-type">${esc(q.tag)}</span>
+       <p class="q-ask">${esc(q.ask)}</p>
+       <p class="q-ask-en">${esc(q.askEn || '')}</p>
+       ${q.big ? `<div class="q-big${q.bigIpa ? ' is-ipa' : ''}">${esc(q.big)}</div>` : ''}
+       ${q.say ? `<button class="q-play" data-act="play">🔊 소리 듣기</button>` : ''}
+       <div class="q-opts${q.seven ? ' seven' : ''}">
+         ${q.options.map((o, i) => `<button class="q-opt" data-i="${i}"><span class="mk">${'①②③④⑤⑥⑦'[i]}</span><span>${esc(o)}</span></button>`).join('')}
+       </div>
+       <div class="uq-fb" hidden></div>
+       <div class="uq-foot"><button class="btn" data-act="next" hidden>다음 →</button></div>`;
+    if(q.say && ttsOk) speak(q.say);
+  }
+
+  function answer(i){
+    if(st.answered) return;
+    st.answered = true;
+    const q = st.qs[st.i];
+    const opts = [...host.querySelectorAll('.q-opt')];
+    opts.forEach(o => {
+      const k = +o.dataset.i;
+      if(k === q.answer) o.classList.add('ok');
+      else if(k === i) o.classList.add('ng');
+      else o.classList.add('dim');
+    });
+    const ok = i === q.answer;
+    if(ok) st.score++;
+    const fb = host.querySelector('.uq-fb');
+    fb.hidden = false;
+    fb.className = 'uq-fb ' + (ok ? 'ok' : 'ng');
+    const right = q.options[q.answer];
+    fb.innerHTML = ok
+      ? `✓ 맞았어요!${q.explain ? ` <span class="uq-exp">${esc(q.explain)}</span>` : ''}`
+      : `✕ 아니에요. 정답은 <b>${esc(right)}</b>${q.explain ? ` <span class="uq-exp">${esc(q.explain)}</span>` : ''}`;
+    const scoreEl = host.querySelector('.uq-barrow');
+    if(scoreEl) scoreEl.lastElementChild.textContent = '✓ ' + st.score;
+    const nx = host.querySelector('[data-act="next"]');
+    nx.hidden = false;
+    nx.textContent = (st.i === st.qs.length - 1) ? '결과 보기 →' : '다음 →';
+    if(q.say && ok && ttsOk) speak(q.say);
+  }
+
+  function result(){
+    st.phase = 'done';
+    const n = st.qs.length;
+    const pct = n ? Math.round(st.score / n * 100) : 0;
+    let title = '수고했어요!', msg = '틀린 소리를 카드에서 다시 들어 보며 한 번 더 풀어 보세요.';
+    if(pct === 100){ title = '만점입니다! 🎉'; msg = '이 단원의 소리를 완벽하게 익혔어요.'; }
+    else if(pct >= 80){ title = '아주 잘했어요!'; msg = '헷갈린 문제만 다시 들어 보면 완벽해요.'; }
+    else if(pct >= 50){ title = '좋아요!'; msg = '틀린 문제의 소리를 카드에서 다시 들어 보세요.'; }
+    host.innerHTML = head() +
+      `<div class="q-res">
+         <div class="ring" style="border-color:${pct >= 80 ? '#b7d9d0' : '#cfdcf0'}">
+           <b>${st.score}<span style="font-size:16px"> / ${n}</span></b><span>${pct}%</span>
+         </div>
+         <h3>${title}</h3><p>${msg}</p>
+         <div class="uq-acts">
+           <button class="btn" data-act="again">다시 풀기</button>
+           <button class="btn ghost" data-act="goto" data-tab="quiz">⑥ 전체 발음 퀴즈</button>
+         </div>
+       </div>`;
+    if(window.pickle && window.pickle.widget && window.pickle.widget.signal){
+      window.pickle.widget.signal(`${cfg.label}: ${n}문제 중 ${st.score}문제를 맞혔습니다.`);
+    }
+  }
+
+  host.addEventListener('click', e => {
+    const o = e.target.closest('.q-opt');
+    if(o && host.contains(o) && st.phase === 'q'){ answer(+o.dataset.i); return; }
+    const b = e.target.closest('[data-act]');
+    if(!b || !host.contains(b)) return;
+    const act = b.dataset.act;
+    if(act === 'start' || act === 'again') start();
+    else if(act === 'play'){ if(st.qs[st.i]) speak(st.qs[st.i].say); }
+    else if(act === 'next'){ st.i++; draw(); }
+    else if(act === 'goto') showTab(b.dataset.tab);
+  });
+
+  intro();
+}
+
+UNIT_QUIZZES.forEach(initUnitQuiz);
 
 /* 해시로 탭 열기 */
 if(location.hash){
