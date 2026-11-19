@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#1e40af">
+<title>2A 부루마불 한국어 보드게임 | 서울대 한국어+ 2A</title>
+<style>
+  :root{
+    --ink:#0f172a; --sub:#475569; --muted:#94a3b8; --line:#e2e8f0;
+    --brand:#2563eb; --brand2:#0ea5e9; --ok:#16a34a; --warn:#dc2626;
+    --paper:#fffdf8;
+    color-scheme: light;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "맑은 고딕", "Malgun Gothic", sans-serif;
+    color:var(--ink); background:#eef4fb;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(14,165,233,.16), transparent 42%),
+      radial-gradient(circle at 88% 92%, rgba(37,99,235,.14), transparent 45%),
+      linear-gradient(180deg,#f6faff,#eaf1fa);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+  body.modal-open{overflow:hidden}
+  button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit}
+  .hidden{display:none !important}
+
+  /* ============ 공통 버튼 ============ */
+  .cta{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    background:linear-gradient(135deg,#2563eb,#0ea5e9); color:#fff; font-weight:800;
+    padding:14px 18px; border-radius:14px; font-size:16px; letter-spacing:-.01em;
+    box-shadow:0 10px 20px -10px rgba(37,99,235,.75);
+    transition:transform .12s ease, box-shadow .2s, filter .2s;
+  }
+  .cta:active{transform:translateY(1px) scale(.995)}
+  .cta:hover{filter:brightness(1.04)}
+  .cta.ok{background:linear-gradient(135deg,#16a34a,#22c55e); box-shadow:0 10px 20px -10px rgba(22,163,74,.7)}
+  .cta.gray{background:#e2e8f0; color:#334155; box-shadow:none}
+  .cta.sm{padding:9px 14px; font-size:14px; border-radius:11px}
+  .ghost{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:12px 16px; border-radius:13px; font-weight:700; font-size:15px;
+    background:#f1f5f9; color:#475569; border:1px solid #e2e8f0;
+  }
+  .ghost:hover{background:#e2e8f0}
+  .ghost.sm{padding:8px 12px; font-size:13.5px; border-radius:10px}
+
+  /* ============ 시작 화면 ============ */
+  .screen{position:fixed; inset:0; overflow-y:auto; -webkit-overflow-scrolling:touch}
+  .setup-wrap{
+    min-height:100%; display:flex; align-items:center; justify-content:center;
+    padding:20px 14px 28px;
+  }
+  .setup-card{
+    width:100%; max-width:520px; background:#fff; border-radius:26px; padding:22px 20px 20px;
+    box-shadow:0 24px 50px -24px rgba(15,23,42,.35), 0 2px 8px rgba(15,23,42,.05);
+    border:1px solid rgba(226,232,240,.9);
+  }
+  .brand{display:flex; gap:13px; align-items:center; margin-bottom:18px}
+  .brand-emoji{
+    width:56px; height:56px; flex:none; border-radius:18px; display:grid; place-items:center;
+    font-size:29px; background:linear-gradient(145deg,#1d4ed8,#0ea5e9 60%,#06b6d4);
+    box-shadow:0 12px 22px -10px rgba(29,78,216,.8), inset 0 0 0 2px rgba(255,255,255,.25);
+  }
+  .brand h1{font-size:20px; font-weight:900; letter-spacing:-.03em; line-height:1.25}
+  .brand p{font-size:12.5px; color:var(--sub); font-weight:600; margin-top:3px}
+  .field{margin-bottom:15px}
+  .field > label{display:block; font-size:12.5px; font-weight:800; color:#334155; margin-bottom:7px; letter-spacing:-.01em}
+  .seg{display:flex; gap:6px; background:#f1f5f9; padding:4px; border-radius:14px; border:1px solid #e9eef6}
+  .seg button{
+    flex:1; padding:10px 4px; border-radius:11px; font-size:13.5px; font-weight:700; color:#64748b;
+    transition:all .16s ease; white-space:nowrap;
+  }
+  .seg button.on{background:#fff; color:#1d4ed8; box-shadow:0 2px 6px rgba(15,23,42,.1); font-weight:800}
+  .team-list{display:flex; flex-direction:column; gap:8px}
+  .team-row{
+    display:flex; align-items:center; gap:9px; background:#f8fafc; border:1px solid #eef2f7;
+    border-radius:14px; padding:8px 10px; transition:opacity .2s, background .2s;
+  }
+  .team-row.off{opacity:.38; pointer-events:none}
+  .tr-num{
+    width:24px; height:24px; flex:none; border-radius:8px; color:#fff; font-size:12px; font-weight:900;
+    display:grid; place-items:center;
+  }
+  .tname{
+    flex:1; min-width:0; border:none; background:transparent; font-size:14.5px; font-weight:700;
+    color:var(--ink); padding:4px 2px; outline:none; border-bottom:1px dashed transparent;
+  }
+  .tname:focus{border-bottom-color:#93c5fd}
+  .swatches{display:flex; gap:5px; flex:none}
+  .sw{width:19px; height:19px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 0 1px rgba(15,23,42,.12); transition:transform .12s}
+  .sw.on{transform:scale(1.18); box-shadow:0 0 0 2px #0f172a}
+  #startBtn{width:100%; margin-top:6px; padding:16px; font-size:17px; border-radius:16px}
+  #resumeBtn{width:100%; margin-top:9px; justify-content:center; padding:13px; font-size:14px}
+  .rules-box{margin-top:14px; border-top:1px dashed #e2e8f0; padding-top:12px}
+  .rules-box summary{font-size:13px; font-weight:800; color:#475569; cursor:pointer; list-style:none}
+  .rules-box summary::-webkit-details-marker{display:none}
+  .rules-box summary::before{content:"📖 "; }
+  .rules-box ol{margin:9px 0 0 0; padding-left:18px; font-size:12.5px; color:#475569; line-height:1.75}
+  .setup-note{font-size:11.5px; color:var(--muted); text-align:center; margin-top:12px; line-height:1.6}
+
+  /* ============ 게임 화면 ============ */
+  #screen-game{display:flex; flex-direction:column; padding:8px 8px 10px; gap:6px}
+  .topbar{display:flex; align-items:center; justify-content:space-between; padding:0 4px; flex:none}
+  .brand-small{display:flex; align-items:center; gap:7px; font-size:14.5px; font-weight:900; letter-spacing:-.02em}
+  .brand-small .tag{
+    font-size:10px; font-weight:800; color:#1d4ed8; background:#dbeafe; padding:2px 7px; border-radius:6px; letter-spacing:0;
+  }
+  .topbtns{display:flex; gap:6px}
+  .topbtns button{
+    width:34px; height:34px; border-radius:11px; background:#fff; border:1px solid #e2e8f0;
+    font-size:15px; display:grid; place-items:center; box-shadow:0 2px 5px rgba(15,23,42,.05);
+  }
+  .topbtns button:active{transform:scale(.95)}
+  .board-wrap{flex:1; min-height:0; display:flex; align-items:center; justify-content:center}
+
+  .board{
+    width:min(100%, calc(100dvh - 74px), 880px);
+    aspect-ratio:1 / 1;
+    display:grid; grid-template-columns:repeat(7,1fr); grid-template-rows:repeat(7,1fr);
+    gap:3px; padding:7px; border-radius:20px;
+    background:linear-gradient(145deg,#1e40af 0%,#0369a1 48%,#0e7490 100%);
+    box-shadow:0 26px 50px -24px rgba(15,23,42,.55), inset 0 0 0 2px rgba(255,255,255,.16);
+    container-type:inline-size;
+  }
+  .cell{
+    position:relative; min-width:0; min-height:0; overflow:hidden;
+    background:var(--paper); border:1.5px solid rgba(15,23,42,.10); border-radius:8px;
+    display:flex; flex-direction:column; align-items:center; cursor:pointer;
+    transition:background .28s ease, border-color .28s ease, box-shadow .2s;
+  }
+  .cell:hover{box-shadow:0 4px 12px -4px rgba(15,23,42,.3)}
+  .cell.here{box-shadow:0 0 0 2.5px #0f172a, 0 6px 16px -6px rgba(0,0,0,.45); z-index:3}
+  .own-bar{position:absolute; top:0; left:0; right:0; height:4px; display:none; z-index:2}
+  .cin{display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; width:100%; padding:1px 1px 0; gap:0; text-align:center}
+  .unum{
+    position:absolute; top:2.5px; left:2.5px; z-index:2; color:#fff;
+    width:clamp(9px,1.95cqw,17px); height:clamp(9px,1.95cqw,17px); border-radius:4px;
+    font-size:clamp(6px,1.2cqw,10.5px); font-weight:900; display:grid; place-items:center;
+    box-shadow:0 1px 2px rgba(0,0,0,.2);
+  }
+  .cemo{font-size:clamp(12px,3.1cqw,27px); line-height:1.05; filter:drop-shadow(0 1px 1px rgba(0,0,0,.08))}
+  .cname{
+    font-size:clamp(7px,1.72cqw,13px); font-weight:800; color:#1e293b; line-height:1.12;
+    letter-spacing:-.03em; word-break:keep-all; margin-top:.15em;
+  }
+  .cell.corner .cemo{font-size:clamp(13px,3.7cqw,32px)}
+  .cell.corner .cname.big{font-size:clamp(8px,2.05cqw,15px)}
+  .csub{font-size:clamp(5.5px,1.18cqw,9.5px); font-weight:700; color:#64748b; line-height:1.1; margin-top:.1em; word-break:keep-all}
+  .cell.start{background:#fff7ed}
+  .cell.island{background:#ecfeff}
+  .cell.jeju{background:#eff6ff}
+  .cell.key{background:#fefce8}
+  .tokens{
+    position:absolute; left:0; right:0; bottom:1px; z-index:3;
+    display:flex; justify-content:center; align-items:flex-end; gap:1px; pointer-events:none;
+  }
+  .pawn{
+    width:clamp(11px,2.75cqw,22px); height:clamp(11px,2.75cqw,22px); border-radius:50%;
+    color:#fff; font-size:clamp(6.5px,1.5cqw,11.5px); font-weight:900;
+    display:grid; place-items:center; flex:none;
+    box-shadow:0 1px 3px rgba(0,0,0,.4), inset 0 0 0 1.5px rgba(255,255,255,.85);
+    animation:pawnIn .25s ease-out;
+  }
+  @keyframes pawnIn{from{transform:scale(.4); opacity:.3} to{transform:scale(1); opacity:1}}
+
+  /* 가운데 조작판 */
+  .center{
+    grid-row:2 / 7; grid-column:2 / 7;
+    background:linear-gradient(180deg,#ffffff,#f8fbff 70%,#f1f7ff);
+    border-radius:14px; padding:1.6cqw 2cqw;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:1.1cqw; min-height:0; overflow:hidden;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.7), 0 6px 18px -12px rgba(15,23,42,.4);
+  }
+  .crow{display:flex; align-items:center; gap:1cqw; width:100%; justify-content:space-between}
+  .round{font-size:clamp(9px,2.2cqw,17px); font-weight:800; color:#334155; letter-spacing:-.02em}
+  .round b{color:#1d4ed8}
+  .round .dim{color:#94a3b8; font-weight:700}
+  .modebadge{
+    font-size:clamp(7.5px,1.7cqw,12.5px); font-weight:800; color:#0369a1; background:#e0f2fe;
+    padding:.25em .7em; border-radius:99px; white-space:nowrap;
+  }
+  .turnbanner{
+    width:100%; display:flex; align-items:center; justify-content:center; gap:.45em;
+    padding:.5cqw 1cqw; border-radius:2cqw; border:1.5px solid rgba(15,23,42,.1);
+    font-size:clamp(11px,2.7cqw,21px); font-weight:800; letter-spacing:-.02em; white-space:nowrap;
+    overflow:hidden;
+  }
+  .turnbanner .pawn{width:clamp(14px,3.3cqw,26px); height:clamp(14px,3.3cqw,26px); font-size:clamp(8px,1.7cqw,13px)}
+  .tb-s{font-weight:700; color:#64748b; font-size:.82em}
+  .tb-name{max-width:9em; overflow:hidden; text-overflow:ellipsis}
+  .tb-tag{font-size:.62em; font-weight:800; background:#fff; border-radius:99px; padding:.15em .55em; color:#0369a1}
+  .dice{
+    font-size:clamp(30px,11.5cqw,86px); line-height:1; user-select:none; filter:drop-shadow(0 3px 6px rgba(15,23,42,.18));
+    transition:transform .15s;
+  }
+  .dice.shaking{animation:diceShake .28s infinite}
+  @keyframes diceShake{
+    0%{transform:rotate(-8deg) scale(1)} 50%{transform:rotate(9deg) scale(1.06)} 100%{transform:rotate(-8deg) scale(1)}
+  }
+  .dice.pop{animation:pop .22s ease-out}
+  @keyframes pop{0%{transform:scale(.75)} 60%{transform:scale(1.14)} 100%{transform:scale(1)}}
+  .roll{
+    width:100%; border-radius:2cqw; color:#fff; font-weight:900; letter-spacing:-.02em;
+    font-size:clamp(12px,2.75cqw,22px); padding:1.5cqw 1cqw; background:#2563eb;
+    box-shadow:0 6px 14px -8px rgba(15,23,42,.7); transition:filter .2s, transform .1s;
+  }
+  .roll:active{transform:translateY(1px)}
+  .roll:disabled{opacity:.55; cursor:default}
+  .chips{display:flex; flex-wrap:wrap; gap:.8cqw; justify-content:center; width:100%}
+  .chip{
+    display:flex; align-items:center; gap:.4em; background:#fff; border:1.5px solid #e8eef7;
+    border-radius:99px; padding:.35cqw 1cqw; font-size:clamp(8.5px,1.95cqw,15px); font-weight:700;
+    color:#334155; min-width:0;
+  }
+  .chip.on{border-color:var(--tc); background:color-mix(in srgb, var(--tc) 10%, #fff); box-shadow:0 0 0 1.5px var(--tc)}
+  .chip-pawn{
+    width:1.55em; height:1.55em; border-radius:50%; color:#fff; display:grid; place-items:center;
+    font-size:.78em; font-weight:900; flex:none;
+  }
+  .chip-name{max-width:5.2em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .chip-score{font-weight:900; color:#0f172a}
+  .chip-land{color:#94a3b8; font-size:.85em; font-weight:700}
+  .logbox{width:100%; display:flex; flex-direction:column; gap:.15cqw; min-height:0; overflow:hidden}
+  .logline{
+    font-size:clamp(7.5px,1.65cqw,12.5px); color:#64748b; font-weight:600;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.35;
+  }
+  .logline:first-child{color:#334155; font-weight:800}
+
+  /* ============ 모달 ============ */
+  .overlay{
+    position:fixed; inset:0; z-index:60; background:rgba(15,23,42,.55);
+    -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);
+    display:flex; align-items:center; justify-content:center; padding:14px;
+  }
+  .modal{
+    width:min(560px,100%); max-height:92dvh; overflow-y:auto; -webkit-overflow-scrolling:touch;
+    background:#fff; border-radius:22px; padding:20px;
+    box-shadow:0 30px 60px -22px rgba(0,0,0,.6);
+    animation:modalIn .18s ease-out;
+  }
+  .modal.quiz-modal{width:min(680px,100%)}
+  .modal.info-modal{width:min(620px,100%)}
+  @keyframes modalIn{from{transform:translateY(10px) scale(.985); opacity:0} to{transform:none; opacity:1}}
+  .mhead{display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-bottom:9px}
+  .pill{
+    font-size:11.5px; font-weight:900; padding:3px 9px; border-radius:99px; letter-spacing:-.01em;
+  }
+  .pill.gray{background:#f1f5f9; color:#64748b}
+  .mtag{font-size:11.5px; font-weight:700; color:#94a3b8; letter-spacing:-.01em}
+  .mtitle{font-size:19px; font-weight:900; letter-spacing:-.03em; line-height:1.35; margin:2px 0 6px}
+  .mtext{font-size:14px; color:#475569; line-height:1.65; margin-bottom:14px}
+  .msub{font-size:13px; color:#64748b; font-weight:600; margin:2px 0 4px; line-height:1.5}
+  .bigemoji{font-size:44px; text-align:center; line-height:1.1; margin:2px 0 4px}
+  .mrow{display:flex; gap:8px; justify-content:flex-end; margin-top:14px; flex-wrap:wrap}
+  .mrow.two{display:grid; grid-template-columns:1fr 1fr}
+  .mrow.two > *{width:100%}
+  .mrow.col{flex-direction:column; align-items:stretch}
+  .mrow.col > *{width:100%}
+  .mrow .cta, .mrow .ghost{flex:1}
+
+  .qtags{display:flex; gap:6px; margin:2px 0 2px}
+  .qtag{font-size:11px; font-weight:800; color:#7c3aed; background:#f3e8ff; padding:3px 8px; border-radius:6px}
+  .mq{font-size:clamp(16.5px,2.3vw,24px); font-weight:800; line-height:1.5; letter-spacing:-.03em; margin:8px 0 4px}
+  .opts{display:flex; flex-direction:column; gap:8px; margin:14px 0 8px}
+  .opt{
+    display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+    padding:12px 13px; border-radius:13px; border:1.5px solid #e6ecf5; background:#f8fafc;
+    font-size:clamp(14px,1.75vw,17.5px); font-weight:700; color:#0f172a; letter-spacing:-.02em; line-height:1.35;
+    transition:border-color .15s, background .15s, transform .1s;
+  }
+  .opt:hover:not(:disabled){border-color:#93c5fd; background:#f0f7ff}
+  .opt:disabled{cursor:default}
+  .opt .oi{
+    width:26px; height:26px; flex:none; border-radius:8px; background:#e2e8f0; color:#475569;
+    display:grid; place-items:center; font-size:13px; font-weight:900;
+  }
+  .opt.correct{border-color:#16a34a; background:#f0fdf4}
+  .opt.correct .oi{background:#16a34a; color:#fff}
+  .opt.wrong{border-color:#dc2626; background:#fef2f2}
+  .opt.wrong .oi{background:#dc2626; color:#fff}
+  .qafter{border-radius:13px; padding:11px 13px; font-size:13.5px; line-height:1.6; font-weight:600; margin-bottom:4px}
+  .qafter b{display:block; font-size:14px; margin-bottom:2px}
+  .qafter.good{background:#f0fdf4; border:1px solid #bbf7d0; color:#14532d}
+  .qafter.bad{background:#fef2f2; border:1px solid #fecaca; color:#7f1d1d}
+  .qafter.hint{background:#fffbeb; border:1px solid #fde68a; color:#78350f}
+
+  .grammar-box{
+    display:flex; align-items:center; gap:8px; background:#eef4ff; border:1px solid #dbeafe;
+    border-radius:12px; padding:8px 11px; margin-bottom:10px;
+  }
+  .g-label{font-size:10.5px; font-weight:900; color:#1d4ed8; background:#fff; padding:2px 7px; border-radius:6px; flex:none}
+  .g-text{font-size:12.5px; font-weight:800; color:#1e3a8a; letter-spacing:-.02em; line-height:1.35}
+  .msit{font-size:13px; font-weight:700; color:#0e7490; margin-bottom:6px}
+  .mtask{font-size:clamp(16px,2.2vw,21px); font-weight:800; line-height:1.55; letter-spacing:-.03em}
+  .mexample{margin-top:12px; background:#f8fafc; border:1px solid #e9eef6; border-radius:12px; padding:9px 12px}
+  .mexample summary{font-size:12.5px; font-weight:800; color:#475569; cursor:pointer}
+  .mexample p{font-size:13.5px; color:#334155; line-height:1.65; margin-top:7px; font-weight:600}
+  .mnote{font-size:11.5px; color:#94a3b8; font-weight:600; text-align:center; margin-top:12px; line-height:1.6}
+
+  .chance-card{
+    background:linear-gradient(150deg,#fffbeb,#fef3c7 60%,#fde68a);
+    border:2px dashed #f59e0b; border-radius:18px; padding:16px 16px 18px; text-align:center;
+    animation:cardFlip .3s ease-out;
+  }
+  @keyframes cardFlip{from{transform:rotateY(70deg) scale(.9); opacity:0} to{transform:none; opacity:1}}
+  .cc-band{
+    display:inline-block; font-size:11px; font-weight:900; color:#92400e; background:#fff7ed;
+    padding:3px 10px; border-radius:99px; margin-bottom:6px; letter-spacing:.02em;
+  }
+  .cc-icon{font-size:50px; line-height:1.15}
+  .cc-title{font-size:20px; font-weight:900; color:#78350f; letter-spacing:-.03em; margin-top:2px}
+  .cc-desc{font-size:13.5px; color:#92400e; font-weight:700; line-height:1.65; margin-top:6px; white-space:normal}
+
+  .dest-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr)); gap:7px; margin-top:12px}
+  .dest{
+    position:relative; display:flex; flex-direction:column; align-items:center; gap:2px;
+    background:#f8fafc; border:1.5px solid #e6ecf5; border-radius:12px; padding:9px 4px 7px;
+    transition:border-color .15s, background .15s, transform .1s;
+  }
+  .dest:hover{border-color:#93c5fd; background:#f0f7ff}
+  .d-unum{position:absolute; top:4px; left:4px; color:#fff; font-size:9px; font-weight:900; width:14px; height:14px; border-radius:4px; display:grid; place-items:center}
+  .d-emoji{font-size:21px; line-height:1.1}
+  .d-name{font-size:11.5px; font-weight:800; color:#1e293b; letter-spacing:-.03em}
+  .d-own{font-size:8.5px; font-weight:900; color:#fff; padding:1px 5px; border-radius:99px; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+  .ci-head{display:flex; align-items:center; gap:10px; margin-bottom:10px}
+  .ci-emoji{font-size:38px; line-height:1}
+  .ci-words{display:flex; flex-direction:column; gap:6px; max-height:46vh; overflow-y:auto}
+  .ci-word{background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:7px 10px; display:flex; flex-direction:column; gap:2px}
+  .ci-word b{font-size:13px; color:#1d4ed8}
+  .ci-word span{font-size:12.5px; color:#475569; line-height:1.5}
+
+  .rules-body p{font-size:13.5px; color:#475569; line-height:1.7; margin-bottom:7px}
+  .rules-body b{color:#0f172a}
+
+  .winner-wrap{text-align:center}
+  .win-emoji{font-size:56px; line-height:1.1; animation:pop .5s ease-out}
+  .win-title{font-size:26px; font-weight:900; letter-spacing:-.04em; margin:4px 0}
+  .rank-list{display:flex; flex-direction:column; gap:7px; margin:14px 0 4px}
+  .rank-row{display:flex; align-items:center; gap:8px; border:1.5px solid; border-radius:12px; padding:9px 11px; text-align:left}
+  .rk{font-size:17px; width:22px; text-align:center}
+  .rank-pawn{width:22px; height:22px; border-radius:50%; color:#fff; font-size:11px; font-weight:900; display:grid; place-items:center; flex:none}
+  .rank-name{flex:1; font-size:14.5px; font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .rank-score{font-size:15px; font-weight:900}
+  .rank-land{font-size:12px; color:#64748b; font-weight:700}
+
+  .toast{
+    position:fixed; left:50%; bottom:22px; transform:translate(-50%,16px); z-index:80;
+    background:rgba(15,23,42,.92); color:#fff; font-size:14px; font-weight:800;
+    padding:11px 18px; border-radius:99px; opacity:0; pointer-events:none;
+    transition:all .3s ease; max-width:calc(100vw - 32px); text-align:center;
+    box-shadow:0 14px 30px -14px rgba(0,0,0,.6);
+  }
+  .toast.show{opacity:1; transform:translate(-50%,0)}
+
+  @media (max-height:600px){
+    .logbox{display:none}
+    .chips{gap:.5cqw}
+  }
+  @media (max-width:400px){
+    .setup-card{padding:18px 15px 16px; border-radius:22px}
+    .brand h1{font-size:18px}
+    .brand-emoji{width:48px; height:48px; font-size:25px; border-radius:15px}
+    .swatches{gap:3.5px}
+    .sw{width:17px; height:17px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 시작 화면 ===== -->
+<div id="screen-setup" class="screen">
+  <div class="setup-wrap">
+    <div class="setup-card">
+      <div class="brand">
+        <div class="brand-emoji">🎲</div>
+        <div>
+          <h1>2A 부루마불<br>한국어 보드게임</h1>
+          <p>《서울대 한국어+ 2A》 1~9단원 · 교실용 팀 게임</p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>팀 수</label>
+        <div class="seg" id="teamCount">
+          <button data-n="2">2팀</button>
+          <button data-n="3">3팀</button>
+          <button data-n="4">4팀</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>팀 이름 · 말 색</label>
+        <div class="team-list" id="teamList"></div>
+      </div>
+
+      <div class="field">
+        <label>문제 방식</label>
+        <div class="seg" id="modeSeg">
+          <button data-mode="mixed">혼합 (추천)</button>
+          <button data-mode="quiz">객관식 퀴즈</button>
+          <button data-mode="speak">말하기 미션</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>게임 길이</label>
+        <div class="seg" id="roundSeg">
+          <button data-r="5">5라운드</button>
+          <button data-r="9">9라운드</button>
+          <button data-r="12">12라운드</button>
+        </div>
+      </div>
+
+      <button id="startBtn" class="cta">게임 시작 🚀</button>
+      <button id="resumeBtn" class="ghost hidden">이어서 하기</button>
+
+      <details class="rules-box">
+        <summary>게임 방법 보기</summary>
+        <ol>
+          <li>2~4팀이 차례대로 주사위를 굴려 말을 움직입니다.</li>
+          <li>출발점을 지날 때마다 <b>+20점</b>을 받습니다.</li>
+          <li>단원 칸에서 퀴즈·말하기 미션에 성공하면 그 땅을 얻고 <b>+30점</b>!</li>
+          <li>상대 팀 땅에 걸리면 통행료 <b>20점</b>을 내거나 방어 퀴즈에 도전합니다.</li>
+          <li>황금열쇠·무인도·제주도 여행 칸이 게임을 뒤집습니다.</li>
+          <li>정해진 라운드가 끝나면 점수가 가장 높은 팀이 우승합니다.</li>
+        </ol>
+      </details>
+      <p class="setup-note">2A 1~9단원 실제 교재 예문·어휘·문법 90문항 + 말하기 미션 18개</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 게임 화면 ===== -->
+<div id="screen-game" class="screen hidden">
+  <header class="topbar">
+    <div class="brand-small">🎲 2A 부루마불 <span class="tag">서울대 한국어+</span></div>
+    <div class="topbtns">
+      <button id="rulesBtn" title="게임 규칙" aria-label="게임 규칙">❓</button>
+      <button id="muteBtn" title="소리" aria-label="소리">🔊</button>
+      <button id="newGameBtn" title="새 게임" aria-label="새 게임">↻</button>
+    </div>
+  </header>
+  <main class="board-wrap">
+    <div id="board" class="board"></div>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<div id="overlay" class="overlay hidden"><div id="modal" class="modal"></div></div>
+
+<script>
+const UNITS = [{"unit":1,"title":"1단원 소개","subtitle":"V-(으)려고, N인데","flashcards":[{"word":"유학생","ex":"저는 한국에 공부하러 온 유학생이에요."},{"word":"복잡하다","ex":"퇴근 시간에는 지하철이 아주 복잡해요."},{"word":"조용하다","ex":"제 고향은 사람이 적어서 조용해요."},{"word":"특산물","ex":"제주도의 특산물은 달콤한 감귤이에요."},{"word":"안내소","ex":"관광 안내소에서 지도를 받았어요."},{"word":"경치","ex":"산 위에서 보는 경치가 정말 아름다워요."},{"word":"전공","ex":"제 전공은 한국어 교육이에요."},{"word":"사귀다","ex":"한국 친구를 많이 사귀고 싶어요."}],"quiz":[{"tag":"어휘 (뜻)","q":"한국 대학교에서 전공 공부를 하고 싶어서 다른 나라에서 한국으로 온 학생을 뭐라고 해요?","sub":"외국에서 공부하러 온 학생을 찾아보세요.","options":["여행객","유학생","회사원","요리사"],"ans":1,"hint":"'유학(Study abroad)'을 하러 온 학생은 '유학생'이에요."},{"tag":"어휘 (반의어)","q":"서울은 사람이 많고 차가 많아서 복잡해요. 하지만 제 고향은 사람이 적어서 아주 [       ].","sub":"'복잡하다'와 반대되는 분위기를 골라보세요.","options":["시끄러워요","조용해요","위험해요","유명해요"],"ans":1,"hint":"'복잡하다(Crowded)'의 반대말은 '조용하다(Quiet)'예요."},{"tag":"어휘 (특산물)","q":"그 지역에서 특별히 생산되어 유명한 물건이나 음식을 무엇이라고 합니까?","sub":"예: 춘천 닭갈비, 전주 비빔밥, 제주 감귤","options":["명소","특산물","유적지","안내소"],"ans":1,"hint":"고향을 대표하는 유명한 음식이나 상품을 '특산물(Local specialty)'이라고 해요."},{"tag":"문법: V-(으)려고 (ㄹ 받침)","q":"동사 '만들다'에 '-(으)려고'가 붙을 때 알맞은 형태는 무엇인가요?","sub":"받침이 'ㄹ'인 동사의 규칙을 생각해 보세요.","options":["만들으려고","만들려고","만드려고","만들으려면"],"ans":1,"hint":"받침이 'ㄹ'인 동사는 '-려고'와 만나요! (만들다 → 만들려고)"},{"tag":"문법: V-(으)려고 (ㄷ 불규칙)","q":"한국 노래를 [       ] 라디오를 켰어요. (기본형: 듣다)","sub":"'듣다'의 'ㄷ' 불규칙 활용을 고르세요.","options":["듣으려고","듣려고","들으려고","들려고"],"ans":2,"hint":"'듣다'는 'ㄷ' 불규칙 동사예요! 모음 앞에서 '듣'이 '들'로 바뀌어 '들으려고'가 돼요."},{"tag":"문법: V-(으)려고 (제약 조건)","q":"다음 중 문법 규칙에 맞게 올바르게 쓰인 문장을 고르세요.","sub":"-(으)려고는 동사에만 쓰고, 청유문(-자)이나 과거형(-았/었-)과 쓰지 않아요.","options":["영화를 보려고 극장에 갔어요.","날씨가 좋으려고 산책을 해요.","친구를 만나려고 같이 가자!","어제 밥을 먹었으려고 식당에 갔어요."],"ans":0,"hint":"-(으)려고는 동사 목적에만 쓰이고, 뒤에 청유문이나 시제 선어말어미가 결합할 수 없어요."},{"tag":"문법: N인데 (소개·설명)","q":"제 고향은 [       ] 닭갈비가 유명합니다. (명사: 춘천)","sub":"명사 뒤에 붙어 어떤 사실을 소개하거나 덧붙여 설명하는 표현을 고르세요.","options":["춘천인데","춘천은데","춘천는데","춘천려고"],"ans":0,"hint":"명사 뒤에는 받침 유무와 상관없이 '-인데'가 붙어요. (춘천 + 인데 → 춘천인데)"},{"tag":"문법: N인데 (물건 소개)","q":"가: 그게 뭐예요?\n나: [       ] 정말 싸고 맛있어요. (명사: 김밥)","sub":"물건을 소개하며 한마디 덧붙여 말할 때 알맞은 형태를 고르세요.","options":["김밥은데","김밥인데","김밥는데","김밥이는데"],"ans":1,"hint":"받침이 있는 명사 '김밥' 뒤에는 '-인데'를 붙여 '김밥인데'라고 말해요."},{"tag":"문법: 동·형-지 않다 (과거 부정)","q":"가: 아침 먹었어요?\n나: 오늘은 시간이 없어서 [       ]. (기본형: 먹다)","sub":"과거 시제에서 '-지 않다'를 바르게 활용한 문장을 고르세요.","options":["먹지 않아요","먹지 않았어요","먹었지 않아요","먹지 않었어요"],"ans":1,"hint":"과거를 말할 때는 동사 어간 뒤에 '-지'를 쓰고, 뒤의 '않다'에 과거형(-았어요)을 붙여 '먹지 않았어요'라고 해요."},{"tag":"문법: 동·형-지 않다 (형용사 부정)","q":"우리 집은 [       ] 편하고 좋습니다. (기본형: 크다)","sub":"형용사 어간 뒤에 '-지 않다'를 붙여 반대 뜻을 나타내는 표현을 고르세요.","options":["크지 않지만","크는데","크려고","크은데"],"ans":0,"hint":"형용사 '크다'에 '-지 않다'를 붙이면 '크지 않다(크지 않지만)'가 되어 반대나 부정의 뜻을 나타내요."}]},{"unit":2,"title":"2단원 취미","subtitle":"V-는 것 · N(이)나 1 / V-거나","flashcards":[{"word":"취미","ex":"제 취미는 음악을 듣는 거예요."},{"word":"동호회","ex":"주말마다 사진 동호회 사람들을 만나요."},{"word":"모이다","ex":"우리 금요일 저녁에 모여요."},{"word":"즐겁다","ex":"친구들과 대화하는 게 참 즐거워요."},{"word":"활동","ex":"야외 활동을 좋아하는 편이에요."},{"word":"등산","ex":"가을에는 산에 등산하러 자주 가요."},{"word":"악기","ex":"기타나 피아노 같은 악기를 배워보고 싶어요."},{"word":"스트레스가 풀리다","ex":"운동을 하면 스트레스가 잘 풀려요."}],"quiz":[{"tag":"어휘 (취미 모임)","q":"같은 취미나 관심을 가진 사람들이 함께 모여 활동하는 모임을 무엇이라고 하나요?","sub":"예: 사진을 좋아하는 사람들의 주말 모임","options":["회사","동호회","연구소","방송국"],"ans":1,"hint":"같은 취미를 나누는 모임을 '동호회(Club)'라고 합니다."},{"tag":"어휘 (표현)","q":"가: 운동을 왜 자주 해요?\n나: 땀을 흘리고 나면 마음이 편해지고 [       ].","sub":"마음의 부담이나 피로가 해소되는 표현을 고르세요.","options":["취미가 없어요","스트레스가 풀려요","동호회를 만들어요","시간이 없어요"],"ans":1,"hint":"긴장이나 피로가 사라질 때 '스트레스가 풀리다'라고 합니다."},{"tag":"문법: V-는 것 (기본 결합)","q":"저는 집에서 혼자 책을 [       ] 좋아해요. (기본형: 읽다)","sub":"동사 '읽다'를 명사 형태로 바꾸는 올바른 표현을 고르세요.","options":["읽은 것을","읽는 것을","읽을 것을","읽으려고"],"ans":1,"hint":"동사 어간에 받침이 있어도 현재 명사화는 '-는 것'이고, '좋아해요' 앞에는 조사 '을'이 붙어 '읽는 것을'이 됩니다."},{"tag":"문법: V-는 것 (ㄹ 탈락)","q":"가: 취미가 뭐예요?\n나: 제 취미는 맛있는 음식을 [       ]. (기본형: 만들다)","sub":"'만들다'의 'ㄹ' 탈락 규칙을 적용해 현재 취미를 말하는 문장을 완성하세요.","options":["만든 것이에요","만드는 것이에요","만드는 이에요","만들는 것이에요"],"ans":1,"hint":"'ㄹ' 받침 동사는 '-는 것' 앞에서 'ㄹ'이 탈락하므로 '만드는 것이에요'가 맞아요."},{"tag":"문법: V-는 것 (구어 줄임말)","q":"한국어 말하기를 연습하는 [       ] 가장 중요해요. (것이 → 줄임말)","sub":"'-는 것이'의 자연스러운 구어 줄임말을 고르세요.","options":["걸","건","게","거예요"],"ans":2,"hint":"'-는 것이'는 구어에서 '-는 게'로 줄여서 말합니다. (것을 → 걸, 것은 → 건)"},{"tag":"문법: N(이)나 (받침 O)","q":"시간이 있을 때 [       ] 카페에서 숙제를 해요. (명사: 도서관)","sub":"받침이 있는 명사 뒤에 오는 선택 조사 형태를 고르세요.","options":["도서관나","도서관이나","도서관거나","도서관인"],"ans":1,"hint":"명사에 받침이 있으면 '이나'가 결합해요! (도서관 + 이나 → 도서관이나)"},{"tag":"문법: N(이)나 (받침 X)","q":"목이 마르면 시원한 [       ] 주스를 드세요. (명사: 커피)","sub":"받침이 없는 명사 뒤의 선택 조사 형태를 고르세요.","options":["커피이나","커피나","커피거나","커피인데"],"ans":1,"hint":"명사에 받침이 없으면 '나'가 결합해요! (커피 + 나 → 커피나, 사과나)"},{"tag":"문법: V-거나 (동사 선택)","q":"주말에는 보통 집에서 [       ] 친구를 만나요. (기본형: 쉬다)","sub":"두 가지 동작 중 하나를 선택하는 결합 형태를 고르세요.","options":["쉬이나","쉬나","쉬거나","쉬는 것"],"ans":2,"hint":"동사 어간에는 받침 유무와 상관없이 '-거나'가 붙어요! (쉬다 → 쉬거나, 먹다 → 먹거나)"},{"tag":"문법: V-거나 (일상 습관)","q":"저는 시간이 있을 때 보통 영화를 [       ] 음악을 들어요. (기본형: 보다)","sub":"두 가지 동작 중 하나를 선택할 때 알맞은 현재형 연결 표현을 고르세요.","options":["보이나","보거나","보는 것","보려고"],"ans":1,"hint":"동사 어간 뒤에 '-거나'를 붙여 두 가지 동작 중 하나를 선택해 말할 때 씁니다. (보다 → 보거나)"},{"tag":"종합 회화 완성","q":"가: 토요일 모임에 몇 시에 만나요?\n나: 오후 2시[   ] 3시에 모입시다.","sub":"두 시간 중 하나를 선택하여 제안할 때 알맞은 조사는?","options":["나","이나","거나","려고"],"ans":0,"hint":"'2시'는 받침이 없으므로 받침 없는 명사 뒤에 '나'가 붙습니다."}]},{"unit":3,"title":"3단원 여행 경험","subtitle":"V-아/어 보다 · V-(으)니까 / N 동안 · V-고 나서","flashcards":[{"word":"유적지","ex":"경주에는 유명한 유적지가 많아요."},{"word":"기념품","ex":"여행지에서 친구들에게 줄 기념품을 샀어요."},{"word":"짐을 싸다","ex":"내일 여행을 가려고 오늘 밤 짐을 쌌어요."},{"word":"온천","ex":"추운 겨울에 따뜻한 온천에 가보고 싶어요."},{"word":"경험","ex":"한국에서 다양한 문화 경험을 했어요."},{"word":"민박","ex":"시골 마을 민박집에서 하루 묵었어요."},{"word":"묵다","ex":"바다가 보이는 호텔에서 묵었어요."},{"word":"기억에 남다","ex":"한라산에 오른 것이 가장 기억에 남아요."}],"quiz":[{"tag":"어휘 (여행)","q":"역사적으로 중요한 사건이나 건축물이 남아 있는 장소를 무엇이라고 합니까?","sub":"예: 불국사, 첨성대, 경복궁","options":["안내소","유적지","특산물","동호회"],"ans":1,"hint":"역사적 유물이 있는 자리를 '유적지(Historic site)'라고 합니다."},{"tag":"어휘 (표현)","q":"가: 이번 제주도 여행은 어땠어요?\n나: 아름다운 노을을 본 게 제일 [       ].","sub":"시간이 지나도 잊히지 않고 생각난다는 뜻의 관용 표현을 고르세요.","options":["짐을 쌌어요","기억에 남아요","온천에 가요","민박을 해요"],"ans":1,"hint":"인상 깊은 추억이 머릿속에 계속 남을 때 '기억에 남다'라고 합니다."},{"tag":"문법: V-아/어 보다 (양성모음)","q":"가: 제주도에 [       ]?\n나: 네, 작년에 한 번 가 봤어요. (기본형: 가다)","sub":"경험을 묻는 질문 형태를 완성하세요.","options":["가 봤어요","가 볼래요","가 보겠어요","가 보려고 해요"],"ans":0,"hint":"'가다'는 양성모음(ㅏ)이므로 '-아 보다'가 결합하여 '가 보다'가 됩니다."},{"tag":"문법: V-아/어 보다 (음성모음)","q":"가: 한국 전통 음식을 먹어 봤어요?\n나: 아니요, 아직 한 번도 안 [       ]. (기본형: 먹다)","sub":"'먹다'의 부정 경험 표현을 고르세요.","options":["먹아 봤어요","먹어 봤어요","먹는 걸 봤어요","먹으려고 봤어요"],"ans":1,"hint":"'먹다'는 음성모음(ㅓ)이므로 '-어 보다'가 결합하여 '먹어 보다'가 됩니다."},{"tag":"문법: V-아/어 보다 (음성모음 ㅣ)","q":"가: 한복을 [       ]?\n나: 네, 전주 한옥마을에서 입어 봤어요. (기본형: 입다)","sub":"'입다'에 경험 문법을 적용한 올바른 형태는?","options":["입아 봤어요","입어 봤어요","입어 봐요","입고 봤어요"],"ans":1,"hint":"'입다'의 모음 'ㅣ'는 음성모음이므로 '-어 보다'와 결합해 '입어 보다'가 됩니다."},{"tag":"문법: N 동안 (기간)","q":"저는 이번 여름방학 [       ] 고향에 다녀올 생각이에요.","sub":"어떤 일이 계속되는 시간의 길이를 나타내는 명사를 고르세요.","options":["마다","후에","동안","까지"],"ans":2,"hint":"시간의 지속 기간을 나타낼 때는 'N 동안(During/For)'을 씁니다."},{"tag":"문법: V-(으)니까 (이유)","q":"가: 수업 끝나고 뭐 할까요?\n나: 오늘 날씨가 [       ] 한강에 갈까요? (기본형: 좋다)","sub":"뒤에 권유나 제안이 올 때, 앞의 내용이 이유가 되는 표현을 고르세요.","options":["좋으니까","좋아서","좋지만","좋으려고"],"ans":0,"hint":"형용사 '좋다'에는 '-으니까'가 붙어요. 뒤에 '-ㄹ까요?'가 와요. (좋다 → 좋으니까)"},{"tag":"문법: V-고 나서 (순서)","q":"점심을 [       ] 도서관에 갈 거예요. (기본형: 먹다)","sub":"점심을 끝낸 뒤에 도서관에 간다고 할 때 알맞은 표현을 고르세요.","options":["먹고 나서","먹은 나서","먹으면서","먹기 전에"],"ans":0,"hint":"앞의 행동을 끝낸 뒤 다음 행동을 할 때는 'V-고 나서'를 써요. (먹다 → 먹고 나서)"},{"tag":"문법: 경험 부정 표현","q":"비행기를 한 번도 탄 적이 없을 때 자연스럽게 대답하는 문장은?","sub":"'V-아/어 보다'의 부정을 완성하세요.","options":["비행기를 안 타 봤어요.","비행기를 못 타 봤어요.","비행기를 타 보지 않았어요.","1, 2, 3번 모두 가능"],"ans":3,"hint":"'안 V-아/어 보다', '못 V-아/어 보다', 'V-아/어 보지 않다' 모두 부정 경험에 쓰입니다."},{"tag":"종합 회화 완성","q":"가: 한국에 있는 [       ] 어디에 가장 가보고 싶어요?\n나: 부산 해운대에 가보고 싶어요.","sub":"기간을 나타내는 명사 결합을 고르세요.","options":["동안","후에","마다","보다"],"ans":0,"hint":"'한국에 있는 동안'은 한국에 머무는 기간 전체를 뜻합니다."}]},{"unit":4,"title":"4단원 쇼핑","subtitle":"V-는 것 같다 · N보다 / V-(으)ㄴ N · N(으)로","flashcards":[{"word":"가격","ex":"이 옷은 디자인도 예쁘고 가격도 저렴해요."},{"word":"할인","ex":"백화점에서 30% 할인을 하고 있어요."},{"word":"어울리다","ex":"선희 님께 이 모자가 정말 잘 어울려요."},{"word":"맞다","ex":"신발 사이즈가 발에 딱 맞아요."},{"word":"교환","ex":"사이즈가 작아서 다른 옷으로 교환했어요."},{"word":"환불","ex":"영수증을 가져오시면 환불해 드립니다."},{"word":"유행","ex":"요즘 대학생들 사이에 긴 코트가 유행이에요."},{"word":"선택하다","ex":"두 가지 색상 중에서 파란색을 선택했어요."}],"quiz":[{"tag":"어휘 (쇼핑)","q":"가게에서 물건을 사고 마음에 들지 않아서 돈을 돌려받는 것을 무엇이라고 하나요?","sub":"돈을 다시 돌려받는 행위를 찾으세요.","options":["교환","할인","환불","주문"],"ans":2,"hint":"물건을 돌려주고 결제한 금액을 다시 돌려받는 것은 '환불(Refund)'입니다."},{"tag":"어휘 (표현)","q":"옷의 색깔이나 디자인이 그 사람의 분위기와 자연스럽게 조화를 이룰 때 쓰는 말은?","sub":"예: 이 색이 민수 씨에게 정말 잘 [       ].","options":["비싸요","어울려요","바꿔요","할인해요"],"ans":1,"hint":"사람의 외모나 분위기와 조화를 이룰 때는 '어울리다'를 씁니다."},{"tag":"문법: N보다 (비교 기준)","q":"기차가 버스[   ] 더 빠릅니다.","sub":"비교의 기준이 되는 명사 뒤에 붙는 조사를 고르세요.","options":["보다","마다","부터","처럼"],"ans":0,"hint":"비교 기준 명사 뒤에는 조사 '보다'가 붙습니다. (버스보다 더 빠르다)"},{"tag":"문법: N보다 더/덜 (어순)","q":"다음 중 '비행기'가 '기차'보다 빠르다는 올바른 비교 문장은?","sub":"비교 대상과 기준 명사의 어순을 확인하세요.","options":["비행기가 기차보다 더 빨라요.","기차가 비행기보다 더 빨라요.","비행기보다 기차가 더 빨라요.","비행기가 기차보다 덜 빨라요."],"ans":0,"hint":"비행기가 기차보다 더 빠르다는 뜻이므로 1번이 정확합니다."},{"tag":"문법: V-(으)ㄴ N (과거 관형형 받침 O)","q":"어제 서점에서 [       ] 책이 정말 재미있어요. (기본형: 읽다)","sub":"동사 '읽다'의 과거 관형사형을 고르세요.","options":["읽는","읽은","읽을","읽던"],"ans":1,"hint":"동사 어간에 받침이 있으면 과거 관형형으로 '-은'이 붙어요! (읽다 → 읽은 책)"},{"tag":"문법: V-(으)ㄴ N (과거 관형형 받침 X)","q":"지난 주말에 친구와 함께 [       ] 영화 제목이 뭐예요? (기본형: 보다)","sub":"받침 없는 동사 '보다'의 과거 관형사형을 고르세요.","options":["보는","본","볼","봤는"],"ans":1,"hint":"받침이 없는 동사는 어간 끝에 받침 'ㄴ'이 붙어요! (보다 → 본 영화)"},{"tag":"문법: V-(으)ㄴ N (ㄹ 탈락)","q":"어제 어머니께서 직접 [       ] 케이크를 먹었어요. (기본형: 만들다)","sub":"'만들다'의 과거 관형사형 'ㄹ' 탈락을 적용하세요.","options":["만들은","만든","만드는","만들는"],"ans":1,"hint":"'ㄹ' 받침 동사는 관형형 어미 앞에서 'ㄹ'이 탈락하고 'ㄴ'이 붙어요! (만들다 → 만든)"},{"tag":"문법: V-(으)ㄴ N (ㄷ 불규칙)","q":"아침에 라디오에서 [       ] 노래가 하루 종일 생각나요. (기본형: 듣다)","sub":"'듣다'의 과거 관형형 ㄷ 불규칙을 고르세요.","options":["듣은","들은","듣는","들을"],"ans":1,"hint":"'듣다'는 모음 앞에서 'ㄷ'이 'ㄹ'로 바뀌어 '들은'이 됩니다. (듣다 → 들은 노래)"},{"tag":"문법: 동-는 것 같다 (추측)","q":"가: 제니 씨가 요즘 모자를 자주 쓰고 다녀요.\n나: 제니 씨는 모자를 [       ]. (기본형: 좋아하다)","sub":"동사 어간에 '-는 것 같다'를 붙여 상황으로 미루어 추측할 때 씁니다.","options":["좋아하는 것 같아요","좋아한 것 같아요","좋아할 것 같아요","좋아하던 것 같아요"],"ans":0,"hint":"'좋아하다'에는 '-는 것 같다'가 붙어요. (좋아하다 → 좋아하는 것 같아요)"},{"tag":"종합 회화 완성 (N(으)로)","q":"가: 학교에 뭐 타고 갔어요?\n나: [       ] 갔어요. (명사: 지하철)","sub":"수단이나 도구를 나타내는 조사를 고르세요.","options":["지하철로","지하철으로","지하철에서","지하철보다"],"ans":0,"hint":"'지하철'은 'ㄹ' 받침이라 '로'가 붙어요. (지하철 → 지하철로)"}]},{"unit":5,"title":"5단원 우체국과 은행","subtitle":"V-는데요·(으)ㄴ데요·N인데요 · V-(으)ㄹ 거예요 / 'ㄹ' 불규칙 · V-(으)면 되다","flashcards":[{"word":"소포","ex":"고향에 있는 가족에게 소포를 보냈어요."},{"word":"통장","ex":"은행에서 새 통장을 만들었어요."},{"word":"비밀번호","ex":"비밀번호 4자리를 입력해 주세요."},{"word":"송금하다","ex":"부모님께 생활비를 송금했어요."},{"word":"환전","ex":"해외여행을 가기 전에 달러로 환전했어요."},{"word":"창구","ex":"1번 창구로 가서 번호표를 내세요."},{"word":"우편물","ex":"우체부 아저씨가 우편물을 배달해 주셨어요."},{"word":"도와주다","ex":"어려운 일이 있으면 언제든 도와줄게요."}],"quiz":[{"tag":"어휘 (은행 업무)","q":"자신의 은행 계좌에서 다른 사람의 계좌로 돈을 보내는 것을 무엇이라고 하나요?","sub":"돈을 전자로 보내는 은행 업무를 찾으세요.","options":["환전","송금","출금","예금"],"ans":1,"hint":"돈을 보내는 업무는 '송금(Wire transfer)'이라고 합니다."},{"tag":"어휘 (우체국 업무)","q":"우체국을 통해 박스에 든 물건을 다른 곳으로 부치는 우편물을 무엇이라고 하나요?","sub":"편지보다 큰 화물 상자 우편물입니다.","options":["엽서","소포","통장","영수증"],"ans":1,"hint":"물건 상자를 부치는 우편물은 '소포(Parcel)'입니다."},{"tag":"문법: 동-는데요","q":"가: 어디에 사세요?\n나: 서울대 기숙사에 [       ]. (기본형: 살다)","sub":"동사 어간에 '-는데요'를 붙여 어떤 사실을 전달하며 상대의 반응을 기대할 때 씁니다.","options":["사는데요","산데요","살은데요","사은데요"],"ans":0,"hint":"'살다'에는 '-는데요'가 붙어요. (살다 → 사는데요)"},{"tag":"문법: 형-(으)ㄴ데요 / 명인데요","q":"가: 옷이 잘 맞아요?\n나: 아니요, 저한테 좀 [       ]. (기본형: 작다)","sub":"형용사 어간에 '-(으)ㄴ데요'를 붙여 사실을 전달하며 상대의 반응을 기대합니다.","options":["작는데요","작은데요","작으데요","작인데요"],"ans":1,"hint":"형용사 '작다'에는 '-은데요'가 붙어요. (작다 → 작은데요)"},{"tag":"문법: 동·형-(으)ㄹ 거예요 (추측)","q":"가: 서울대학교까지 버스로 얼마나 걸려요?\n나: 보통 20분쯤 걸려요. 그런데 지금 퇴근 시간이라서 더 [       ]. (기본형: 걸리다)","sub":"지금 상황을 보고 앞으로 그럴 것이라고 추측할 때 씁니다.","options":["걸릴 거예요","걸리을 거예요","걸리는 거예요","걸렸을 거예요"],"ans":0,"hint":"받침이 없는 '걸리다'에는 '-ㄹ 거예요'가 붙어요. (걸리다 → 걸릴 거예요)"},{"tag":"문법: 동·형-(으)ㄹ 거예요 (과거 추측)","q":"가: 제니 씨가 어디에 있어요?\n나: 아마 아르바이트하러 [       ]. (기본형: 가다)","sub":"이미 지난 일을 추측할 때는 '-았을/었을 거예요'를 씁니다.","options":["갔을 거예요","갈 거예요","가을 거예요","갔는 거예요"],"ans":0,"hint":"과거 상황의 추측은 '-았을 거예요'로 말해요. (가다 → 갔을 거예요)"},{"tag":"문법: 'ㄹ' 불규칙 (아/어요)","q":"출근 시간에는 지하철이 택시보다 [       ]. (기본형: 빠르다)","sub":"'르'로 끝나는 형용사의 'ㄹ' 불규칙 활용을 고르세요.","options":["빠라요","빨라요","빠르어요","빨으라요"],"ans":1,"hint":"'빠르다'는 'ㅡ'가 탈락하고 'ㄹ'이 두 번 들어가 '빨라요'가 돼요. (빠르다 → 빨라요)"},{"tag":"문법: 'ㄹ' 불규칙 (과거)","q":"선생님이 학생의 이름을 [       ]. (기본형: 부르다)","sub":"'부르다'의 'ㄹ' 불규칙 과거형을 고르세요.","options":["불렀어요","부르었어요","불렀서요","부렀어요"],"ans":0,"hint":"'부르다'는 '불러요', 과거에는 '불렀어요'가 돼요. (부르다 → 불렀어요)"},{"tag":"문법: 동-(으)면 되다 (방법)","q":"가: 학생증을 잃어버렸어요. 어떻게 하죠?\n나: 사무실에 가서 다시 [       ]. (기본형: 만들다)","sub":"어떤 행동을 하면 문제가 없다는 뜻을 나타내는 표현을 고르세요.","options":["만들면 돼요","만들으면 돼요","만들으면서 돼요","만들기 돼요"],"ans":0,"hint":"'ㄹ' 받침 동사는 '-면 되다'를 써요. (만들다 → 만들면 돼요)"},{"tag":"종합 회화 완성","q":"가: 현금이 없는데 카드로 내도 돼요?\n나: 네, 카드로 [       ]. (기본형: 내다)","sub":"'-(으)면 되다'로 자연스럽게 대답한 것을 고르세요.","options":["내면 돼요","내으면 돼요","내서 돼요","내고 돼요"],"ans":0,"hint":"받침이 없는 '내다'에는 '-면 돼요'가 붙어요. (내다 → 내면 돼요)"}]},{"unit":6,"title":"6단원 하루 일과","subtitle":"N마다 · V-(으)ㄹ게요 / V-기 전에 · V-(으)ㄴ 후에","flashcards":[{"word":"출근하다","ex":"저는 매일 아침 8시에 출근해요."},{"word":"퇴근하다","ex":"오늘 일이 많아서 늦게 퇴근했어요."},{"word":"야근하다","ex":"내일 회의 준비 때문에 야근했어요."},{"word":"규칙적이다","ex":"건강을 위해 규칙적으로 생활해요."},{"word":"알람","ex":"아침 6시 30분에 알람을 맞췄어요."},{"word":"졸리다","ex":"점심을 먹고 나면 항상 졸려요."},{"word":"일어나다","ex":"주말에도 일찍 일어나는 편이에요."},{"word":"산책하다","ex":"저녁 식사 후에 공원을 산책해요."}],"quiz":[{"tag":"어휘 (직장 생활)","q":"정해진 근무 시간이 끝난 뒤 밤늦게까지 회사에 남아 일하는 것을 무엇이라고 하나요?","sub":"야간 근무를 뜻하는 어휘를 찾으세요.","options":["출근","퇴근","야근","결근"],"ans":2,"hint":"밤늦게까지 연장 근무하는 것을 '야근(Overtime work)'이라고 합니다."},{"tag":"어휘 (생활 습관)","q":"일정한 시간이나 규칙에 따라 빠짐없이 행동하는 태도를 무엇이라고 합니까?","sub":"예: 매일 같은 시간에 자고 일어나는 생활","options":["복잡하다","규칙적이다","위험하다","조용하다"],"ans":1,"hint":"정해진 규칙대로 바르게 지켜나가는 것은 '규칙적이다'입니다."},{"tag":"문법: N마다 (반복/주기)","q":"저는 [       ] 아침 일찍 조깅을 합니다. (명사: 주말)","sub":"빠짐없이 반복됨을 나타내는 보조사를 결합하세요.","options":["주말마다","주말동안","주말후에","주말보다"],"ans":0,"hint":"'하나도 빠짐없이 매번'을 뜻할 때는 명사 뒤에 '마다'를 씁니다. (주말마다 = 매 주말)"},{"tag":"문법: N마다 (시간 명사)","q":"'매일'과 같은 뜻으로 바꿀 수 있는 표현은 어느 것인가요?","sub":"날(Day)을 뜻하는 명사에 '마다'를 결합하세요.","options":["달마다","날마다","해마다","때마다"],"ans":1,"hint":"'날마다'는 '매일'과 완전히 같은 뜻입니다. (달마다 = 매달, 해마다 = 매년)"},{"tag":"문법: N마다 (조사 생략)","q":"기차가 [       ] 서울역에 도착해요. (명사: 10분)","sub":"시간 간격을 나타내는 올바른 결합은?","options":["10분마다에","10분마다","10분에마다","10분동안마다"],"ans":1,"hint":"'마다' 뒤에는 시간 부사격 조사 '에'를 함께 쓰지 않습니다. (10분마다 O, 10분마다에 X)"},{"tag":"문법: V-(으)ㄴ 후에 (받침 O)","q":"점심을 [       ] 도서관에 갈 거예요. (기본형: 먹다)","sub":"동사 '먹다' 뒤에 시간적 선후 관계를 나타내는 표현을 고르세요.","options":["먹는 후에","먹은 후에","먹을 후에","먹고 후에"],"ans":1,"hint":"동사 어간에 받침이 있으면 '-은 후에'가 결합합니다. (먹다 → 먹은 후에)"},{"tag":"문법: V-(으)ㄴ 후에 (받침 X)","q":"숙제를 다 [       ] 텔레비전을 봤어요. (기본형: 하다)","sub":"받침 없는 동사 '하다'의 결합 형태를 고르세요.","options":["하는 후에","한 후에","할 후에","하고 후에"],"ans":1,"hint":"받침이 없는 동사 어간에는 'ㄴ 후에'가 결합합니다. (하다 → 한 후에)"},{"tag":"문법: V-(으)ㄹ게요 (의지·약속)","q":"가: 빵이 없네요.\n나: 제가 빵을 [       ]. (기본형: 사오다)","sub":"듣는 사람에게 자신이 하겠다고 약속할 때 쓰는 형태를 고르세요.","options":["사올게요","사오을게요","사오게요","사오을게"],"ans":0,"hint":"'사오다'는 받침이 없으므로 '-ㄹ게요'가 붙어요. (사오다 → 사올게요)"},{"tag":"문법: -기 전에 vs -(으)ㄴ 후에","q":"밤에 [       ] 따뜻한 우유를 마시면 잠이 잘 와요. (기본형: 자다)","sub":"선행 행동의 '이전'을 뜻하는 대조 표현은?","options":["잔 후에","자기 전에","자면서","자려고"],"ans":1,"hint":"어떤 행동을 하기 앞선 시점을 가리킬 때는 'V-기 전에'를 씁니다."},{"tag":"종합 회화 완성","q":"가: 보통 언제 운동을 하세요?\n나: 퇴근[       ] 헬스장에 가서 1시간씩 운동해요.","sub":"'퇴근' 명사 뒤에 시간 순서를 나타내는 조사를 고르세요.","options":["후에","마다","동안","보다"],"ans":0,"hint":"퇴근이라는 사건이 끝난 뒤에 운동하므로 '퇴근 후에'가 가장 적절합니다."}]},{"unit":7,"title":"7단원 길 찾기","subtitle":"-(으)ㄹ까요? · -(으)ㄹ 것 같다 · -는지 알다 · -다가","flashcards":[{"word":"사거리","ex":"다음 사거리에서 오른쪽으로 도세요."},{"word":"횡단보도","ex":"신호등이 초록색으로 바뀌면 횡단보도를 건너세요."},{"word":"골목","ex":"이 좁은 골목 안으로 들어가면 식당이 있어요."},{"word":"신호등","ex":"신호등을 잘 보고 길을 건너야 해요."},{"word":"육교","ex":"길 건너편으로 가려면 육교를 이용하세요."},{"word":"직진하다","ex":"이 길을 따라 앞으로 100미터 직진하세요."},{"word":"우회전하다","ex":"사거리에서 우회전하시면 은행이 보입니다."},{"word":"건너다","ex":"길을 건너서 오른쪽으로 가세요."}],"quiz":[{"tag":"어휘 (길 찾기)","q":"도로 네 개가 서로 교차하여 네 방향으로 갈라지는 지점을 무엇이라고 하나요?","sub":"사거리 / 교차로를 뜻하는 어휘입니다.","options":["삼거리","사거리","횡단보도","육교"],"ans":1,"hint":"길이 넷으로 교차하는 곳은 '사거리(Intersection)'라고 합니다."},{"tag":"어휘 (보행 시설)","q":"사람이 차도를 안전하게 걸어서 건널 수 있도록 도로에 흰색 선으로 표시해 둔 곳은?","sub":"길을 건너는 보행자 도로를 찾으세요.","options":["인도","골목","횡단보도","신호등"],"ans":2,"hint":"길을 건너도록 하얗게 줄무늬를 그려둔 곳은 '횡단보도(Crosswalk)'입니다."},{"tag":"문법: -(으)ㄹ까요? (추측 묻기)","q":"가: 지금 버스를 타면 길이 [       ]?\n나: 네. 출근 시간이라서 막힐 거예요. (기본형: 막히다)","sub":"확실하지 않은 일을 짐작하면서 물어볼 때 알맞은 표현을 고르세요.","options":["막힐까요","막히을까요","막힐까","막히다가"],"ans":0,"hint":"받침 없는 동사 '막히다' 뒤에 '-ㄹ까요?'를 붙여 '막힐까요?'라고 물어봐요."},{"tag":"문법: -(으)ㄹ까요? (ㄹ 받침)","q":"내일 도서관이 문을 [       ]? (기본형: 열다)","sub":"'ㄹ' 받침 동사에 '-(으)ㄹ까요?'가 결합할 때 알맞은 형태를 고르세요.","options":["열을까요","열까요","여을까요","열는까요"],"ans":1,"hint":"'ㄹ' 받침 동사는 'ㄹ'을 탈락시키고 '-ㄹ까요?'를 붙여 '열까요?'가 돼요."},{"tag":"문법: -(으)ㄹ 것 같다 (추측)","q":"가: 지금 길이 복잡할까요?\n나: 네. 비가 와서 길이 [       ]. (기본형: 막히다)","sub":"상황을 보고 부드럽게 짐작해 말할 때 알맞은 표현을 고르세요.","options":["막히을 것 같아요","막힐 것 같아요","막히을 거 같아요","막히는지 알아요"],"ans":1,"hint":"동사 '막히다'에 '-(으)ㄹ 것 같다'를 붙이면 '막힐 것 같아요'가 돼요."},{"tag":"문법: 명사 + 일 것 같다","q":"저 사람이 [       ]. (명사: 선생님)","sub":"명사 뒤에 추측 표현을 붙일 때 알맞은 형태를 고르세요.","options":["선생님을 것 같아요","선생님일 것 같아요","선생님것 같아요","선생님은 것 같아요"],"ans":1,"hint":"명사 뒤에는 '-일 것 같다'를 붙여요. (선생님 → 선생님일 것 같아요)"},{"tag":"문법: 동-는지 알다/모르다","q":"비행기가 몇 시에 [       ] 아세요? (기본형: 도착하다)","sub":"동사 뒤에 어떤 사실이나 방법을 알고 있는지 묻는 표현을 고르세요.","options":["도착은지","도착는지","도착하는지","도착는 것"],"ans":2,"hint":"동사 어간 뒤에는 '-는지 알다/모르다'가 붙어 '도착하는지 아세요?'가 돼요."},{"tag":"문법: 명사 + 인지 알다/모르다","q":"화장실이 [       ] 아세요? (명사: 어디)","sub":"장소를 물을 때 명사 뒤에 붙는 표현을 고르세요.","options":["어디는지","어디은지","어디인지","어디일까요"],"ans":2,"hint":"명사 뒤에는 '-인지 알다/모르다'를 붙여 '어디인지 아세요?'라고 물어요."},{"tag":"문법: 동-다가 (길 안내)","q":"가: 지하철역이 어디에 있는지 아세요?\n나: 네. 쭉 [       ] 오른쪽으로 돌아가세요. (기본형: 가다)","sub":"앞의 행동을 하다가 다른 행동으로 바뀔 때 쓰는 표현을 고르세요.","options":["가다가","가으다가","가려고","갈 것 같아요"],"ans":0,"hint":"동사 어간 뒤에 '-다가'를 붙여 '쭉 가다가 오른쪽으로 돌아가세요'처럼 말해요."},{"tag":"문법: 동-다가 (행동 전환)","q":"어젯밤에 숙제를 [       ] 너무 피곤해서 잤어요. (기본형: 하다)","sub":"앞 절의 행동을 하던 중에 뒤 절의 행동으로 넘어갈 때 알맞은 형태를 고르세요.","options":["하다가","하니까","하면서","하러"],"ans":0,"hint":"앞의 행동(숙제를 하다)을 하다가 그만두고 다음 행동(잤어요)으로 넘어갈 때 '-다가'를 써요."}]},{"unit":8,"title":"8단원 모임","subtitle":"V-기로 하다 · V-(으)ㄹ까 하다 / V-(으)ㄹ N · V-(으)ㄹ 테니까","flashcards":[{"word":"약속을 정하다","ex":"친구들과 이번 주 토요일에 만나기로 약속을 정했어요."},{"word":"연기하다","ex":"급한 일이 생겨서 모임을 다음 주료 연기했어요."},{"word":"취소하다","ex":"비가 너무 많이 와서 야외 소풍을 취소했어요."},{"word":"회식","ex":"금요일 퇴근 후에 부서 회식을 해요."},{"word":"동창회","ex":"고등학교 동창회에서 오랜만에 친구들을 만났어요."},{"word":"장소를 잡다","ex":"강남역 근처 조용한 식당으로 장소를 잡았어요."},{"word":"연락하다","ex":"도착하면 바로 연락할게요."},{"word":"참석하다","ex":"이번 동호회 정기 모임에 꼭 참석할게요."}],"quiz":[{"tag":"어휘 (일정 변경)","q":"정해진 약속이나 일정을 뒤의 날짜나 시간으로 미루는 것을 무엇이라고 하나요?","sub":"날짜를 뒤로 미루는 어휘를 찾으세요.","options":["취소하다","연기하다","정하다","참석하다"],"ans":1,"hint":"일정을 뒤로 미루는 것은 '연기하다(Postpone)'입니다."},{"tag":"어휘 (모임 종류)","q":"회사 동료들이 업무를 마치고 친목을 위해 함께 식사하는 자리를 무엇이라고 합니까?","sub":"직장인들의 식사 모임입니다.","options":["동창회","회식","동호회","연구회"],"ans":1,"hint":"회사 직원들의 식사 모임은 '회식(Company dinner)'이라고 합니다."},{"tag":"문법: V-기로 하다 (약속/결정)","q":"주말에 친구와 함께 등산을 [       ]. (기본형: 가다)","sub":"이미 약속하거나 결정한 사실을 나타내는 표현을 완성하세요.","options":["가기로 했어요","가려고 해요","가는데 했어요","가는 것 같아요"],"ans":0,"hint":"결정이나 약속은 이미 정해진 상태이므로 통상 과거형 '-기로 했어요'를 씁니다."},{"tag":"문법: V-기로 하다 (부정 표현 위치)","q":"앞으로 담배를 피우지 않기로 약속했을 때 올바른 표현은?","sub":"부정문 결합 형태를 고르세요.","options":["담배를 안 피우기로 했어요.","담배를 피우기로 안 했어요.","담배를 피우기로 못 했어요.","담배를 피우지 않기로 하지 않았어요."],"ans":0,"hint":"결정한 내용 자체를 부정할 때는 '-지 않기로 하다' 또는 '안 V-기로 하다'를 씁니다."},{"tag":"문법: V-(으)ㄹ까 하다","q":"가: 오늘 뭐 먹을 거예요?\n나: 매운 걸 먹고 싶어서 떡볶이를 [       ]. (기본형: 만들다)","sub":"아직 정하지 않은 마음이나 생각을 부드럽게 말할 때 씁니다.","options":["만들까 해요","만들을까 해요","만들으까 해요","만들기까 해요"],"ans":0,"hint":"'만들다'는 'ㄹ' 받침이라 'ㄹ'을 한 번만 써서 '만들까 해요'가 돼요."},{"tag":"문법: V-(으)ㄹ 테니까","q":"제가 방을 [       ] 책장 정리를 해 주세요. (기본형: 닦다)","sub":"내가 할 테니 너는 ~해 달라고 부탁할 때 씁니다.","options":["닦을 테니까","닦을 테서","닦으 테니까","닦아 테니까"],"ans":0,"hint":"받침이 있는 '닦다'에는 '-을 테니까'가 붙어요. (닦다 → 닦을 테니까)"},{"tag":"문법: V-(으)ㄹ N (미래 관형형 받침 O)","q":"오늘 저녁에 [       ] 음식을 미리 준비했어요. (기본형: 먹다)","sub":"받침 있는 동사 '먹다'의 미래/예정 관형형을 고르세요.","options":["먹는","먹은","먹을","먹던"],"ans":2,"hint":"동사의 미래나 예정된 행동을 수식할 때는 '-을 N'이 결합합니다. (먹을 음식)"},{"tag":"문법: V-(으)ㄹ N (ㄹ 탈락)","q":"내일 친구들과 [       ] 게임 규칙을 읽어봤어요. (기본형: 만들다)","sub":"'만들다'의 미래 관형형을 고르세요.","options":["만들은","만들","만드는","만들는"],"ans":1,"hint":"'ㄹ' 받침 동사는 미래 관형형 어미와 만날 때 그대로 '만들 N'이 됩니다. (만들다 → 만들 음식)"},{"tag":"문법: V-(으)ㄹ까 하다 (마음)","q":"주말에 집에서 쉬면서 책을 [       ]. (기본형: 읽다)","sub":"'읽다'에 '-(으)ㄹ까 하다'를 붙인 형태를 고르세요.","options":["읽을까 해요","읽을을까 해요","읽으까 해요","읽을까 해서"],"ans":0,"hint":"받침이 있는 '읽다'에는 '-을까 하다'가 붙어요. (읽다 → 읽을까 해요)"},{"tag":"문법: V-기로 하다 (약속·결정)","q":"가: 주말에 뭐 해요?\n나: 우리 반 친구들과 [       ]. (기본형: 만나다)","sub":"이미 정한 약속이나 결정을 말할 때 알맞은 표현을 고르세요.","options":["만나기로 했어요","만나려고","만날게요","만나는데요"],"ans":0,"hint":"이미 결정하거나 약속한 일을 말할 때는 동사 어간 뒤에 '-기로 했어요'를 써요."}]},{"unit":9,"title":"9단원 건강한 생활","subtitle":"V-는 게 어때요? · A/V-(으)ㄴ/는 것 같다","flashcards":[{"word":"두통","ex":"머리가 지끈지끈 아픈 두통이 있어요."},{"word":"열이 나다","ex":"체온을 재어 보니 열이 많이 나요."},{"word":"기침을 하다","ex":"목이 간지럽고 기침을 자꾸 해요."},{"word":"처방전","ex":"병원에서 받은 처방전으로 약국에서 약을 샀어요."},{"word":"스트레스","ex":"충분한 수면은 스트레스 해소에 좋아요."},{"word":"몸살","ex":"피로가 쌓여서 심한 감기몸살에 걸렸어요."},{"word":"푹 쉬다","ex":"주말에는 아무 일도 안 하고 푹 쉬었어요."},{"word":"체하다","ex":"점심을 급하게 먹어서 체한 것 같아요."}],"quiz":[{"tag":"어휘 (건강 이상)","q":"음식을 너무 급하게 먹거나 과식하여 소화가 잘 안 되고 속이 답답할 때 쓰는 표현은?","sub":"소화 불량 상태를 나타내는 동사를 찾으세요.","options":["체하다","열이 나다","기침하다","다치다"],"ans":0,"hint":"소화가 막혀 답답한 상태는 '체하다(Have an upset stomach)'라고 합니다."},{"tag":"어휘 (의료 시설)","q":"의사 선생님이 진료 후 환자가 약을 받을 수 있도록 약의 종류와 복용법을 적어준 문서는?","sub":"약국에 제출하는 서류입니다.","options":["진단서","처방전","영수증","안내서"],"ans":1,"hint":"약국에 약을 지어 달라고 내는 문서는 '처방전(Prescription)'입니다."},{"tag":"문법: V-는 게 어때요? (권유)","q":"가: 감기 기운이 있어요.\n나: 오늘은 집에서 따뜻한 차를 마시고 푹 [       ]? (기본형: 쉬다)","sub":"상대방에게 부드럽게 권유하거나 조언하는 표현을 완성하세요.","options":["쉬는 게 어때요","쉬는 것 같아요","쉬기로 해요","쉬려고 해요"],"ans":0,"hint":"상대방에게 부드럽게 행동을 권할 때는 'V-는 게 어때요?'를 씁니다."},{"tag":"문법: V-는 게 어때요? (동사 결합)","q":"가: 건강이 안 좋은데 어떻게 하면 좋을까요?\n나: 매일 가벼운 운동을 [       ]? (기본형: 시작하다)","sub":"'시작하다'에 조언 문법을 바르게 결합한 것은?","options":["시작하는 게 어때요","시작한 게 어때요","시작할 게 어때요","시작되는 게 어때요"],"ans":0,"hint":"동사 어간 뒤에는 받침 유무와 상관없이 '-는 게 어때요?'가 결합합니다."},{"tag":"문법: 형용사 -(으)ㄴ 것 같다 (현재 추측)","q":"밖을 보니 사람들이 두꺼운 패딩을 입었어요. 오늘 날씨가 아주 [       ]. (기본형: 춥다)","sub":"'춥다'의 ㅂ 불규칙 활용을 형용사 추측 문법에 적용하세요.","options":["추운 것 같아요","춥는 것 같아요","추운지 알아요","춥은 것 같아요"],"ans":0,"hint":"'춥다'는 ㅂ 불규칙이므로 모음 앞에서 '추우'로 바뀌어 '추운 것 같아요'가 됩니다."},{"tag":"문법: 동사 -는 것 같다 (현재 추측)","q":"저 식당 앞에 줄이 아주 길어요. 저 식당 음식이 정말 [       ]. (기본형: 맛있다)","sub":"'맛있다'는 관형사형에서 동사처럼 '-는'이 붙는 규칙을 적용하세요.","options":["맛있는 것 같아요","맛있은 것 같아요","맛있을 것 같아요","맛있던 것 같아요"],"ans":0,"hint":"'있다/없다'가 붙은 어휘는 현재 추측에서 '-는 것 같다'가 결합합니다. (맛있는 것 같다)"},{"tag":"문법: 동-(으)ㄴ 것 같다 (과거 추측)","q":"가: 나나 씨가 오늘 기분이 좋아 보이네요.\n나: 저도 봤어요. 시험을 잘 [       ]. (기본형: 보다)","sub":"이미 지나간 일을 짐작해서 말할 때 알맞은 표현을 고르세요.","options":["본 것 같아요","보는 것 같아요","볼 것 같아요","보은 것 같아요"],"ans":0,"hint":"동사 과거 추측은 '-(으)ㄴ 것 같다'를 써서 '시험을 잘 본 것 같아요'라고 말해요."},{"tag":"문법: 미래 추측 -(으)ㄹ 것 같다","q":"하늘에 먹구름이 가득해요. 곧 비가 [       ]. (기본형: 오다)","sub":"앞으로 일어날 일에 대한 미래 추측 형태는?","options":["오는 것 같아요","온 것 같아요","올 것 같아요","오기로 했어요"],"ans":2,"hint":"미래나 예정된 일에 대한 추측은 '-(으)ㄹ 것 같다'를 씁니다. (비가 올 것 같아요)"},{"tag":"문법: 완곡한 표현의 기능","q":"'한국어는 참 재미있는 것 같아요'처럼 '-것 같다'를 자신의 생각에 쓰는 이유는?","sub":"'-것 같다'로 자신의 생각을 부드럽게 말하는 이유를 생각해 보세요.","options":["자신의 주장을 너무 단정적으로 말하지 않고 부드럽고 겸손하게 표현하기 위해","자신이 한 말을 믿지 못해서","남의 말을 그대로 전달하기 위해","질문을 상대방에게 넘기기 위해"],"ans":0,"hint":"한국어에서는 자신의 느낌이나 의견도 '-것 같다'로 완곡하게 부드럽게 표현하는 경우가 많습니다."},{"tag":"종합 회화 완성","q":"가: 머리도 아프고 열도 나요.\n나: 감기몸살에 걸린 것 같아요. 빨리 병원에 [       ]?","sub":"'가다'를 사용해 상대방에게 병원 방문을 권유하는 표현은?","options":["가는 게 어때요","가는 것 같아요","가기로 했어요","가려고 해요"],"ans":0,"hint":"상대방의 회복을 위해 병원 진료를 권유하는 '가보는 게 어때요?' 또는 '가는 게 어때요?'가 가장 알맞습니다."}]}];
+'use strict';
+/* =========================================================
+   2A 부루마불 한국어 보드게임
+   《서울대 한국어+ 2A》 1~9단원 · 교실용 팀 보드게임
+   ========================================================= */
+
+/* ---------- 보드판 (24칸) ---------- */
+const CELLS = [
+  { type: 'start' },
+  { type: 'unit', u: 1, name: '춘천', emoji: '🏞️' },
+  { type: 'unit', u: 1, name: '서울', emoji: '🏙️' },
+  { type: 'unit', u: 2, name: '도서관', emoji: '📚' },
+  { type: 'key' },
+  { type: 'unit', u: 2, name: '공원', emoji: '🌳' },
+  { type: 'island' },
+  { type: 'unit', u: 3, name: '부산', emoji: '🏖️' },
+  { type: 'unit', u: 3, name: '전주', emoji: '🍲' },
+  { type: 'unit', u: 4, name: '백화점', emoji: '🏬' },
+  { type: 'unit', u: 4, name: '시장', emoji: '🛒' },
+  { type: 'key' },
+  { type: 'jeju' },
+  { type: 'unit', u: 5, name: '우체국', emoji: '📮' },
+  { type: 'unit', u: 5, name: '은행', emoji: '🏦' },
+  { type: 'unit', u: 6, name: '인사동', emoji: '🎨' },
+  { type: 'unit', u: 6, name: '집', emoji: '🏠' },
+  { type: 'key' },
+  { type: 'unit', u: 7, name: '서울대학교', emoji: '🏫' },
+  { type: 'unit', u: 7, name: '지하철역', emoji: '🚇' },
+  { type: 'unit', u: 8, name: '카페', emoji: '☕' },
+  { type: 'unit', u: 8, name: '파티룸', emoji: '🎉' },
+  { type: 'unit', u: 9, name: '병원', emoji: '🏥' },
+  { type: 'unit', u: 9, name: '약국', emoji: '💊' }
+];
+
+const UNIT_COLORS = {
+  1: '#ef4444', 2: '#f59e0b', 3: '#10b981', 4: '#06b6d4', 5: '#6366f1',
+  6: '#8b5cf6', 7: '#ec4899', 8: '#f97316', 9: '#14b8a6'
+};
+const TEAM_COLORS = ['#ef4444', '#2563eb', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899'];
+const START_BONUS = 20, LAND_POINTS = 30, OWN_VISIT = 10, TOLL = 20;
+
+/* ---------- 말하기 미션 (단원 목표 문법 기반) ---------- */
+const MISSIONS = [
+  { u: 1, sit: '여행 박람회에서 우리 고향을 소개합니다.',
+    prompt: "'N인데'로 고향을 소개하고, '-(으)려고'로 이번 방학에 하려는 일을 말해 보세요.",
+    example: '제 고향은 제주도인데 바다가 아주 아름다워요. 방학에 친구를 만나려고 제주도에 갈 거예요.' },
+  { u: 1, sit: '한국에 온 이유를 친구에게 말해 봅니다.',
+    prompt: "'-(으)려고'를 사용해 한국에 온 이유와 하고 싶은 일을 두 문장으로 말해 보세요.",
+    example: '저는 한국 친구를 많이 사귀려고 한국에 왔어요. 한국어를 열심히 배우려고 매일 공부해요.' },
+  { u: 2, sit: '취미 동호회에서 자기소개를 합니다.',
+    prompt: "'V-는 것'으로 취미를 말하고, 'N(이)나'로 주말에 하고 싶은 활동을 하나 골라 말해 보세요.",
+    example: '제 취미는 음악을 듣는 거예요. 주말에는 등산이나 자전거를 타요.' },
+  { u: 2, sit: '주말 계획을 이야기합니다.',
+    prompt: "'V-거나'로 주말에 하는 일을 두 가지 이상 이어서 말해 보세요.",
+    example: '주말에는 친구를 만나거나 집에서 영화를 봐요.' },
+  { u: 3, sit: '여행 이야기를 나눕니다.',
+    prompt: "'-아/어 보다'로 여행 경험을 말하고, '-(으)니까'로 그 이유를 덧붙여 보세요.",
+    example: '부산에 가 봤는데 바다가 정말 아름다웠어요. 경치가 좋으니까 다음에도 또 가고 싶어요.' },
+  { u: 3, sit: '친구에게 여행 일정을 들려줍니다.',
+    prompt: "'N 동안'과 'V-고 나서'로 다녀온 여행 일정을 말해 보세요.",
+    example: '이틀 동안 경주에 있었어요. 유적지를 구경하고 나서 기념품을 샀어요.' },
+  { u: 4, sit: '옷 가게에서 친구와 쇼핑합니다.',
+    prompt: "'-(으)ㄴ/는 것 같다'로 옷을 입어 본 느낌을 말하고, 'N보다'로 두 옷을 비교해 보세요.",
+    example: '이 코트가 저 코트보다 더 따뜻한 것 같아요.' },
+  { u: 4, sit: '산 물건을 친구에게 자랑합니다.',
+    prompt: "'V-(으)ㄴ N'과 'N(으)로'로 산 물건을 소개하고, 바꾼 이유도 말해 보세요.",
+    example: '어제 백화점에서 산 가방이에요. 사이즈가 작아서 큰 것으로 교환했어요.' },
+  { u: 5, sit: '우체국 창구에서 소포를 보냅니다.',
+    prompt: "'-는데요'로 상황을 말하고, '-(으)면 되다'로 어떻게 하는지 물어보세요.",
+    example: '소포를 보내려고 하는데요. 어떻게 하면 돼요? — 여기에 주소를 쓰시면 돼요.' },
+  { u: 5, sit: '은행 창구에서 오늘 할 일을 말합니다.',
+    prompt: "'-(으)ㄹ 거예요'로 은행에서 할 일을 두 가지 말해 보세요.",
+    example: '새 통장을 만들 거예요. 그리고 부모님께 생활비를 송금할 거예요.' },
+  { u: 6, sit: '하루 일과를 소개합니다.',
+    prompt: "'N마다'와 'V-기 전에 / -(으)ㄴ 후에'로 여러분의 하루 일과를 말해 보세요.",
+    example: '아침마다 일곱 시에 일어나요. 출근하기 전에 운동을 하고, 퇴근한 후에 공원을 산책해요.' },
+  { u: 6, sit: '내일의 약속을 말합니다.',
+    prompt: "'-(으)ㄹ게요'로 내일 지킬 약속을 두 가지 말해 보세요.",
+    example: '내일은 일찍 일어날게요. 그리고 도착하면 바로 연락할게요.' },
+  { u: 7, sit: '길을 잃어서 지나가는 사람에게 물어봅니다.',
+    prompt: "'-(으)ㄹ까요?'로 길을 묻고, '-는지 알다'로 아는지 물어보세요.",
+    example: '실례합니다, 지하철역에 어떻게 갈까요? — 저도 지하철역이 어디인지 잘 모르겠어요.' },
+  { u: 7, sit: '친구에게 약속 장소를 안내합니다.',
+    prompt: "'-(으)ㄹ 것 같다'와 '-다가'로 길을 안내해 보세요.",
+    example: '이 골목으로 들어가다가 왼쪽으로 가면 식당이 있을 것 같아요.' },
+  { u: 8, sit: '친구들과 주말 모임을 계획합니다.',
+    prompt: "'-기로 하다'와 '-(으)ㄹ까 하다'로 정한 약속과 생각 중인 계획을 말해 보세요.",
+    example: '친구들과 토요일에 만나기로 했어요. 다음에는 영화를 볼까 해요.' },
+  { u: 8, sit: '모임 장소와 연락 방법을 알려 줍니다.',
+    prompt: "'-(으)ㄹ N'과 '-(으)ㄹ 테니까'로 모임 계획을 말해 보세요.",
+    example: '이번 주말에 있을 모임은 강남역 근처에서 해요. 제가 연락할 테니까 걱정하지 마세요.' },
+  { u: 9, sit: '친구가 피곤해 보입니다.',
+    prompt: "'-는 게 어때요?'로 친구에게 건강 조언을 해 보세요.",
+    example: '요즘 잠이 부족한 것 같아요. — 그럼 오늘은 일찍 자는 게 어때요?' },
+  { u: 9, sit: '병원에서 몸 상태를 말합니다.',
+    prompt: "'-(으)ㄴ/는 것 같다'로 지금 몸 상태를 두 가지 말해 보세요.",
+    example: '점심을 급하게 먹어서 체한 것 같아요. 열이 나는 것 같아요.' }
+];
+
+/* ---------- 황금열쇠 카드 ---------- */
+const CHANCE = [
+  { icon: '🚩', t: '출발점으로!', d: '출발점으로 돌아가고 보너스 20점을 받습니다.', eff: { type: 'toStart' } },
+  { icon: '⏩', t: '앞으로 2칸', d: '기분 좋게 두 칸 앞으로 갑니다.', eff: { type: 'move', v: 2 } },
+  { icon: '⏪', t: '뒤로 1칸', d: '한 칸 뒤로 물러납니다.', eff: { type: 'back', v: 1 } },
+  { icon: '💰', t: '+20점', d: '복권에 당첨되었습니다! 20점을 받습니다.', eff: { type: 'points', v: 20 } },
+  { icon: '🍜', t: '한국 음식 자랑', d: '가장 좋아하는 한국 음식을 말하면 15점을 받습니다.', eff: { type: 'points', v: 15 }, judge: true },
+  { icon: '🎫', t: '무료 통행권', d: '다음에 상대 팀 땅에 걸려도 통행료를 내지 않습니다.', eff: { type: 'pass' } },
+  { icon: '🎲', t: '한 번 더!', d: '주사위를 한 번 더 굴립니다.', eff: { type: 'again' } },
+  { icon: '🏝️', t: '무인도로', d: '무인도로 가서 한 턴 쉽니다.', eff: { type: 'toIsland' } },
+  { icon: '🤝', t: '돈을 빌려줘요', d: '가장 점수가 높은 팀에게 10점을 줍니다.', eff: { type: 'giveTop', v: 10 } },
+  { icon: '🎤', t: '애국가 1절', d: '애국가 1절을 부르면 20점을 받습니다.', eff: { type: 'points', v: 20 }, judge: true },
+  { icon: '💬', t: '오늘 배운 문법', d: '오늘 배운 문법으로 문장을 하나 말하면 15점을 받습니다.', eff: { type: 'points', v: 15 }, judge: true },
+  { icon: '😅', t: '벌금', d: '가방 정리가 안 되어 10점을 잃습니다.', eff: { type: 'points', v: -10 } }
+];
+
+/* ---------- 유틸 ---------- */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const rand = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const nl = s => esc(s).replace(/\n/g, '<br>');
+const hexA = (hex, a) => {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+};
+
+/* ---------- 소리 ---------- */
+let AC = null, muted = false;
+try { muted = localStorage.getItem('bm2a_mute') === '1'; } catch (e) { }
+function sfx(kind) {
+  if (muted) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    if (AC.state === 'suspended') AC.resume();
+    const now = AC.currentTime;
+    const tone = (f, t0, dur, type, vol) => {
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0, now + t0);
+      g.gain.linearRampToValueAtTime(vol || 0.08, now + t0 + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + t0 + dur);
+      o.connect(g); g.connect(AC.destination);
+      o.start(now + t0); o.stop(now + t0 + dur + 0.02);
+    };
+    if (kind === 'step') tone(520, 0, 0.05, 'triangle', 0.05);
+    else if (kind === 'roll') { for (let i = 0; i < 5; i++) tone(300 + i * 70, i * 0.07, 0.05, 'square', 0.03); }
+    else if (kind === 'coin') { tone(880, 0, 0.09, 'sine', 0.09); tone(1320, 0.08, 0.12, 'sine', 0.07); }
+    else if (kind === 'win') { [523, 659, 784, 1046].forEach((f, i) => tone(f, i * 0.09, 0.16, 'triangle', 0.09)); }
+    else if (kind === 'fail') { tone(300, 0, 0.16, 'sawtooth', 0.06); tone(220, 0.12, 0.2, 'sawtooth', 0.05); }
+    else if (kind === 'card') { tone(660, 0, 0.07, 'sine', 0.07); tone(990, 0.07, 0.12, 'sine', 0.06); }
+    else if (kind === 'click') tone(440, 0, 0.04, 'triangle', 0.04);
+  } catch (e) { /* 무음 환경 무시 */ }
+}
+
+/* ---------- 상태 ---------- */
+let S = null;
+let setupCfg = {
+  teams: [
+    { name: '1팀', color: TEAM_COLORS[0] },
+    { name: '2팀', color: TEAM_COLORS[1] },
+    { name: '3팀', color: TEAM_COLORS[2] },
+    { name: '4팀', color: TEAM_COLORS[3] }
+  ],
+  count: 2,
+  mode: 'mixed',
+  rounds: 9
+};
+const SAVE_KEY = 'bm2a_save_v1';
+const cur = () => S.teams[S.turn];
+const cellAt = i => CELLS[i];
+
+function newGame() {
+  S = {
+    v: 1,
+    cfg: { mode: setupCfg.mode, rounds: setupCfg.rounds },
+    teams: setupCfg.teams.slice(0, setupCfg.count).map((t, i) => ({
+      id: i, name: (t.name || '').trim() || (i + 1) + '팀', color: t.color,
+      pos: 0, score: 0, skip: 0, pass: 0, lands: 0
+    })),
+    turn: 0, round: 1, owner: {}, used: {}, again: false, over: false,
+    phase: 'idle', dice: 0, log: []
+  };
+  addLog('🎮 게임 시작! ' + S.teams.map(t => t.name).join(' · '));
+  save();
+}
+
+function addLog(msg) {
+  S.log.push(msg);
+  if (S.log.length > 60) S.log.shift();
+}
+function save() {
+  try {
+    const c = JSON.parse(JSON.stringify(S));
+    c.phase = 'idle';
+    localStorage.setItem(SAVE_KEY, JSON.stringify(c));
+  } catch (e) { }
+}
+function clearSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) { } }
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !s.teams || !s.teams.length || s.over) return null;
+    return s;
+  } catch (e) { return null; }
+}
+
+/* ---------- 보드 배치 ---------- */
+function gridPos(i) {
+  if (i <= 6) return { row: 7, col: 1 + i };
+  if (i <= 11) return { row: 7 - (i - 6), col: 7 };
+  if (i === 12) return { row: 1, col: 7 };
+  if (i <= 17) return { row: 1, col: 7 - (i - 12) };
+  if (i === 18) return { row: 1, col: 1 };
+  return { row: 1 + (i - 18), col: 1 };
+}
+const isCorner = i => i === 0 || i === 6 || i === 12 || i === 18;
+
+/* ---------- 화면 ---------- */
+function showScreen(id) {
+  ['setup', 'game'].forEach(k => $('#screen-' + k).classList.toggle('hidden', k !== id));
+}
+
+function buildSetup() {
+  const tl = $('#teamList');
+  tl.innerHTML = setupCfg.teams.map((t, i) => `
+    <div class="team-row ${i >= setupCfg.count ? 'off' : ''}" data-i="${i}">
+      <span class="tr-num" style="background:${t.color}">${i + 1}</span>
+      <input class="tname" data-i="${i}" value="${esc(t.name)}" maxlength="10" placeholder="${i + 1}팀 이름">
+      <div class="swatches" data-i="${i}">
+        ${TEAM_COLORS.map(c => `<button class="sw ${t.color === c ? 'on' : ''}" data-c="${c}" style="background:${c}" aria-label="색 ${c}"></button>`).join('')}
+      </div>
+    </div>`).join('');
+  $$('#teamCount button').forEach(b => b.classList.toggle('on', +b.dataset.n === setupCfg.count));
+  $$('#modeSeg button').forEach(b => b.classList.toggle('on', b.dataset.mode === setupCfg.mode));
+  $$('#roundSeg button').forEach(b => b.classList.toggle('on', +b.dataset.r === setupCfg.rounds));
+  const sv = loadSave();
+  $('#resumeBtn').classList.toggle('hidden', !sv);
+  if (sv) $('#resumeBtn').textContent = `이어서 하기 — ${sv.teams.map(t => t.name + ' ' + t.score + '점').join(' · ')}`;
+}
+
+$('#teamCount').addEventListener('click', e => {
+  const b = e.target.closest('button[data-n]'); if (!b) return;
+  setupCfg.count = +b.dataset.n; sfx('click'); buildSetup();
+});
+$('#modeSeg').addEventListener('click', e => {
+  const b = e.target.closest('button[data-mode]'); if (!b) return;
+  setupCfg.mode = b.dataset.mode; sfx('click'); buildSetup();
+});
+$('#roundSeg').addEventListener('click', e => {
+  const b = e.target.closest('button[data-r]'); if (!b) return;
+  setupCfg.rounds = +b.dataset.r; sfx('click'); buildSetup();
+});
+$('#teamList').addEventListener('input', e => {
+  const inp = e.target.closest('.tname'); if (!inp) return;
+  setupCfg.teams[+inp.dataset.i].name = inp.value;
+});
+$('#teamList').addEventListener('click', e => {
+  const sw = e.target.closest('.sw'); if (!sw) return;
+  const row = sw.closest('.team-row'); const i = +row.dataset.i;
+  const c = sw.dataset.c;
+  const other = setupCfg.teams.findIndex((t, j) => j !== i && t.color === c);
+  if (other >= 0) setupCfg.teams[other].color = setupCfg.teams[i].color;
+  setupCfg.teams[i].color = c;
+  sfx('click'); buildSetup();
+});
+
+$('#startBtn').addEventListener('click', () => {
+  sfx('coin');
+  newGame();
+  startGame();
+});
+$('#resumeBtn').addEventListener('click', () => {
+  const sv = loadSave();
+  if (!sv) return;
+  S = sv; S.phase = 'idle';
+  sfx('coin');
+  startGame();
+});
+$('#newGameBtn').addEventListener('click', () => { sfx('click'); confirmNewGame(); });
+$('#rulesBtn').addEventListener('click', () => showRules());
+$('#muteBtn').addEventListener('click', () => {
+  muted = !muted;
+  try { localStorage.setItem('bm2a_mute', muted ? '1' : '0'); } catch (e) { }
+  $('#muteBtn').textContent = muted ? '🔇' : '🔊';
+  if (!muted) sfx('click');
+});
+
+function startGame() {
+  showScreen('game');
+  $('#muteBtn').textContent = muted ? '🔇' : '🔊';
+  buildBoard();
+  update();
+}
+
+/* ---------- 보드 그리기 ---------- */
+function buildBoard() {
+  const b = $('#board');
+  b.innerHTML = '';
+  const cellEls = [];
+  CELLS.forEach((c, i) => {
+    const p = gridPos(i);
+    const d = document.createElement('div');
+    d.className = 'cell ' + c.type + (isCorner(i) ? ' corner' : '');
+    d.style.gridRow = p.row; d.style.gridColumn = p.col;
+    d.dataset.i = i;
+    let inner = '';
+    if (c.type === 'unit') {
+      inner = `<span class="unum" style="background:${UNIT_COLORS[c.u]}">${c.u}</span>
+        <span class="cemo">${c.emoji}</span>
+        <span class="cname">${esc(c.name)}</span>`;
+    } else if (c.type === 'start') {
+      inner = `<span class="cemo">🚩</span><span class="cname big">출발</span><span class="csub">지날 때마다 +${START_BONUS}</span>`;
+    } else if (c.type === 'island') {
+      inner = `<span class="cemo">🏝️</span><span class="cname big">무인도</span><span class="csub">1턴 쉬기</span>`;
+    } else if (c.type === 'jeju') {
+      inner = `<span class="cemo">✈️</span><span class="cname big">제주도</span><span class="csub">원하는 칸으로</span>`;
+    } else if (c.type === 'key') {
+      inner = `<span class="cemo">🔑</span><span class="cname big">황금열쇠</span><span class="csub">찬스 카드</span>`;
+    }
+    d.innerHTML = `<div class="own-bar"></div><div class="cin">${inner}</div><div class="tokens"></div>`;
+    d.addEventListener('click', () => showCellInfo(i));
+    b.appendChild(d);
+    cellEls[i] = d;
+  });
+
+  const center = document.createElement('div');
+  center.className = 'center';
+  center.innerHTML = `
+    <div class="crow">
+      <span class="round">라운드 <b id="roundNum">1</b><span class="dim">/${S ? S.cfg.rounds : 9}</span></span>
+      <span class="modebadge" id="modeBadge">혼합</span>
+    </div>
+    <div class="turnbanner" id="turnBanner"></div>
+    <div class="dice" id="dice">⚀</div>
+    <button id="rollBtn" class="roll">주사위 굴리기</button>
+    <div class="chips" id="chips"></div>
+    <div class="logbox" id="logbox"></div>`;
+  b.appendChild(center);
+  $('#rollBtn').addEventListener('click', onRoll);
+}
+
+/* ---------- 화면 갱신 ---------- */
+function update() {
+  if (!S) return;
+  const modeName = { mixed: '혼합', quiz: '객관식 퀴즈', speak: '말하기 미션' }[S.cfg.mode] || '혼합';
+  const rn = $('#roundNum'); if (rn) rn.textContent = Math.min(S.round, S.cfg.rounds);
+  const mb = $('#modeBadge'); if (mb) mb.textContent = modeName;
+
+  // 말(토큰)
+  $$('.cell .tokens').forEach(t => t.innerHTML = '');
+  const byPos = {};
+  S.teams.forEach(t => { (byPos[t.pos] = byPos[t.pos] || []).push(t); });
+  Object.keys(byPos).forEach(k => {
+    const el = $('.cell[data-i="' + k + '"] .tokens'); if (!el) return;
+    el.innerHTML = byPos[k].map(t => `<span class="pawn" style="background:${t.color}" title="${esc(t.name)}">${t.id + 1}</span>`).join('');
+  });
+
+  // 땅 주인 표시
+  $$('.cell').forEach(el => {
+    const i = +el.dataset.i;
+    const o = S.owner[i];
+    el.classList.toggle('owned', o !== undefined && o !== null);
+    const bar = $('.own-bar', el);
+    if (o !== undefined && o !== null && S.teams[o]) {
+      el.style.background = hexA(S.teams[o].color, 0.16);
+      el.style.borderColor = S.teams[o].color;
+      bar.style.background = S.teams[o].color;
+      bar.style.display = 'block';
+    } else {
+      el.style.background = '';
+      el.style.borderColor = '';
+      bar.style.display = 'none';
+    }
+  });
+
+  // 현재 팀 표시
+  const t = cur();
+  $$('.cell').forEach(el => el.classList.toggle('here', +el.dataset.i === t.pos));
+  $('#turnBanner').innerHTML = `
+    <span class="pawn" style="background:${t.color}">${t.id + 1}</span>
+    <span class="tb-name">${esc(t.name)}</span> <span class="tb-s">차례</span>
+    ${t.skip > 0 ? '<span class="tb-tag">🏝️ 무인도</span>' : ''}
+    ${t.pass > 0 ? '<span class="tb-tag">🎫 무료 통행권</span>' : ''}`;
+  $('#turnBanner').style.background = hexA(t.color, 0.13);
+  $('#turnBanner').style.borderColor = hexA(t.color, 0.35);
+
+  // 주사위
+  const dEl = $('#dice');
+  if (dEl && S.phase !== 'rolling') {
+    dEl.textContent = S.dice ? ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][S.dice] : '🎲';
+    dEl.style.color = t.color;
+  }
+  const rb = $('#rollBtn');
+  if (rb) {
+    rb.disabled = S.phase !== 'idle' || S.over;
+    rb.textContent = S.over ? '게임 끝' : (t.skip > 0 ? '한 턴 쉬기' : (S.phase === 'rolling' ? '주사위…' : '주사위 굴리기'));
+    rb.style.background = S.over ? '#94a3b8' : t.color;
+  }
+
+  // 점수 칩
+  const chips = $('#chips');
+  if (chips) {
+    chips.innerHTML = S.teams.map((x, i) => `
+      <div class="chip ${i === S.turn ? 'on' : ''}" style="--tc:${x.color}">
+        <span class="chip-pawn" style="background:${x.color}">${x.id + 1}</span>
+        <span class="chip-name">${esc(x.name)}</span>
+        <span class="chip-score">${x.score}</span>
+        <span class="chip-land">🏳 ${x.lands}</span>
+      </div>`).join('');
+  }
+
+  // 기록
+  const lb = $('#logbox');
+  if (lb) {
+    lb.innerHTML = S.log.slice(-4).reverse().map(m => `<div class="logline">${esc(m)}</div>`).join('');
+  }
+  save();
+}
+
+/* ---------- 주사위 ---------- */
+let rollingLock = false;
+async function onRoll() {
+  if (!S || S.phase !== 'idle' || S.over || rollingLock) return;
+  rollingLock = true;
+  try { await turnFlow(); } catch (err) { console.error(err); S.phase = 'idle'; update(); }
+  rollingLock = false;
+}
+
+async function turnFlow() {
+  const t = cur();
+
+  if (t.skip > 0) {
+    t.skip--;
+    addLog(`🏝️ ${t.name}, 무인도에서 한 턴 쉽니다`);
+    update();
+    sfx('fail');
+    await toast('🏝️ 무인도에서 한 턴 쉽니다');
+    S.phase = 'idle';
+    finishTurn();
+    return;
+  }
+
+  S.phase = 'rolling'; update();
+  const v = rand(1, 6);
+  sfx('roll');
+  await animateDice(v);
+  S.dice = v;
+  addLog(`🎲 ${t.name}: ${v}칸`);
+  S.phase = 'moving'; update();
+  await sleep(150);
+  await moveSteps(t, v);
+  await resolveLanding(t, t.pos, 0);
+  S.phase = 'idle';
+  update();
+  finishTurn();
+}
+
+async function animateDice(v) {
+  const d = $('#dice');
+  const faces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+  d.classList.add('shaking');
+  for (let i = 0; i < 8; i++) {
+    d.textContent = faces[rand(0, 5)];
+    await sleep(65 + i * 8);
+  }
+  d.textContent = faces[v - 1];
+  d.classList.remove('shaking');
+  d.classList.add('pop');
+  await sleep(220);
+  d.classList.remove('pop');
+}
+
+async function moveSteps(t, n) {
+  for (let i = 0; i < n; i++) {
+    t.pos = (t.pos + 1) % CELLS.length;
+    if (t.pos === 0) {
+      t.score += START_BONUS;
+      addLog(`🚩 ${t.name}, 출발점 통과 +${START_BONUS}점`);
+      sfx('coin');
+    } else {
+      sfx('step');
+    }
+    update();
+    await sleep(240);
+  }
+}
+
+function finishTurn() {
+  if (!S || S.over) return;
+  if (S.again) {
+    S.again = false;
+    addLog(`🎲 ${cur().name}, 한 번 더!`);
+    update();
+    return;
+  }
+  S.turn++;
+  if (S.turn >= S.teams.length) {
+    S.turn = 0;
+    S.round++;
+    if (S.round > S.cfg.rounds) { endGame(); return; }
+    addLog(`— ${S.round}라운드 시작 —`);
+  }
+  update();
+}
+
+/* ---------- 도착 처리 ---------- */
+async function resolveLanding(t, idx, depth) {
+  const c = cellAt(idx);
+  if (c.type === 'start') { addLog(`🚩 ${t.name}, 출발점 도착`); update(); return; }
+  if (c.type === 'island') {
+    t.skip = 1;
+    addLog(`🏝️ ${t.name}, 무인도에 갇혔습니다 (1턴 쉬기)`);
+    update();
+    sfx('fail');
+    await cardModal({ icon: '🏝️', t: '무인도', d: `${t.name}은(는) 무인도에 갇혔습니다.\n다음 차례에는 한 번 쉬고, 그다음 차례부터 다시 달립니다.`, color: '#0ea5e9' });
+    return;
+  }
+  if (c.type === 'key') { await drawChance(t, depth); return; }
+  if (c.type === 'jeju') { await jejuTravel(t, depth); return; }
+  if (c.type === 'unit') { await unitLanding(t, idx, depth); return; }
+}
+
+async function unitLanding(t, idx, depth) {
+  const c = cellAt(idx);
+  const u = UNITS[c.u - 1];
+  const owner = S.owner[idx];
+
+  if (owner === undefined || owner === null) {
+    const ok = await askQuest(c.u, c.name);
+    if (ok) {
+      S.owner[idx] = t.id;
+      t.score += LAND_POINTS;
+      t.lands++;
+      addLog(`🏳 ${t.name}, ${c.name} 땅 획득! +${LAND_POINTS}점`);
+      sfx('win');
+      update();
+      await toast(`🏳 ${c.name} 땅을 얻었습니다! +${LAND_POINTS}점`);
+    } else {
+      addLog(`❌ ${t.name}, ${c.name} 문제 실패`);
+      sfx('fail');
+      update();
+    }
+    return;
+  }
+
+  if (owner === t.id) {
+    t.score += OWN_VISIT;
+    addLog(`🏠 ${t.name}, 우리 땅 ${c.name} 방문 +${OWN_VISIT}점`);
+    sfx('coin');
+    update();
+    await toast(`🏠 우리 땅 ${c.name} +${OWN_VISIT}점`);
+    return;
+  }
+
+  // 상대 팀 땅
+  const o = S.teams[owner];
+  const hasPass = t.pass > 0;
+  const choice = await new Promise(res => {
+    modalResolver = res;
+    openModal(`
+      <div class="mhead"><span class="pill" style="background:${hexA(o.color, .14)};color:${o.color}">상대 팀 땅</span>
+        <span class="mtag">${c.u}단원 · ${esc(c.name)}</span></div>
+      <div class="bigemoji">${c.emoji}</div>
+      <h2 class="mtitle">${esc(o.name)}의 땅입니다!</h2>
+      <p class="mtext">통행료 <b>${TOLL}점</b>을 내거나, 방어 퀴즈에 도전해 보세요.<br>방어 퀴즈에 성공하면 통행료를 내지 않습니다.</p>
+      <div class="mrow col">
+        ${hasPass ? `<button class="cta" data-choice="pass">🎫 무료 통행권 사용 (${t.pass}장)</button>` : ''}
+        <button class="cta gray" data-choice="pay">통행료 ${TOLL}점 내기</button>
+        <button class="cta" style="background:${o.color}" data-choice="defend">방어 퀴즈 도전</button>
+      </div>`);
+  });
+  closeModal();
+
+  if (choice === 'pass') {
+    t.pass--;
+    addLog(`🎫 ${t.name}, 무료 통행권 사용 — 통행료 면제`);
+    update();
+    await toast('🎫 무료 통행권으로 통과!');
+    return;
+  }
+  if (choice === 'pay') {
+    payToll(t, o);
+    return;
+  }
+  // defend
+  const ok = await askQuest(c.u, c.name);
+  if (ok) {
+    addLog(`🛡️ ${t.name}, 방어 성공! 통행료 면제`);
+    sfx('win');
+    update();
+    await toast('🛡️ 방어 성공! 통행료 면제');
+  } else {
+    addLog(`💸 ${t.name}, 방어 실패 — 통행료 지불`);
+    payToll(t, o);
+  }
+}
+
+function payToll(t, o) {
+  const amt = Math.max(0, Math.min(TOLL, t.score));
+  t.score -= amt;
+  o.score += amt;
+  addLog(`💸 ${t.name}, ${o.name}에게 통행료 ${amt}점`);
+  sfx('fail');
+  update();
+}
+
+/* ---------- 황금열쇠 ---------- */
+async function drawChance(t, depth) {
+  const card = CHANCE[rand(0, CHANCE.length - 1)];
+  sfx('card');
+  const res = await new Promise(res => {
+    modalResolver = res;
+    openModal(`
+      <div class="chance-card">
+        <div class="cc-band">🔑 황금열쇠</div>
+        <div class="cc-icon">${card.icon}</div>
+        <div class="cc-title">${esc(card.t)}</div>
+        <div class="cc-desc">${nl(card.d)}</div>
+      </div>
+      <div class="mrow ${card.judge ? 'two' : ''}">
+        ${card.judge
+        ? `<button class="cta ok" data-choice="yes">잘했어요 +${card.eff.v}</button><button class="ghost" data-choice="no">아쉬워요</button>`
+        : `<button class="cta" data-choice="ok">확인</button>`}
+      </div>`);
+  });
+  closeModal();
+  await applyEffect(t, card.eff, res, depth);
+}
+
+async function applyEffect(t, eff, res, depth) {
+  if (!eff) return;
+  if (eff.type === 'points') {
+    const v = res === 'no' ? 0 : eff.v;
+    t.score = Math.max(0, t.score + v);
+    addLog(`${v >= 0 ? '💰' : '💸'} ${t.name} ${v >= 0 ? '+' : ''}${v}점 (황금열쇠)`);
+    sfx(v >= 0 ? 'coin' : 'fail'); update();
+    await toast(`${v >= 0 ? '+' : ''}${v}점`);
+  } else if (eff.type === 'pass') {
+    t.pass++;
+    addLog(`🎫 ${t.name}, 무료 통행권 획득`);
+    sfx('coin'); update();
+    await toast('🎫 무료 통행권 획득!');
+  } else if (eff.type === 'again') {
+    S.again = true;
+    addLog(`🎲 ${t.name}, 한 번 더 굴립니다`);
+    sfx('coin'); update();
+    await toast('🎲 한 번 더!');
+  } else if (eff.type === 'giveTop') {
+    const others = S.teams.filter(x => x.id !== t.id).sort((a, b) => b.score - a.score);
+    if (others.length) {
+      const top = others[0];
+      t.score = Math.max(0, t.score - eff.v);
+      top.score += eff.v;
+      addLog(`🤝 ${t.name} → ${top.name} ${eff.v}점`);
+      update(); await toast(`🤝 ${top.name}에게 ${eff.v}점`);
+    }
+  } else if (eff.type === 'toIsland') {
+    t.pos = 6; t.skip = 1;
+    addLog(`🏝️ ${t.name}, 무인도로 이동 (1턴 쉬기)`);
+    sfx('fail'); update();
+    await sleep(400);
+  } else if (eff.type === 'toStart') {
+    t.pos = 0; t.score += START_BONUS;
+    addLog(`🚩 ${t.name}, 출발점으로 +${START_BONUS}점`);
+    sfx('coin'); update();
+    await sleep(400);
+  } else if (eff.type === 'move' || eff.type === 'back') {
+    const n = eff.v;
+    if (eff.type === 'move') {
+      await moveSteps(t, n);
+      if (depth < 2) await resolveLanding(t, t.pos, depth + 1);
+    } else {
+      for (let i = 0; i < n; i++) {
+        t.pos = (t.pos - 1 + CELLS.length) % CELLS.length;
+        sfx('step'); update(); await sleep(240);
+      }
+      if (depth < 2) await resolveLanding(t, t.pos, depth + 1);
+    }
+  }
+}
+
+/* ---------- 제주도 ---------- */
+async function jejuTravel(t, depth) {
+  sfx('card');
+  const choices = CELLS.map((c, i) => ({ c, i })).filter(x => x.c.type === 'unit');
+  const val = await new Promise(res => {
+    modalResolver = res;
+    openModal(`
+      <div class="mhead"><span class="pill" style="background:#e0f2fe;color:#0369a1">✈️ 제주도 여행</span>
+        <span class="mtag">원하는 칸으로 이동</span></div>
+      <h2 class="mtitle">어디로 갈까요?</h2>
+      <p class="mtext">가고 싶은 장소를 하나 고르세요. 도착한 칸에서 바로 미션이 시작됩니다.</p>
+      <div class="dest-grid">
+        ${choices.map(x => `<button class="dest" data-choice="${x.i}">
+            <span class="d-unum" style="background:${UNIT_COLORS[x.c.u]}">${x.c.u}</span>
+            <span class="d-emoji">${x.c.emoji}</span>
+            <span class="d-name">${esc(x.c.name)}</span>
+            ${S.owner[x.i] !== undefined && S.owner[x.i] !== null ? `<span class="d-own" style="background:${S.teams[S.owner[x.i]].color}">${esc(S.teams[S.owner[x.i]].name)}</span>` : ''}
+          </button>`).join('')}
+      </div>
+      <div class="mrow"><button class="ghost" data-choice="-1">그냥 제주도에 머물기</button></div>`);
+  });
+  closeModal();
+  if (val === '-1' || val === undefined) {
+    addLog(`✈️ ${t.name}, 제주도에서 쉬어 갑니다`);
+    update(); return;
+  }
+  t.pos = +val;
+  addLog(`✈️ ${t.name}, ${cellAt(t.pos).name}(으)로 이동`);
+  update();
+  await sleep(500);
+  if (depth < 2) await resolveLanding(t, t.pos, depth + 1);
+}
+
+/* ---------- 퀴즈 / 미션 ---------- */
+function pickQuiz(unitNo) {
+  const u = UNITS[unitNo - 1];
+  const used = S.used[unitNo] || (S.used[unitNo] = []);
+  let pool = u.quiz.map((q, i) => i).filter(i => used.indexOf(i) < 0);
+  if (!pool.length) { S.used[unitNo] = []; pool = u.quiz.map((q, i) => i); }
+  const i = pool[rand(0, pool.length - 1)];
+  S.used[unitNo].push(i);
+  return { q: u.quiz[i], u };
+}
+function pickMission(unitNo) {
+  const pool = MISSIONS.filter(m => m.u === unitNo);
+  return pool[rand(0, pool.length - 1)] || MISSIONS[0];
+}
+
+async function askQuest(unitNo, placeName) {
+  const mode = S.cfg.mode;
+  let useSpeak;
+  if (mode === 'speak') useSpeak = true;
+  else if (mode === 'quiz') useSpeak = false;
+  else useSpeak = Math.random() < 0.32;
+  if (useSpeak) return askMission(unitNo, placeName);
+  return askQuiz(unitNo, placeName);
+}
+
+function askQuiz(unitNo, placeName) {
+  const { q, u } = pickQuiz(unitNo);
+  return new Promise(resolve => {
+    let answered = false;
+    modalResolver = null;
+    openModal(`
+      <div class="mhead">
+        <span class="pill" style="background:${hexA(UNIT_COLORS[unitNo], .14)};color:${UNIT_COLORS[unitNo]}">${unitNo}단원</span>
+        <span class="mtag">${esc(u.title)} · ${esc(placeName)}</span>
+      </div>
+      <div class="qtags"><span class="qtag">${esc(q.tag)}</span></div>
+      <h2 class="mq">${nl(q.q)}</h2>
+      ${q.sub ? `<p class="msub">${esc(q.sub)}</p>` : ''}
+      <div class="opts">
+        ${q.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="oi">${'ABCD'[i]}</span><span class="ot">${esc(o)}</span></button>`).join('')}
+      </div>
+      <div class="qafter hidden" id="qafter"></div>
+      <div class="mrow">
+        <button class="ghost sm" id="hintBtn">💡 힌트</button>
+        <button class="cta sm hidden" id="qnext">계속 →</button>
+      </div>`, { cls: 'quiz-modal' });
+
+    const md = $('#modal');
+    const btns = $$('.opt', md);
+    const after = $('#qafter', md);
+    const hintBtn = $('#hintBtn', md);
+
+    hintBtn.addEventListener('click', () => {
+      after.classList.remove('hidden');
+      after.className = 'qafter hint';
+      after.innerHTML = `<b>힌트</b> ${esc(q.hint)}`;
+      sfx('click');
+    });
+
+    btns.forEach(b => b.addEventListener('click', () => {
+      if (answered) return;
+      answered = true;
+      const i = +b.dataset.i;
+      const ok = i === q.ans;
+      btns.forEach((x, j) => {
+        x.disabled = true;
+        if (j === q.ans) x.classList.add('correct');
+        else if (j === i) x.classList.add('wrong');
+      });
+      after.classList.remove('hidden');
+      after.className = 'qafter ' + (ok ? 'good' : 'bad');
+      after.innerHTML = ok
+        ? `<b>정답입니다! 🎉</b> ${esc(q.hint)}`
+        : `<b>아쉬워요 😢 정답은 ${'ABCD'[q.ans]}번입니다.</b> ${esc(q.hint)}`;
+      sfx(ok ? 'win' : 'fail');
+      hintBtn.classList.add('hidden');
+      const nx = $('#qnext', md);
+      nx.classList.remove('hidden');
+      nx.style.background = ok ? '#16a34a' : '#64748b';
+      nx.addEventListener('click', () => { closeModal(); resolve(ok); }, { once: true });
+      nx.focus();
+    }));
+  });
+}
+
+function askMission(unitNo, placeName) {
+  const m = pickMission(unitNo);
+  const u = UNITS[unitNo - 1];
+  return new Promise(resolve => {
+    modalResolver = null;
+    openModal(`
+      <div class="mhead">
+        <span class="pill" style="background:${hexA(UNIT_COLORS[unitNo], .14)};color:${UNIT_COLORS[unitNo]}">${unitNo}단원</span>
+        <span class="mtag">${esc(u.title)} · ${esc(placeName)}</span>
+      </div>
+      <div class="grammar-box"><span class="g-label">목표 문법</span><span class="g-text">${esc(u.subtitle)}</span></div>
+      <p class="msit">🗣️ ${esc(m.sit)}</p>
+      <h2 class="mtask">${esc(m.prompt)}</h2>
+      <details class="mexample"><summary>교재 예문 보기</summary><p>${esc(m.example)}</p></details>
+      <p class="mnote">말하기가 끝나면 친구들이 잘 들었는지 확인한 뒤,<br><b>성공</b> 또는 <b>아쉬워요</b>를 눌러 주세요.</p>
+      <div class="mrow two">
+        <button class="cta ok" id="mOk">성공 ✅</button>
+        <button class="ghost" id="mNo">아쉬워요</button>
+      </div>`, { cls: 'mission-modal' });
+    $('#mOk').addEventListener('click', () => { closeModal(); resolve(true); }, { once: true });
+    $('#mNo').addEventListener('click', () => { closeModal(); resolve(false); }, { once: true });
+  });
+}
+
+/* ---------- 모달 공통 ---------- */
+let modalResolver = null;
+function openModal(html, opts) {
+  opts = opts || {};
+  const ov = $('#overlay'), md = $('#modal');
+  md.className = 'modal' + (opts.cls ? ' ' + opts.cls : '');
+  md.innerHTML = html;
+  ov.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  const f = md.querySelector('button:not([disabled])');
+  if (f && opts.focus !== false) setTimeout(() => { try { f.focus({ preventScroll: true }); } catch (e) { } }, 60);
+}
+function closeModal() {
+  $('#overlay').classList.add('hidden');
+  $('#modal').innerHTML = '';
+  document.body.classList.remove('modal-open');
+}
+function choose(v) { const r = modalResolver; modalResolver = null; if (r) r(v); }
+$('#modal').addEventListener('click', e => {
+  const b = e.target.closest('[data-choice]');
+  if (!b || b.disabled) return;
+  sfx('click');
+  choose(b.dataset.choice);
+});
+
+function cardModal(opts) {
+  return new Promise(res => {
+    modalResolver = res;
+    openModal(`
+      <div class="chance-card">
+        <div class="cc-band">${opts.band || '안내'}</div>
+        <div class="cc-icon">${opts.icon}</div>
+        <div class="cc-title">${esc(opts.t)}</div>
+        <div class="cc-desc">${nl(opts.d)}</div>
+      </div>
+      <div class="mrow"><button class="cta" data-choice="ok">확인</button></div>`);
+  }).then(() => closeModal());
+}
+
+let toastTimer = null, toastResolvers = [];
+function toast(msg) {
+  return new Promise(res => {
+    const el = $('#toast');
+    toastResolvers.push(res);
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      el.classList.remove('show');
+      const rs = toastResolvers; toastResolvers = [];
+      rs.forEach(r => r());
+    }, 1100);
+  });
+}
+
+/* ---------- 칸 정보 ---------- */
+function showCellInfo(i) {
+  if (!S) return;
+  const c = CELLS[i];
+  const owner = S.owner[i];
+  const ownerTxt = (owner !== undefined && owner !== null) ? `<span class="pill" style="background:${hexA(S.teams[owner].color, .15)};color:${S.teams[owner].color}">${esc(S.teams[owner].name)} 땅</span>` : '<span class="pill gray">주인 없음</span>';
+  if (c.type === 'unit') {
+    const u = UNITS[c.u - 1];
+    openModal(`
+      <div class="mhead"><span class="pill" style="background:${hexA(UNIT_COLORS[c.u], .14)};color:${UNIT_COLORS[c.u]}">${c.u}단원</span>${ownerTxt}</div>
+      <div class="ci-head"><span class="ci-emoji">${c.emoji}</span><div><h2 class="mtitle">${esc(c.name)}</h2><p class="msub">${esc(u.title)} · ${esc(u.subtitle)}</p></div></div>
+      <div class="ci-words">${u.flashcards.map(f => `<div class="ci-word"><b>${esc(f.word)}</b><span>${esc(f.ex)}</span></div>`).join('')}</div>
+      <div class="mrow"><button class="ghost" data-choice="x">닫기</button></div>`, { cls: 'info-modal' });
+    modalResolver = () => closeModal();
+  } else {
+    const info = {
+      start: ['🚩 출발', `출발점을 지나거나 도착할 때마다 ${START_BONUS}점을 받습니다.`],
+      island: ['🏝️ 무인도', '도착하면 한 턴을 쉽니다. 그다음 차례부터 다시 달립니다.'],
+      jeju: ['✈️ 제주도 여행', '원하는 단원 칸으로 날아가 그 칸의 미션을 합니다.'],
+      key: ['🔑 황금열쇠', '찬스 카드를 뽑습니다. 점수·이동·무료 통행권 등이 나옵니다.']
+    }[c.type];
+    openModal(`
+      <div class="bigemoji">${info[0].split(' ')[0]}</div>
+      <h2 class="mtitle">${esc(info[0].split(' ').slice(1).join(' '))}</h2>
+      <p class="mtext">${esc(info[1])}</p>
+      <div class="mrow"><button class="ghost" data-choice="x">닫기</button></div>`);
+    modalResolver = () => closeModal();
+  }
+}
+
+/* ---------- 규칙 / 새 게임 ---------- */
+function showRules() {
+  openModal(`
+    <h2 class="mtitle">🎲 게임 방법</h2>
+    <div class="rules-body">
+      <p><b>1. 팀을 정합니다.</b> 2~4팀이 차례대로 주사위를 굴려 말을 움직입니다.</p>
+      <p><b>2. 출발점</b>을 지날 때마다 <b>+${START_BONUS}점</b>을 받습니다.</p>
+      <p><b>3. 단원 칸</b>에 도착하면 그 단원의 <b>객관식 퀴즈</b>나 <b>말하기 미션</b>이 나옵니다. 성공하면 그 칸을 우리 팀 땅으로 얻고 <b>+${LAND_POINTS}점</b>을 받습니다.</p>
+      <p><b>4. 상대 팀 땅</b>에 걸리면 통행료 <b>${TOLL}점</b>을 내거나 <b>방어 퀴즈</b>에 도전합니다. 방어 퀴즈에 성공하면 통행료를 내지 않습니다.</p>
+      <p><b>5. 황금열쇠</b>에서는 찬스 카드를 뽑고, <b>무인도</b>에서는 한 턴을 쉽니다. <b>제주도</b>에서는 원하는 칸으로 이동합니다.</p>
+      <p><b>6. 마지막 라운드</b>가 끝나면 점수가 가장 높은 팀이 우승합니다.</p>
+    </div>
+    <div class="mrow"><button class="cta" data-choice="x">확인</button></div>`);
+  modalResolver = () => closeModal();
+}
+
+function confirmNewGame() {
+  openModal(`
+    <h2 class="mtitle">새 게임을 시작할까요?</h2>
+    <p class="mtext">지금 점수와 땅이 모두 사라집니다.</p>
+    <div class="mrow two"><button class="cta gray" id="ngYes">새 게임</button><button class="ghost" id="ngNo">취소</button></div>`);
+  $('#ngYes').addEventListener('click', () => {
+    closeModal(); clearSave(); S = null;
+    buildSetup(); showScreen('setup');
+  }, { once: true });
+  $('#ngNo').addEventListener('click', () => closeModal(), { once: true });
+}
+
+/* ---------- 게임 끝 ---------- */
+function endGame() {
+  S.over = true;
+  save();
+  const rank = S.teams.slice().sort((a, b) => b.score - a.score || b.lands - a.lands);
+  const medal = ['🥇', '🥈', '🥉', '4️⃣'];
+  sfx('win');
+  openModal(`
+    <div class="winner-wrap">
+      <div class="win-emoji">🏆</div>
+      <h2 class="win-title">${esc(rank[0].name)} 우승!</h2>
+      <p class="mtext">${S.cfg.rounds}라운드 · 최종 점수</p>
+      <div class="rank-list">
+        ${rank.map((t, i) => `<div class="rank-row" style="background:${hexA(t.color, .11)};border-color:${hexA(t.color, .35)}">
+          <span class="rk">${medal[i] || (i + 1)}</span>
+          <span class="rank-pawn" style="background:${t.color}">${t.id + 1}</span>
+          <span class="rank-name">${esc(t.name)}</span>
+          <span class="rank-score">${t.score}점</span>
+          <span class="rank-land">🏳 ${t.lands}</span>
+        </div>`).join('')}
+      </div>
+      <div class="mrow"><button class="cta" id="againBtn">새 게임</button><button class="ghost" id="closeWin">보드 보기</button></div>
+    </div>`);
+  $('#againBtn').addEventListener('click', () => { closeModal(); clearSave(); S = null; buildSetup(); showScreen('setup'); }, { once: true });
+  $('#closeWin').addEventListener('click', () => closeModal(), { once: true });
+  update();
+}
+
+/* ---------- 시작 ---------- */
+buildSetup();
+showScreen('setup');
+
+</script>
+</body>
+</html>
