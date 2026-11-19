@@ -112,9 +112,10 @@
 
   .panel-intro{
     margin:16px 0 6px;font-size:14px;color:var(--ink-2);line-height:1.55;
-    display:flex;gap:8px;align-items:flex-start;word-break:keep-all;
+    display:block;word-break:keep-all;
   }
-  .panel-intro b{color:var(--red);font-weight:900;flex:none;white-space:nowrap}
+  .panel-intro b{color:var(--red);font-weight:900}
+  .panel-intro span{display:block;font-size:12.5px;margin-top:2px}
 
   /* ---------- block ---------- */
   .blk{
@@ -1673,8 +1674,8 @@ function initUnitQuiz(cfg){
     fb.className = 'uq-fb ' + (ok ? 'ok' : 'ng');
     const right = q.options[q.answer];
     fb.innerHTML = ok
-      ? `✓ 맞았어요!${q.explain ? ` <span class="uq-exp">${esc(q.explain)}</span>` : ''}`
-      : `✕ 아니에요. 정답은 <b>${esc(right)}</b>${q.explain ? ` <span class="uq-exp">${esc(q.explain)}</span>` : ''}`;
+      ? `✓ 맞았어요!${q.explain ? `<br><span class="uq-exp">${esc(q.explain)}</span>` : ''}`
+      : `✕ 아니에요. 정답은 <b>${esc(right)}</b>${q.explain ? `<br><span class="uq-exp">${esc(q.explain)}</span>` : ''}`;
     const scoreEl = host.querySelector('.uq-barrow');
     if(scoreEl) scoreEl.lastElementChild.textContent = '✓ ' + st.score;
     const nx = host.querySelector('[data-act="next"]');
