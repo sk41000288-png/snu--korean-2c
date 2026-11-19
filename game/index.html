@@ -204,7 +204,7 @@
   .tb-name{max-width:9em; overflow:hidden; text-overflow:ellipsis}
   .tb-tag{font-size:.62em; font-weight:800; background:#fff; border-radius:99px; padding:.15em .55em; color:#0369a1}
   .dice{
-    font-size:clamp(32px,13cqw,120px); line-height:1; user-select:none; filter:drop-shadow(0 3px 6px rgba(15,23,42,.18));
+    font-size:clamp(34px,15cqw,150px); line-height:1; user-select:none; filter:drop-shadow(0 3px 6px rgba(15,23,42,.18));
     transition:transform .15s;
   }
   .dice.shaking{animation:diceShake .28s infinite}
@@ -275,6 +275,8 @@
   .mrow.two > *{width:100%}
   .mrow.col{flex-direction:column; align-items:stretch}
   .mrow.col > *{width:100%}
+  .mrow.qrow{justify-content:space-between; align-items:center}
+  .mrow.qrow .ghost.sm, .mrow.qrow .cta.sm{flex:0 0 auto}
   .mrow .cta, .mrow .ghost{flex:1}
 
   .qtags{display:flex; gap:6px; margin:2px 0 2px}
@@ -372,6 +374,10 @@
   }
   .toast.show{opacity:1; transform:translate(-50%,0)}
 
+  @media (max-width:520px){
+    .scorebar .chips{display:grid; grid-template-columns:1fr 1fr; gap:5px}
+    .scorebar .chip{justify-content:flex-start}
+  }
   @media (max-height:600px){
     .scorebar .logbox{display:none}
     .chips{gap:.5cqw}
@@ -498,7 +504,7 @@ const CELLS = [
   { type: 'unit', u: 4, name: '시장', emoji: '🛒' },
   { type: 'key' },
   { type: 'jeju' },
-  { type: 'unit', u: 5, name: '우체국', emoji: '📮' },
+  { type: 'unit', u: 5, name: '우체국', emoji: '✉️' },
   { type: 'unit', u: 5, name: '은행', emoji: '🏦' },
   { type: 'unit', u: 6, name: '인사동', emoji: '🎨' },
   { type: 'unit', u: 6, name: '집', emoji: '🏠' },
@@ -844,9 +850,10 @@ function update() {
     el.classList.toggle('owned', o !== undefined && o !== null);
     const bar = $('.own-bar', el);
     if (o !== undefined && o !== null && S.teams[o]) {
-      el.style.background = hexA(S.teams[o].color, 0.16);
-      el.style.borderColor = S.teams[o].color;
-      bar.style.background = S.teams[o].color;
+      const c2 = S.teams[o].color;
+      el.style.background = `linear-gradient(${hexA(c2, .22)}, ${hexA(c2, .22)}), #fffdf8`;
+      el.style.borderColor = c2;
+      bar.style.background = c2;
       bar.style.display = 'block';
     } else {
       el.style.background = '';
@@ -994,7 +1001,7 @@ async function resolveLanding(t, idx, depth) {
     addLog(`🏝️ ${t.name}, 무인도에 갇혔습니다 (1턴 쉬기)`);
     update();
     sfx('fail');
-    await cardModal({ icon: '🏝️', t: '무인도', d: `${t.name}은(는) 무인도에 갇혔습니다.\n다음 차례에는 한 번 쉬고, 그다음 차례부터 다시 달립니다.`, color: '#0ea5e9' });
+    await cardModal({ icon: '🏝️', t: '무인도', d: `${t.name}, 무인도에 갇혔습니다.\n다음 차례에는 한 번 쉬고, 그다음 차례부터 다시 달립니다.`, color: '#0ea5e9' });
     return;
   }
   if (c.type === 'key') { await drawChance(t, depth); return; }
@@ -1188,7 +1195,7 @@ async function jejuTravel(t, depth) {
     update(); return;
   }
   t.pos = +val;
-  addLog(`✈️ ${t.name}, ${cellAt(t.pos).name}(으)로 이동`);
+  addLog(`✈️ ${t.name} → ${cellAt(t.pos).name}`);
   update();
   await sleep(500);
   if (depth < 2) await resolveLanding(t, t.pos, depth + 1);
@@ -1236,7 +1243,7 @@ function askQuiz(unitNo, placeName) {
         ${q.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="oi">${'ABCD'[i]}</span><span class="ot">${esc(o)}</span></button>`).join('')}
       </div>
       <div class="qafter hidden" id="qafter"></div>
-      <div class="mrow">
+      <div class="mrow qrow">
         <button class="ghost sm" id="hintBtn">💡 힌트</button>
         <button class="cta sm hidden" id="qnext">계속 →</button>
       </div>`, { cls: 'quiz-modal' });
@@ -1290,7 +1297,7 @@ function askMission(unitNo, placeName) {
         <span class="mtag">${esc(u.title)} · ${esc(placeName)}</span>
       </div>
       <div class="grammar-box"><span class="g-label">목표 문법</span><span class="g-text">${esc(u.subtitle)}</span></div>
-      <p class="msit">🗣️ ${esc(m.sit)}</p>
+      <p class="msit">💬 ${esc(m.sit)}</p>
       <h2 class="mtask">${esc(m.prompt)}</h2>
       <details class="mexample"><summary>교재 예문 보기</summary><p>${esc(m.example)}</p></details>
       <p class="mnote">말하기가 끝나면 친구들이 잘 들었는지 확인한 뒤,<br><b>성공</b> 또는 <b>아쉬워요</b>를 눌러 주세요.</p>
@@ -1423,6 +1430,11 @@ function endGame() {
   const rank = S.teams.slice().sort((a, b) => b.score - a.score || b.lands - a.lands);
   const medal = ['🥇', '🥈', '🥉', '4️⃣'];
   sfx('win');
+  try {
+    if (window.pickle && pickle.widget && pickle.widget.signal) {
+      pickle.widget.signal(`2A 부루마불 ${S.cfg.rounds}라운드 종료: ${rank[0].name} 우승 (${rank[0].score}점, 땅 ${rank[0].lands}칸)`);
+    }
+  } catch (e) { }
   openModal(`
     <div class="winner-wrap">
       <div class="win-emoji">🏆</div>
