@@ -14,10 +14,11 @@
 </style>
 </head>
 <body>
-  <div class="phone"><iframe id="app" src="./index.html" title="1A 한글 발음편 390px 미리보기"></iframe></div>
-  <p class="note">390px 모바일 폭 미리보기<br>(?to=요소id 로 해당 위치까지 스크롤)</p>
+  <div class="phone"><iframe id="app" title="1A 한글 발음편 390px 미리보기"></iframe></div>
+  <p class="note">390px 모바일 폭 미리보기<br>(?to=요소id 로 스크롤, #해시로 탭 열기)</p>
 <script>
   var f = document.getElementById('app');
+  f.setAttribute('src', './index.html' + (location.hash || ''));
   function jump(){
     var id = (location.search.match(/[?&]to=([^&]+)/) || [])[1];
     if(!id) return;
@@ -28,7 +29,7 @@
       else f.contentWindow.scrollTo(0, 0);
     }catch(e){}
   }
-  f.addEventListener('load', function(){ setTimeout(jump, 350); });
+  f.addEventListener('load', function(){ setTimeout(jump, 400); });
 </script>
 </body>
 </html>
