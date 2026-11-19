@@ -381,6 +381,9 @@
   }
   .toast.show{opacity:1; transform:translate(-50%,0)}
 
+  @media (orientation:portrait){
+    .board-wrap{align-items:flex-start; padding-top:2px}
+  }
   @media (max-width:520px){
     .scorebar .chips{display:grid; grid-template-columns:1fr 1fr; gap:5px}
     .scorebar .chip{justify-content:flex-start}
