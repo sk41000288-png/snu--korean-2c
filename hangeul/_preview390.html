@@ -18,7 +18,7 @@
   <p class="note">390px 모바일 폭 미리보기<br>(?to=요소id 로 스크롤, #해시로 탭 열기)</p>
 <script>
   var f = document.getElementById('app');
-  f.setAttribute('src', './index.html' + (location.hash || ''));
+  f.setAttribute('src', './index.html?cb=' + Date.now() + (location.hash || ''));
   function jump(){
     var id = (location.search.match(/[?&]to=([^&]+)/) || [])[1];
     if(!id) return;
