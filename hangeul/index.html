@@ -101,6 +101,7 @@
     color:#6f5216;font-size:12px;font-weight:600;line-height:1.45;
     display:flex;gap:8px;align-items:flex-start;
   }
+  .ttsbar[hidden]{display:none}
   .ttsbar b{font-weight:900}
 
   /* ---------- panels ---------- */
@@ -155,7 +156,7 @@
   .playall.playing{background:var(--indigo);color:#fff;border-color:var(--indigo)}
 
   /* ---------- letter cards ---------- */
-  .lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(102px,1fr));gap:8px}
+  .lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:8px}
   .lt{
     position:relative;border:1px solid var(--line);background:linear-gradient(180deg,#fffefb,#fbf7ef);
     border-radius:var(--r-s);padding:10px 6px 8px;cursor:pointer;font:inherit;text-align:center;
@@ -432,7 +433,9 @@
 <div class="wrap">
   <div class="ttsbar" id="ttsbar" hidden>
     <span>⚠️</span>
-    <span>이 기기에는 <b>한국어 음성</b>이 없어 소리가 나오지 않아요. 카드의 <b>발음 기호</b>와 <b>입 모양 설명</b>으로 익혀 보세요. (아이폰: 설정 › 손쉬운 사용 › 콘텐츠 말하기 › 음성 › 한국어 다운로드)</span>
+    <span>이 기기에는 <b>한국어 음성</b>이 없어 소리가 나오지 않아요. 카드의 <b>발음 기호</b>와 <b>입 모양 설명</b>으로 익혀 보세요.<br>
+    <b>안드로이드</b>: 설정 › 일반 › 언어 및 입력 › 텍스트 음성 변환 › 한국어 설치<br>
+    <b>아이폰</b>: 설정 › 손쉬운 사용 › 콘텐츠 말하기 › 음성 › 한국어 다운로드</span>
   </div>
 
   <main id="main">
@@ -579,19 +582,20 @@ function toast(msg){
   t._h = setTimeout(() => t.classList.remove('on'), 2200);
 }
 
+/* 속도 바꾸기 */
+function setSpeed(r){
+  RATE = (Math.abs(r - 0.65) < 0.01) ? 0.65 : 1;
+  document.querySelectorAll('.sp').forEach(x => {
+    x.classList.toggle('on', Math.abs(parseFloat(x.dataset.rate) - RATE) < 0.01);
+  });
+  try{ localStorage.setItem('hg1a-rate', String(RATE)); }catch(e){}
+}
+
 /* 속도 버튼 */
 document.querySelectorAll('.sp').forEach(b => {
   const r = parseFloat(b.dataset.rate);
-  if(Math.abs(r - RATE) < 0.01) {
-    document.querySelectorAll('.sp').forEach(x => x.classList.remove('on'));
-    b.classList.add('on');
-  }
-  b.addEventListener('click', () => {
-    RATE = parseFloat(b.dataset.rate);
-    document.querySelectorAll('.sp').forEach(x => x.classList.remove('on'));
-    b.classList.add('on');
-    try{ localStorage.setItem('hg1a-rate', String(RATE)); }catch(e){}
-  });
+  if(Math.abs(r - RATE) < 0.01) setSpeed(r);
+  b.addEventListener('click', () => setSpeed(parseFloat(b.dataset.rate)));
 });
 
 /* =======================================================================
@@ -834,9 +838,10 @@ function letterCards(list, kind){
 function wordCards(list){
   return `<div class="wgrid">${list.map(w => {
     const ko = w[0], en = w[1] || '', ipa = w[2] || '';
+    const showIpa = ipa && ipa !== ko;
     return `<button class="wd" data-say="${esc(ko)}" aria-label="${esc(ko)}">
       <span class="ko">${esc(ko)}</span>
-      ${ipa ? `<span class="ipa">[${esc(ipa)}]</span>` : ''}
+      ${showIpa ? `<span class="ipa">[${esc(ipa)}]</span>` : ''}
       ${en ? `<span class="en">${esc(en)}</span>` : ''}
     </button>`;
   }).join('')}</div>`;
@@ -981,18 +986,18 @@ document.getElementById('p-bat').innerHTML =
     </div>`,
     {note:'<b>안녕하세요</b>의 <b>안</b>[안] · <b>녕</b>[녕]처럼, 받침은 뒤 글자로 넘어가지 않고 앞 글자에서 소리가 끝납니다.', noteClass:'blue'}) +
   block('k4','p.47 · 받침','대표음 단어','Words','[ㄱ] · [ㄴ] 대표음으로 읽는 단어',
-    subHead('[ㄱ] 수박 · 약 · 부엌 · 밖','[ㄱ]', ['수박','약','부엌','밖']) +
+    subHead('[ㄱ] 수박 · 약 · 부엌 · 밖','', ['수박','약','부엌','밖']) +
     wordCards(W47.slice(0,4).map(w=>[w[0],w[1],w[2]])) +
-    subHead('[ㄴ] 산 · 레몬 · 신문 · 부산','[ㄴ]', ['산','레몬','신문','부산']) +
+    subHead('[ㄴ] 산 · 레몬 · 신문 · 부산','', ['산','레몬','신문','부산']) +
     wordCards(W47.slice(4).map(w=>[w[0],w[1],w[2]]))) +
   block('k4','p.48 · 받침','대표음별 단어','More Words','[ㄷ] [ㄹ] [ㅁ] [ㅂ] [ㅇ] 로 소리 나는 단어',
     W48.map(g => subHead(`[${g[0]}]`, g[1].map(w=>w[0]).join(' · '), g[1].map(w=>w[0])) +
       wordCards(g[1].map(w=>[w[0],w[1],w[2]]))).join('')) +
   block('k4','p.49 · 받침','자모 조합','Build the Syllable','자음을 모아 글자를 만들어 보세요. 눌러서 확인!',
     `<div class="jgrid">${JAMO.map((o,i) => `<button class="jp" data-jamo="${i}">
-      <span class="j">${o.a.join(' + ')}</span><span class="q">${esc(o.w)}</span>
+      <span class="j">${o.a.join(' + ')}</span><span class="q" aria-hidden="true">${esc(o.w)}</span>
     </button>`).join('')}</div>`) +
-  block('k4','p.52 · 받침','분류 놀이','Sort the Words','스물두 단어를 받침 소리로 나누어 보세요',
+  block('k4','p.52 · 받침','분류 놀이','Sort the Words','서른두 단어를 받침 소리로 나누어 보세요',
     sortHTML,
     {note:'교재에서는 <b>가족</b>을 [ㄱ], <b>언니</b>를 [ㄴ] 칸에 먼저 적어 두었어요. 나머지 단어를 같은 방법으로 나눠 보세요.', noteClass:'green'}) +
   block('k4','p.50 · 받침','연습','Practice','듣고 고르기 · 공통 받침 찾기 · 최소대립쌍',
@@ -1041,7 +1046,10 @@ document.getElementById('p-quiz').innerHTML = quizHTML;
    ======================================================================= */
 const tabs = document.querySelectorAll('.tab');
 const panels = {h1:'p-h1', h2:'p-h2', h3:'p-h3', bat:'p-bat', etc:'p-etc', quiz:'p-quiz'};
+let currentTab = 'h1';
 function showTab(name){
+  if(!panels[name]) name = 'h1';
+  currentTab = name;
   tabs.forEach(t => t.classList.toggle('on', t.dataset.tab === name));
   Object.keys(panels).forEach(k => document.getElementById(panels[k]).classList.toggle('on', k === name));
   stopAll();
@@ -1050,6 +1058,7 @@ function showTab(name){
 }
 tabs.forEach(t => t.addEventListener('click', () => {
   showTab(t.dataset.tab);
+  saveState(t.dataset.tab);
   if(window.pickle && window.pickle.widget && window.pickle.widget.signal){
     window.pickle.widget.signal('한글 발음편: ' + t.textContent.trim() + ' 탭을 열었습니다.');
   }
@@ -1077,6 +1086,8 @@ document.addEventListener('click', e => {
   if(!j) return;
   const item = JAMO[+j.dataset.jamo];
   j.classList.add('on');
+  const q = j.querySelector('.q');
+  if(q) q.removeAttribute('aria-hidden');
   sayCard(j, item.w);
 });
 
@@ -1271,7 +1282,7 @@ function renderQuizQuestion(autoPlay){
 
   let body = '';
   if(q.kind === 'audio'){
-    body = `<button class="q-play" id="qPlay">🔊 다시 듣기 <span style="font-size:11px;font-weight:800;color:var(--ink-3)">다시 듣기</span></button>`;
+    body = `<button class="q-play" id="qPlay">🔊 다시 듣기</button>`;
   }else if(q.kind === 'final'){
     body = `<div class="q-big">${esc(q.word)}<small>${esc(q.tag)}</small></div>
             <button class="q-play" id="qPlay">🔊 소리 듣기</button>`;
@@ -1364,6 +1375,9 @@ function renderQuizResult(){
   if(window.pickle && window.pickle.widget && window.pickle.widget.signal){
     window.pickle.widget.signal(`한글 발음 퀴즈: ${n}문제 중 ${quiz.score}문제를 맞혔습니다.`);
   }
+  if(window.pickle && window.pickle.widget && window.pickle.widget.save){
+    try{ window.pickle.widget.save({ tab:'quiz', speed: RATE === 0.65 ? 'slow' : 'normal', metrics:{ quiz_score: quiz.score, quiz_total: n } }); }catch(e){}
+  }
 }
 
 /* 음성 목록이 늦게 준비되면 퀴즈 안내를 갱신 */
@@ -1376,6 +1390,32 @@ renderQuizIntro();
 if(location.hash){
   const name = location.hash.slice(1);
   if(panels[name]) showTab(name);
+}
+
+/* ---------- Pickle 위젯 연결 ---------- */
+function saveState(tab){
+  if(window.pickle && window.pickle.widget && window.pickle.widget.save){
+    try{ window.pickle.widget.save({ tab: tab || currentTab, speed: RATE === 0.65 ? 'slow' : 'normal' }); }catch(e){}
+  }
+}
+if(window.pickle && window.pickle.widget){
+  const W = window.pickle.widget;
+  const tabMap = {'1':'h1','2':'h2','3':'h3','4':'bat','5':'etc','6':'quiz'};
+  if(W.state && W.state.tab) showTab(W.state.tab);
+  if(W.state && W.state.speed) setSpeed(W.state.speed === 'slow' ? 0.65 : 1);
+  W.onstate = (d) => {
+    if(!d) return;
+    if(d.tab) showTab(d.tab);
+    if(d.speed) setSpeed(d.speed === 'slow' ? 0.65 : 1);
+  };
+  W.oncommand = (cmd) => {
+    const parts = String(cmd || '').trim().split(/\s+/);
+    const word = parts[0], arg = parts[1];
+    if(word === 'tab'){ const t = tabMap[arg] || arg; showTab(t); saveState(t); }
+    else if(word === 'speed'){ setSpeed(arg === 'slow' ? 0.65 : 1); saveState(); }
+    else if(word === 'quiz'){ showTab('quiz'); startQuiz(); }
+    else if(panels[word]){ showTab(word); saveState(word); }
+  };
 }
 </script>
 </body>
