@@ -18,6 +18,7 @@
     font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
     line-height:1.6; font-size:17px; letter-spacing:-0.2px;
     -webkit-text-size-adjust:100%;
+    word-break:keep-all; overflow-wrap:break-word;
   }
   #app{max-width:430px;margin:0 auto;padding:14px 14px 96px;min-height:100vh}
   .hidden{display:none !important}
@@ -335,8 +336,9 @@ let quiz = null;
 
 function makeItems(lesson){
   return lesson.quiz.map(function(q, i){
+    const opts = shuffle(q.options.slice());
     return { lid: lesson.id, lname: lesson.name, idx: i, g: q.g, q: q.q, sub: q.sub,
-             options: q.options, ans: q.ans, hint: q.hint };
+             options: opts, ans: opts.indexOf(q.options[q.ans]), hint: q.hint };
   });
 }
 function shuffle(a){
