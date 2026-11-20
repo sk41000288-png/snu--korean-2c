@@ -438,8 +438,9 @@ function finish(){
     if(best[curLesson.id] === undefined || score > best[curLesson.id]){
       best[curLesson.id] = score; lsSet(K_BEST, best);
     }
-    clearWrongOf(curLesson.id);
   }
+  // 이번에 맞힌 문제는 오답 노트에서 지우고, 틀린 문제는 남겨요.
+  quiz.answers.forEach(function(a){ if(a.ok) removeWrong(a.it.lid, a.it.idx); });
 
   const wrongN = quiz.answers.filter(function(a){ return !a.ok; }).length;
   document.getElementById("retryWrong").classList.toggle("hidden", wrongN === 0);
@@ -469,6 +470,9 @@ function addWrong(lid, idx){
 }
 function clearWrongOf(lid){
   lsSet(K_WRONG, wrongList().filter(function(w){ return w.lid !== lid; }));
+}
+function removeWrong(lid, idx){
+  lsSet(K_WRONG, wrongList().filter(function(w){ return !(w.lid === lid && w.idx === idx); }));
 }
 function findItem(lid, idx){
   const L = DATA.filter(function(x){ return x.id === lid; })[0];
