@@ -356,6 +356,7 @@ function startRandom(){
   beginQuiz(items, "전 과 랜덤 20문항", "random");
 }
 function beginQuiz(items, head, mode){
+  answered = false;
   quiz = { items: items, i: 0, correct: 0, answers: [], head: head, mode: mode };
   document.getElementById("quizHead").textContent = head;
   show("scr-quiz");
