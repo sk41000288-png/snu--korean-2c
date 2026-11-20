@@ -438,9 +438,67 @@
   @media (prefers-reduced-motion: reduce){
     *{animation:none!important;transition:none!important}
   }
+  /* ---------- 수업 입장 비밀번호 / Class password gate ---------- */
+  #pw-gate{display:none}
+  body.locked{overflow:hidden}
+  body.locked > *:not(#pw-gate){display:none!important}
+  body.locked #pw-gate{
+    display:flex;position:fixed;inset:0;z-index:9999;
+    align-items:center;justify-content:center;padding:24px 16px;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    background:
+      radial-gradient(900px 480px at 10% -12%, #fffaf0 0%, transparent 62%),
+      radial-gradient(700px 420px at 100% 0%, #eef4f6 0%, transparent 58%),
+      var(--paper);
+  }
+  .pw-card{
+    width:100%;max-width:360px;margin:auto;background:var(--card);
+    border:1px solid var(--line-2);border-radius:20px;
+    padding:28px 22px 22px;text-align:center;box-shadow:var(--shadow);
+  }
+  .pw-badge{
+    display:inline-block;background:var(--indigo-3);color:var(--indigo);
+    font-size:12px;font-weight:800;letter-spacing:.2px;
+    padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .pw-title{margin:0 0 8px;font-size:19px;font-weight:800;color:var(--ink);line-height:1.35}
+  .pw-title span{display:block;margin-top:3px;font-size:12.5px;font-weight:600;color:var(--ink-3);letter-spacing:.2px}
+  .pw-desc{margin:0 0 18px;font-size:13.5px;color:var(--ink-2);line-height:1.55}
+  .pw-desc span{display:block;font-size:12.5px;color:var(--ink-3)}
+  .pw-input{
+    width:100%;padding:14px;font-size:16px;font-family:inherit;text-align:center;
+    letter-spacing:3px;color:var(--ink);background:#fff;
+    border:1.5px solid var(--line-2);border-radius:12px;outline:none;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .pw-input::placeholder{letter-spacing:0;color:var(--ink-3)}
+  .pw-input:focus{border-color:var(--indigo-2);box-shadow:var(--tap)}
+  .pw-input.bad{border-color:var(--ng);box-shadow:0 0 0 3px rgba(178,58,58,.14)}
+  .pw-btn{
+    width:100%;margin-top:10px;padding:14px;font-size:15.5px;font-weight:800;font-family:inherit;
+    color:#fff;background:var(--indigo);border:none;border-radius:12px;cursor:pointer;
+  }
+  .pw-btn:active{background:var(--indigo-2)}
+  .pw-err{min-height:20px;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--ng);line-height:1.45}
+  .pw-err span{display:block;font-weight:600;color:var(--ink-3)}
+  .pw-foot{margin-top:12px;font-size:11.5px;color:var(--ink-3);line-height:1.5}
 </style>
 </head>
-<body>
+<body class="locked">
+
+<div id="pw-gate">
+  <div class="pw-card" role="dialog" aria-modal="true" aria-labelledby="pw-title">
+    <div class="pw-badge">수업 전용 앱 · Class Access</div>
+    <h2 class="pw-title" id="pw-title">서울대 한국어+ 1A · 한글 발음편<span>Hangeul Pronunciation</span></h2>
+    <p class="pw-desc">비밀번호를 입력하세요.<span>Enter password</span></p>
+    <input id="pw-input" class="pw-input" type="password" inputmode="text" autocomplete="off"
+           autocapitalize="off" autocorrect="off" spellcheck="false"
+           placeholder="비밀번호 / Password" aria-label="비밀번호 / Password">
+    <button id="pw-submit" class="pw-btn" type="button">입장하기 / Enter</button>
+    <div id="pw-err" class="pw-err" role="alert" aria-live="polite"></div>
+    <div class="pw-foot">수업에서 안내한 비밀번호를 입력해 주세요.<br>Use the password given in class.</div>
+  </div>
+</div>
 
 <div class="topbar">
   <div class="topbar-in">
@@ -1757,6 +1815,42 @@ if(window.pickle && window.pickle.widget){
     else if(panels[word]){ showTab(word); saveState(word); }
   };
 }
+</script>
+<script>
+/* ---------- 수업 입장 비밀번호 / Class password gate ---------- */
+(function(){
+  var KEY = 'hg1a_unlocked_v1';
+  var PASS = '1sh0805';
+  var gate = document.getElementById('pw-gate');
+  var inp  = document.getElementById('pw-input');
+  var btn  = document.getElementById('pw-submit');
+  var err  = document.getElementById('pw-err');
+
+  function unlock(){
+    document.body.classList.remove('locked');
+    if(gate) gate.style.display = 'none';
+    inp.value = '';
+    err.innerHTML = '';
+    try{ sessionStorage.setItem(KEY, '1'); }catch(e){}
+  }
+  var open = false;
+  try{ open = sessionStorage.getItem(KEY) === '1'; }catch(e){}
+  if(open){ unlock(); return; }
+
+  setTimeout(function(){ try{ inp.focus(); }catch(e){} }, 80);
+
+  function check(){
+    var v = (inp.value || '').replace(/\s+/g, '');
+    if(v === PASS){ unlock(); return; }
+    err.innerHTML = '비밀번호가 맞지 않아요. 다시 확인해 주세요.<span>Wrong password. Please try again.</span>';
+    inp.value = '';
+    inp.classList.add('bad');
+    try{ inp.focus(); }catch(e){}
+  }
+  inp.addEventListener('input', function(){ inp.classList.remove('bad'); });
+  inp.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); check(); } });
+  btn.addEventListener('click', check);
+})();
 </script>
 </body>
 </html>
